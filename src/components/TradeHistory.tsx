@@ -1,12 +1,46 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from 'react';
+import { Column } from 'react-table';
+import { DataTable } from './shared/DataTable';
 
-const TradeHistory = () => {
-  return (
-    <div>
-      <h1>Trade History</h1>
-    </div>
-  );
+type UnitConversion = {
+  fromUnit: string;
+  toUnit: string;
+  factor: number;
 };
 
-export default TradeHistory;
+const data: UnitConversion[] = [
+  {
+    fromUnit: 'inches',
+    toUnit: 'millimetres (mm)',
+    factor: 25.4,
+  },
+  {
+    fromUnit: 'feet',
+    toUnit: 'centimetres (cm)',
+    factor: 30.48,
+  },
+  {
+    fromUnit: 'yards',
+    toUnit: 'metres (m) ',
+    factor: 0.91444,
+  },
+];
+
+const columns: Column<UnitConversion>[] = [
+  {
+    Header: 'To convert',
+    accessor: 'fromUnit',
+  },
+  {
+    Header: 'Into',
+    accessor: 'toUnit',
+  },
+  {
+    Header: 'Multiply by',
+    accessor: 'factor',
+    isNumeric: true,
+  },
+];
+
+export const TradeHistory = (): JSX.Element => (
+  <DataTable columns={columns} data={data} />
+);

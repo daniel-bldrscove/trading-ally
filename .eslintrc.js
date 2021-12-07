@@ -26,25 +26,6 @@ module.exports = {
     project: ['./tsconfig.json'],
     sourceType: 'module',
   },
-  // temporary workaround to remove typescript no-unused-vars eslint error
-  overrides: [
-    {
-      files: ['**/*.ts', '**/*.tsx'],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-        ecmaVersion: 12,
-        project: ['./tsconfig.json'],
-        sourceType: 'module',
-        // typescript-eslint specific options
-        warnOnUnsupportedTypeScriptVersion: true,
-      },
-      rules: {
-        '@typescript-eslint/no-unused-vars': 'warn',
-      },
-    },
-  ],
   plugins: ['react', '@typescript-eslint', 'jest'],
   rules: {
     'arrow-body-style': 'off',

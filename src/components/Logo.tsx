@@ -10,8 +10,6 @@ import logoDarkMode from '../images/logo/trading-ally-logo-dark-mode-sm.png';
 import logoLightMode from '../images/logo/trading-ally-logo-light-mode-sm.png';
 
 export const Logo = forwardRef<ImageProps, 'img'>((props, ref) => {
-  return useColorModeValue(
-    <Image src={logoLightMode} ref={ref} {...props} />,
-    <Image src={logoDarkMode} ref={ref} {...props} />,
-  );
+  const logoMode = useColorModeValue(logoLightMode, logoDarkMode);
+  return <Image src={logoMode} ref={ref} {...props} />;
 });

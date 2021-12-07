@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import { ColorModeSwitcher } from '../components/ColorModeSwitcher';
 import {
   Box,
-  Container,
   Flex,
   Avatar,
   HStack,
@@ -20,6 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Logo } from './Logo';
+import { LayoutWrapper } from './LayoutWrapper';
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 
@@ -41,8 +41,11 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 const Nav: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box bg={useColorModeValue('gray.100', 'gray.900')} justifySelf="start">
-      <Container maxW={['xl', '95%', '3xl']} mx="auto">
+    <Box
+      bg={useColorModeValue('gray.100', 'brand.gray.500')}
+      justifySelf="start"
+    >
+      <LayoutWrapper>
         <Flex
           h={[16, 20, 28]}
           alignItems={'center'}
@@ -106,7 +109,7 @@ const Nav: React.FC = () => {
             </Stack>
           </Box>
         ) : null}
-      </Container>
+      </LayoutWrapper>
     </Box>
   );
 };

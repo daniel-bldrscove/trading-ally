@@ -13,7 +13,7 @@ export const App: React.FC = function () {
       <Flex
         direction="column"
         justify="space-between"
-        height={'calc(100vh - 4rem)'}
+        height={'calc(100vh - 7rem)'}
       >
         <Layout />
         <Footer />

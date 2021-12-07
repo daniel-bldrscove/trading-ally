@@ -1,14 +1,21 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import * as React from 'react';
 import { Box, useColorModeValue } from '@chakra-ui/react';
+import { LayoutWrapper } from './LayoutWrapper';
+import { TitleSections } from './TitleSections';
+import { TradeHistory } from './TradeHistory';
 
-const Layout: React.FC = () => {
+const Layout = (): JSX.Element => {
   return (
-    <section className="main-layout-section">
-      <Box bg={useColorModeValue('brand.gray.100', 'brand.gray.400')} h="32">
-        <p>Main Layout</p>
-      </Box>
-    </section>
+    <Box
+      as="section"
+      className="main-layout-section"
+      bg={useColorModeValue('brand.gray.50', 'brand.gray.400')}
+      h="full"
+    >
+      <LayoutWrapper>
+        <TitleSections title="Trade History" />
+        <TradeHistory />
+      </LayoutWrapper>
+    </Box>
   );
 };
 
