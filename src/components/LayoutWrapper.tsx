@@ -4,6 +4,7 @@ import { Container } from '@chakra-ui/react';
 interface LayoutProps {
   children: React.ReactNode;
   mt?: string;
+  px?: string[];
 }
 
 export const LayoutWrapper = ({
@@ -14,8 +15,9 @@ export const LayoutWrapper = ({
     <Container
       className="layout-wrapper"
       maxW={['xl', '95%', '5xl']}
-      mx="auto"
       p={0}
+      mx="auto"
+      px={['.5rem', '1.5rem', '2rem']}
       position="relative"
       display="block"
       {...props}
