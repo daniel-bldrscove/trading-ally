@@ -1,11 +1,15 @@
 import React from 'react';
 import { Container } from '@chakra-ui/react';
 
-interface Props {
+interface LayoutProps {
   children: React.ReactNode;
+  mt?: string;
 }
 
-export const LayoutWrapper = ({ children }: Props): JSX.Element => {
+export const LayoutWrapper = ({
+  children,
+  ...props
+}: LayoutProps): JSX.Element => {
   return (
     <Container
       className="layout-wrapper"
@@ -14,6 +18,7 @@ export const LayoutWrapper = ({ children }: Props): JSX.Element => {
       p={0}
       position="relative"
       display="block"
+      {...props}
     >
       {children}
     </Container>

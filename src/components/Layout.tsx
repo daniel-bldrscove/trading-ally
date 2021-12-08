@@ -11,7 +11,7 @@ const Layout = (): JSX.Element => {
       bg={useColorModeValue('brand.gray.50', 'brand.gray.400')}
       h="full"
     >
-      <LayoutWrapper>
+      <LayoutWrapper mt="5rem">
         <TitleSections title="Trade History" />
         <TradeHistory />
       </LayoutWrapper>

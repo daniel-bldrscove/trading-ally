@@ -19,6 +19,7 @@ export function DataTable<Data extends Record<string, unknown>>({
     <Table {...getTableProps()}>
       <Thead>
         {headerGroups.map((headerGroup) => {
+          console.log('Header group', headerGroup);
           const { key, ...restHeaderGroupProps } =
             headerGroup.getHeaderGroupProps();
           return (
