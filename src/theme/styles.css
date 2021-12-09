@@ -3,3 +3,25 @@
 #trade-history-table{
   overflow-x: scroll;
 }
+
+/* width */
+::-webkit-scrollbar {
+  height: 5px; /* horizontal scrollbar height */
+  width: 5px; /* vertical scrollbar width */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--chakra-colors-brand-gray-100);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--chakra-colors-brand-gray-200);
+}

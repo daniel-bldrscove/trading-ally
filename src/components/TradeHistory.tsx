@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
 import { Column } from 'react-table';
 import { DataTable } from './shared/DataTable';
+import { TRADE_MOCK_DATA } from '../utils/mockData.json';
 
 export const TradeHistory = (): JSX.Element => {
   type ExecutedTrades = {
+    id: number;
     date: string;
     execTime: string;
     spread: string;
@@ -12,62 +14,12 @@ export const TradeHistory = (): JSX.Element => {
     symbol: string;
     price: number;
     posEffect: string;
-    edit: string;
-    delete: string;
+    edit: null;
+    delete: null;
   };
 
   const data: ExecutedTrades[] = useMemo(() => {
-    const placeholderData = {
-      date: 'MM/DD/YYYY',
-      execTime: '00:00:00',
-      spread: 'Stock',
-      side: 'Long',
-      qty: 4,
-      symbol: 'ATVI',
-      price: 120.87,
-      posEffect: 'To Open',
-      edit: 'Update',
-      delete: 'Delete',
-    };
-
-    return [
-      {
-        date: placeholderData.date,
-        execTime: placeholderData.execTime,
-        spread: placeholderData.spread,
-        side: placeholderData.side,
-        qty: placeholderData.qty,
-        symbol: placeholderData.symbol,
-        price: placeholderData.price,
-        posEffect: placeholderData.posEffect,
-        edit: placeholderData.edit,
-        delete: placeholderData.delete,
-      },
-      {
-        date: placeholderData.date,
-        execTime: placeholderData.execTime,
-        spread: placeholderData.spread,
-        side: placeholderData.side,
-        qty: placeholderData.qty,
-        symbol: placeholderData.symbol,
-        price: placeholderData.price,
-        posEffect: placeholderData.posEffect,
-        edit: placeholderData.edit,
-        delete: placeholderData.delete,
-      },
-      {
-        date: placeholderData.date,
-        execTime: placeholderData.execTime,
-        spread: placeholderData.spread,
-        side: placeholderData.side,
-        qty: placeholderData.qty,
-        symbol: placeholderData.symbol,
-        price: placeholderData.price,
-        posEffect: placeholderData.posEffect,
-        edit: placeholderData.edit,
-        delete: placeholderData.delete,
-      },
-    ];
+    return TRADE_MOCK_DATA;
   }, []);
 
   const columns: Column<ExecutedTrades>[] = useMemo(
@@ -91,7 +43,6 @@ export const TradeHistory = (): JSX.Element => {
       {
         Header: 'QTY',
         accessor: 'qty',
-        isNumeric: true,
       },
       {
         Header: 'Symbol',
@@ -100,7 +51,6 @@ export const TradeHistory = (): JSX.Element => {
       {
         Header: 'Price',
         accessor: 'price',
-        isNumeric: true,
       },
       {
         Header: 'Pos. Effect',
@@ -109,10 +59,12 @@ export const TradeHistory = (): JSX.Element => {
       {
         accessor: 'edit',
         disableSortBy: true,
+        isEditable: true,
       },
       {
         accessor: 'delete',
         disableSortBy: true,
+        isDeletable: true,
       },
     ],
     [],

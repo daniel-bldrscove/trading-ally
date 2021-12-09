@@ -9,9 +9,8 @@ const Layout = (): JSX.Element => {
       as="section"
       className="main-layout-section"
       bg={useColorModeValue('brand.gray.50', 'brand.gray.400')}
-      h="full"
     >
-      <LayoutWrapper mt="5rem">
+      <LayoutWrapper mt="5rem" mb="5rem">
         <TitleSections title="Trade History" />
         <TradeHistory />
       </LayoutWrapper>

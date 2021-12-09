@@ -36,5 +36,7 @@ declare module 'react-table' {
     D extends Record<string, unknown> = Record<string, unknown>,
   > extends UseSortByColumnProps<D> {
     isNumeric?: boolean;
+    isEditable?: boolean;
+    isDeletable?: boolean;
   }
 }
