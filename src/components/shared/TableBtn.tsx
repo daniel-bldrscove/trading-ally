@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react';
+import { IconButton } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
 interface BtnProps {
@@ -10,15 +10,19 @@ interface BtnProps {
 export const TableBtn = ({ action, onClick }: BtnProps): JSX.Element => {
   if (action === 'edit') {
     return (
-      <Button onClick={onClick}>
-        <EditIcon />
-      </Button>
+      <IconButton
+        aria-label="Edit Trade"
+        onClick={onClick}
+        icon={<EditIcon />}
+      />
     );
   } else if (action === 'delete') {
     return (
-      <Button onClick={onClick}>
-        <DeleteIcon />
-      </Button>
+      <IconButton
+        aria-label="Delete Trade"
+        onClick={onClick}
+        icon={<DeleteIcon />}
+      />
     );
   }
   return <></>;

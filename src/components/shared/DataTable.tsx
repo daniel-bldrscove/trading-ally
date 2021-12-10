@@ -64,7 +64,7 @@ export function DataTable<Data extends Record<string, unknown>>({
   const tableStripes = useColorModeValue('gray', 'gray');
 
   return (
-    <Box {...props} maxW="full">
+    <Box {...props} maxW="full" h="sm">
       <Table
         {...getTableProps()}
         size="sm"
