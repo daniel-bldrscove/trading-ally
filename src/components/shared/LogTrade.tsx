@@ -11,10 +11,11 @@ import {
   Button,
   Grid,
   FormControl,
-  FormErrorMessage,
   Heading,
   HStack,
   IconButton,
+  InputGroup,
+  InputLeftElement,
   Input,
   Select,
   Switch,
@@ -23,6 +24,8 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { SmFormLabel } from './SmFormLabel';
+import { logTradeValidationSchema } from '../../utils/validationSchema';
+import { FormErrorMessage } from '../shared/FormErrorMessage';
 
 interface OtherProps {
   w: string;
@@ -80,7 +83,9 @@ export const LogTrade = ({
       </Box>
       <Formik
         initialValues={initialValues}
+        validationSchema={logTradeValidationSchema}
         onSubmit={(values, actions) => {
+          console.log('Typeof date: ', typeof values.date);
           setTimeout(() => {
             alert(JSON.stringify(values, null, 2));
             actions.setSubmitting(false);
@@ -102,70 +107,88 @@ export const LogTrade = ({
                   gap={6}
                 >
                   <Field name="date">
-                    {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={form.errors.name && form.touched.name}
-                      >
-                        <SmFormLabel htmlFor="date">Date</SmFormLabel>
-                        <Input
-                          w="20"
-                          id="date"
-                          size="xs"
-                          {...field}
-                          placeholder="MM/DD/YY"
-                        />
-                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                      </FormControl>
-                    )}
+                    {({ field, form }: FieldProps) => {
+                      return (
+                        <FormControl
+                          isInvalid={form.errors.date && form.touched.date}
+                        >
+                          <SmFormLabel htmlFor="date">Date</SmFormLabel>
+                          <Input
+                            w="32"
+                            id="date"
+                            type="date"
+                            size="xs"
+                            {...field}
+                            placeholder="MM/DD/YY"
+                          />
+                          <FormErrorMessage>
+                            {form.errors.date}
+                          </FormErrorMessage>
+                        </FormControl>
+                      );
+                    }}
                   </Field>
                   <Field name="execTime">
                     {({ field, form }: FieldProps) => (
                       <FormControl
-                        isInvalid={form.errors.name && form.touched.name}
+                        isInvalid={
+                          form.errors.execTime && form.touched.execTime
+                        }
                       >
                         <SmFormLabel htmlFor="execTime">Exec Time</SmFormLabel>
                         <Input
-                          w="20"
+                          w="28"
                           size="xs"
+                          type="time"
                           id="execTime"
                           {...field}
                           placeholder="00:00"
                         />
-                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                        <FormErrorMessage>
+                          {form.errors.execTime}
+                        </FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
                   <Field name="spread">
-                    {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={form.errors.name && form.touched.name}
-                      >
-                        <SmFormLabel htmlFor="spread">Spread</SmFormLabel>
-                        <Input
-                          w="16"
-                          id="spread"
-                          size="xs"
-                          {...field}
-                          disabled={true}
-                          variant="filled"
-                          value="Stock"
-                        />
-                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                      </FormControl>
-                    )}
+                    {({ field, form }: FieldProps) => {
+                      return (
+                        <FormControl
+                          isInvalid={form.errors.spread && form.touched.spread}
+                        >
+                          <SmFormLabel htmlFor="spread">Spread</SmFormLabel>
+                          <Input
+                            w="16"
+                            id="spread"
+                            size="xs"
+                            type="text"
+                            placeholder="Only stock for now"
+                            {...field}
+                          />
+                          <FormErrorMessage>
+                            {form.errors.spread}
+                          </FormErrorMessage>
+                        </FormControl>
+                      );
+                    }}
                   </Field>
                   <Field name="side">
                     {({ field, form }: FieldProps) => (
                       <FormControl
-                        isInvalid={form.errors.name && form.touched.name}
+                        isInvalid={form.errors.side && form.touched.side}
                       >
                         <SmFormLabel htmlFor="side">Side</SmFormLabel>
-                        <HStack spacing="8px" mt={2} mr={6}>
-                          <Text fontSize="xs">Long</Text>
-                          <Switch {...field} id="side" />
-                          <Text fontSize="xs">Short</Text>
-                        </HStack>
-                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                        <Select
+                          w="24"
+                          id="side"
+                          size="xs"
+                          placeholder="Pick one"
+                          {...field}
+                        >
+                          <option value="long">Long</option>
+                          <option value="short">Short</option>
+                        </Select>
+                        <FormErrorMessage>{form.errors.side}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
@@ -173,7 +196,7 @@ export const LogTrade = ({
                     {({ field, form }: FieldProps) => {
                       return (
                         <FormControl
-                          isInvalid={form.errors.name && form.touched.name}
+                          isInvalid={form.errors.qty && form.touched.qty}
                         >
                           <SmFormLabel htmlFor="qty">QTY</SmFormLabel>
                           <HStack spacing="4px">
@@ -191,9 +214,10 @@ export const LogTrade = ({
                               }
                             />
                             <Input
-                              w="8"
+                              w="12"
                               p="2px"
                               id="qty"
+                              type="number"
                               size="xs"
                               borderBottom="1px"
                               textAlign="center"
@@ -214,9 +238,7 @@ export const LogTrade = ({
                               }
                             />
                           </HStack>
-                          <FormErrorMessage>
-                            {form.errors.name}
-                          </FormErrorMessage>
+                          <FormErrorMessage>{form.errors.qty}</FormErrorMessage>
                         </FormControl>
                       );
                     }}
@@ -224,54 +246,69 @@ export const LogTrade = ({
                   <Field name="symbol">
                     {({ field, form }: FieldProps) => (
                       <FormControl
-                        isInvalid={form.errors.name && form.touched.name}
+                        isInvalid={form.errors.symbol && form.touched.symbol}
                       >
                         <SmFormLabel htmlFor="symbol">Symbol</SmFormLabel>
                         <Input
                           w="16"
                           id="symbol"
+                          type="text"
                           size="xs"
                           {...field}
                           placeholder="AAPL"
+                          textTransform="uppercase"
                         />
-                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                        <FormErrorMessage>
+                          {form.errors.symbol}
+                        </FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
                   <Field name="price">
                     {({ field, form }: FieldProps) => (
                       <FormControl
-                        isInvalid={form.errors.name && form.touched.name}
+                        isInvalid={form.errors.price && form.touched.price}
                       >
                         <SmFormLabel htmlFor="price">Price</SmFormLabel>
-                        <Input
-                          w="16"
-                          id="price"
-                          size="xs"
-                          {...field}
-                          placeholder="00.00"
-                        />
-                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.500"
+                            w="auto"
+                            h="auto"
+                            ml="0.45rem"
+                            // eslint-disable-next-line react/no-children-prop
+                            children="$"
+                          />
+                          <Input
+                            w="20"
+                            id="price"
+                            type="number"
+                            size="xs"
+                            pl="1.5rem"
+                            {...field}
+                            placeholder="00.00"
+                          />
+                        </InputGroup>
+                        <FormErrorMessage>{form.errors.price}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
                   <Field name="posEffect">
                     {({ field, form }: FieldProps) => (
                       <FormControl
-                        isInvalid={form.errors.name && form.touched.name}
+                        isInvalid={
+                          form.errors.posEffect && form.touched.posEffect
+                        }
                       >
                         <SmFormLabel htmlFor="posEffect">Pos. Eff.</SmFormLabel>
-                        <Select
-                          w="24"
-                          id="posEffect"
-                          size="xs"
-                          {...field}
-                          placeholder="Position"
-                        >
+                        <Select w="24" id="posEffect" size="xs" {...field}>
                           <option value="toOpen">To Open</option>
                           <option value="toClose">To Close</option>
                         </Select>
-                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                        <FormErrorMessage>
+                          {form.errors.posEffect}
+                        </FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
