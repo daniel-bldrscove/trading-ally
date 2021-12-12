@@ -1,11 +1,4 @@
-import { useState } from 'react';
-import {
-  Formik,
-  // FormikProps,
-  Form,
-  Field,
-  FieldProps,
-} from 'formik';
+import { Formik, Form, Field, FieldProps } from 'formik';
 import {
   Box,
   Button,
@@ -18,12 +11,10 @@ import {
   InputLeftElement,
   Input,
   Select,
-  Switch,
-  Text,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import { SmFormLabel } from './SmFormLabel';
+import { SmLabelWithTooltip } from './SmLabelWithTooltip';
 import { logTradeValidationSchema } from '../../utils/validationSchema';
 import { FormErrorMessage } from '../shared/FormErrorMessage';
 
@@ -43,25 +34,15 @@ interface FormikValues {
   posEffect: string;
 }
 
-interface CustomFieldProps extends FieldProps {
-  setFieldValue: (
-    field: string,
-    value: number,
-    shouldValidate?: boolean,
-  ) => void;
-}
-
 export const LogTrade = ({
   ...formContainerProps
 }: OtherProps): JSX.Element => {
-  const [count, setCount] = useState(1);
-
   const initialValues: FormikValues = {
     date: '',
     execTime: '',
     spread: '',
     side: '',
-    qty: count,
+    qty: 1,
     symbol: '',
     price: 0,
     posEffect: '',
@@ -94,7 +75,6 @@ export const LogTrade = ({
       >
         {(props) => (
           <Form>
-            {/* TODO: add validate={validateName} */}
             <Box position="relative" p={0} {...formContainerProps}>
               <Box bg={tradeDetailsBgColor} p={5} borderTopRadius="md">
                 <Grid
@@ -112,7 +92,12 @@ export const LogTrade = ({
                         <FormControl
                           isInvalid={form.errors.date && form.touched.date}
                         >
-                          <SmFormLabel htmlFor="date">Date</SmFormLabel>
+                          <SmLabelWithTooltip
+                            htmlFor="date"
+                            toolTipDescription="On what day did you execute the trade?"
+                          >
+                            date
+                          </SmLabelWithTooltip>
                           <Input
                             w="32"
                             id="date"
@@ -135,7 +120,12 @@ export const LogTrade = ({
                           form.errors.execTime && form.touched.execTime
                         }
                       >
-                        <SmFormLabel htmlFor="execTime">Exec Time</SmFormLabel>
+                        <SmLabelWithTooltip
+                          htmlFor="execTime"
+                          toolTipDescription="At what time did you execute the trade?"
+                        >
+                          execTime
+                        </SmLabelWithTooltip>
                         <Input
                           w="28"
                           size="xs"
@@ -156,13 +146,18 @@ export const LogTrade = ({
                         <FormControl
                           isInvalid={form.errors.spread && form.touched.spread}
                         >
-                          <SmFormLabel htmlFor="spread">Spread</SmFormLabel>
+                          <SmLabelWithTooltip
+                            htmlFor="spread"
+                            toolTipDescription="Currently only support logging Stock trades"
+                          >
+                            spread
+                          </SmLabelWithTooltip>
                           <Input
                             w="16"
                             id="spread"
                             size="xs"
                             type="text"
-                            placeholder="Only stock for now"
+                            placeholder="Stock"
                             {...field}
                           />
                           <FormErrorMessage>
@@ -177,7 +172,12 @@ export const LogTrade = ({
                       <FormControl
                         isInvalid={form.errors.side && form.touched.side}
                       >
-                        <SmFormLabel htmlFor="side">Side</SmFormLabel>
+                        <SmLabelWithTooltip
+                          htmlFor="side"
+                          toolTipDescription="'Long' means buy, 'Short' means sell. Did you buy or sell?"
+                        >
+                          side
+                        </SmLabelWithTooltip>
                         <Select
                           w="24"
                           id="side"
@@ -198,7 +198,12 @@ export const LogTrade = ({
                         <FormControl
                           isInvalid={form.errors.qty && form.touched.qty}
                         >
-                          <SmFormLabel htmlFor="qty">QTY</SmFormLabel>
+                          <SmLabelWithTooltip
+                            htmlFor="qty"
+                            toolTipDescription="How many shares did you buy or sell?"
+                          >
+                            qty
+                          </SmLabelWithTooltip>
                           <HStack spacing="4px">
                             <IconButton
                               name="qty"
@@ -248,7 +253,12 @@ export const LogTrade = ({
                       <FormControl
                         isInvalid={form.errors.symbol && form.touched.symbol}
                       >
-                        <SmFormLabel htmlFor="symbol">Symbol</SmFormLabel>
+                        <SmLabelWithTooltip
+                          htmlFor="symbol"
+                          toolTipDescription="What's the company ticker symbol?"
+                        >
+                          Symbol
+                        </SmLabelWithTooltip>
                         <Input
                           w="16"
                           id="symbol"
@@ -269,7 +279,12 @@ export const LogTrade = ({
                       <FormControl
                         isInvalid={form.errors.price && form.touched.price}
                       >
-                        <SmFormLabel htmlFor="price">Price</SmFormLabel>
+                        <SmLabelWithTooltip
+                          htmlFor="price"
+                          toolTipDescription="What's the price of a single share?"
+                        >
+                          price
+                        </SmLabelWithTooltip>
                         <InputGroup>
                           <InputLeftElement
                             pointerEvents="none"
@@ -301,8 +316,22 @@ export const LogTrade = ({
                           form.errors.posEffect && form.touched.posEffect
                         }
                       >
-                        <SmFormLabel htmlFor="posEffect">Pos. Eff.</SmFormLabel>
-                        <Select w="24" id="posEffect" size="xs" {...field}>
+                        <SmLabelWithTooltip
+                          htmlFor="posEffect"
+                          toolTipDescription="One can enter a 'long' position, 'short' position, or exit a position when trading. 
+                          If you bought shares and were not previously in a short position, then the position effect is to open. If you were already short, then it would be to close.
+                          If you sold shares and were not in a long position previously, then the position effect is to open. If you were already long, then it would be to close.
+                          "
+                        >
+                          posEffect
+                        </SmLabelWithTooltip>
+                        <Select
+                          w="24"
+                          id="posEffect"
+                          placeholder="Pick one"
+                          size="xs"
+                          {...field}
+                        >
                           <option value="toOpen">To Open</option>
                           <option value="toClose">To Close</option>
                         </Select>
