@@ -38,7 +38,14 @@ const Footer: React.FC = () => {
             mt={1}
             mb={1}
           >
-            Designed & built by BldrsCove
+            Designed & built by{' '}
+            <a
+              href="https://www.bldrscove.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              BldrsCove
+            </a>
           </Text>
         </Stack>
       </Flex>
