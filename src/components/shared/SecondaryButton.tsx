@@ -16,7 +16,7 @@ export const SecondaryButton = ({
   isLoading = false,
   disabled = false,
   children,
-}: SecondaryButtonProps) => {
+}: SecondaryButtonProps): JSX.Element => {
   const enabledColor = useColorModeValue('brand.gray.300', 'brand.gray.100');
   const disabledColor = useColorModeValue('brand.gray.100', 'brand.gray.300');
   const hoverColor = useColorModeValue('brand.green.500', 'brand.green.500');

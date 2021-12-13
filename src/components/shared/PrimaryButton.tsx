@@ -18,7 +18,7 @@ export const PrimaryButton = ({
   isLoading = false,
   disabled = false,
   children,
-}: PrimaryButtonProps) => {
+}: PrimaryButtonProps): JSX.Element => {
   const enabledTextColor = 'brand.gray.400';
   const enabledColor = 'brand.green.400';
   const hoverColor = useColorModeValue('brand.green.500', 'brand.green.500');
