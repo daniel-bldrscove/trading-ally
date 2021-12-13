@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import {
   Box,
-  Button,
   Grid,
   FormControl,
   Heading,
@@ -12,11 +12,16 @@ import {
   Input,
   Select,
   useColorModeValue,
+  ButtonGroup,
+  Flex,
 } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { SmLabelWithTooltip } from './SmLabelWithTooltip';
 import { logTradeValidationSchema } from '../../utils/validationSchema';
 import { FormErrorMessage } from '../shared/FormErrorMessage';
+import { SecondaryButton } from './SecondaryButton';
+import { PrimaryButton } from './PrimaryButton';
+import { SubmissionSummary } from './LogTradeSubmissionSummary';
 
 interface OtherProps {
   w: string;
@@ -37,6 +42,8 @@ interface FormikValues {
 export const LogTrade = ({
   ...formContainerProps
 }: OtherProps): JSX.Element => {
+  const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
+
   const initialValues: FormikValues = {
     date: '',
     execTime: '',
@@ -48,10 +55,6 @@ export const LogTrade = ({
     posEffect: '',
   };
 
-  const logTradeBtnColor = useColorModeValue(
-    'brand.green.500',
-    'brand.green.500',
-  );
   const tradeDetailsBgColor = useColorModeValue('gray.300', 'brand.gray.800');
   const tradeSummaryBgColor = useColorModeValue('gray.200', 'brand.gray.600');
 
@@ -78,6 +81,7 @@ export const LogTrade = ({
             <Box position="relative" p={0} {...formContainerProps}>
               <Box bg={tradeDetailsBgColor} p={5} borderTopRadius="md">
                 <Grid
+                  overflow="hidden"
                   templateColumns={[
                     'repeat(2,1fr)',
                     'repeat(3,1fr)',
@@ -289,13 +293,14 @@ export const LogTrade = ({
                           <InputLeftElement
                             pointerEvents="none"
                             color="gray.500"
-                            w="auto"
-                            h="auto"
                             ml="0.45rem"
                             // eslint-disable-next-line react/no-children-prop
                             children="$"
+                            w="auto"
+                            h="auto"
                           />
                           <Input
+                            p="2px"
                             w="20"
                             id="price"
                             type="number"
@@ -318,10 +323,8 @@ export const LogTrade = ({
                       >
                         <SmLabelWithTooltip
                           htmlFor="posEffect"
-                          toolTipDescription="One can enter a 'long' position, 'short' position, or exit a position when trading. 
-                          If you bought shares and were not previously in a short position, then the position effect is to open. If you were already short, then it would be to close.
-                          If you sold shares and were not in a long position previously, then the position effect is to open. If you were already long, then it would be to close.
-                          "
+                          toolTipDescription="If you bought shares and were not previously in a short position, then the position effect is to open. If you were already short, then it would be to close.
+                          If you sold shares and were not in a long position previously, then the position effect is to open. If you were already long, then it would be to close."
                         >
                           posEffect
                         </SmLabelWithTooltip>
@@ -346,23 +349,53 @@ export const LogTrade = ({
               <Box
                 bg={tradeSummaryBgColor}
                 w="full"
-                p={2}
+                p={[8, 4, 2]}
                 display="flex"
                 justifyContent="end"
                 borderBottomRadius="md"
               >
-                <Button
-                  w={32}
-                  h={10}
-                  size="xs"
-                  bg={logTradeBtnColor}
-                  color="brand.gray.700"
-                  _hover={{ bg: 'brand.green.600' }}
-                  isLoading={props.isSubmitting}
-                  type="submit"
-                >
-                  Log Trade
-                </Button>
+                {isReadyToSubmit ? (
+                  <Flex
+                    w="full"
+                    align="center"
+                    justify="space-between"
+                    wrap={['wrap', 'wrap', 'nowrap']}
+                  >
+                    <SubmissionSummary {...props.values} />
+                    <ButtonGroup isAttached variant="filled">
+                      <SecondaryButton
+                        type="button"
+                        onClick={() => setIsReadyToSubmit(false)}
+                      >
+                        Cancel
+                      </SecondaryButton>
+                      <PrimaryButton
+                        w={32}
+                        isLoading={props.isSubmitting}
+                        type="submit"
+                      >
+                        Submit
+                      </PrimaryButton>
+                    </ButtonGroup>
+                  </Flex>
+                ) : (
+                  <>
+                    <SecondaryButton
+                      type="button"
+                      onClick={() => setIsReadyToSubmit(true)}
+                      disabled={
+                        // if at least one field has been touched &&
+                        Object.keys(props.touched).length >= 1 &&
+                        // if there are no keys in Formik's error object, enable btn
+                        Object.keys(props.errors).length === 0
+                          ? false
+                          : true
+                      }
+                    >
+                      Review Trade
+                    </SecondaryButton>
+                  </>
+                )}
               </Box>
             </Box>
           </Form>

@@ -21,8 +21,8 @@ export const logTradeValidationSchema = Yup.object({
       // which registers invalid when ran against the previous Yup.date() method
       // so we parse and give the validation a new date object
       currentValue = parse(originalValue, 'kk:mm', new Date());
-      // if currentValue is now valid, return it, otherwise
-      return isValid(currentValue) ? currentValue : new Date(''); // if not valid, send an invalid new Date();
+      // if currentValue is now valid, return it, otherwise return an invalid new Date();
+      return isValid(currentValue) ? currentValue : new Date('');
     })
     .typeError('Invalid time format')
     .required('Required'),

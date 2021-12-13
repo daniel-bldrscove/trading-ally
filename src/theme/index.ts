@@ -15,6 +15,13 @@ const theme = extendTheme({
       },
     }),
   },
+  components: {
+    Button: {
+      baseStyle: {},
+      variants: {},
+      defaultProps: {},
+    },
+  },
   fonts: {
     heading: `Murecho ${base.fonts?.heading}`,
     body: `Murecho ${base.fonts?.body}`,
