@@ -2,7 +2,7 @@ import { Box, useColorModeValue } from '@chakra-ui/react';
 import { LayoutWrapper } from './LayoutWrapper';
 import { TitleSections } from './TitleSections';
 import { TradeHistory } from './TradeHistory';
-import { LogTrade } from './shared/LogTrade';
+import { LogTrade } from './logTrade';
 
 const Layout = (): JSX.Element => {
   return (

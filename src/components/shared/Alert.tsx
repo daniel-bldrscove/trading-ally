@@ -27,30 +27,28 @@ export const Alert = ({
   const cancelRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <>
-      <AlertDialog
-        motionPreset="slideInBottom"
-        leastDestructiveRef={cancelRef}
-        onClose={onAlertClose}
-        isOpen={isAlertOpen}
-        isCentered
-      >
-        <AlertDialogOverlay />
+    <AlertDialog
+      motionPreset="slideInBottom"
+      leastDestructiveRef={cancelRef}
+      onClose={onAlertClose}
+      isOpen={isAlertOpen}
+      isCentered
+    >
+      <AlertDialogOverlay />
 
-        <AlertDialogContent>
-          <AlertDialogHeader>{data.title}</AlertDialogHeader>
-          <ModalCloseButton onClick={onAlertClose} />
-          <AlertDialogBody>{data.disclaimer}</AlertDialogBody>
-          <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onAlertClose}>
-              No
-            </Button>
-            <Button colorScheme="red" ml={3}>
-              Yes
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+      <AlertDialogContent>
+        <AlertDialogHeader>{data.title}</AlertDialogHeader>
+        <ModalCloseButton onClick={onAlertClose} />
+        <AlertDialogBody>{data.disclaimer}</AlertDialogBody>
+        <AlertDialogFooter>
+          <Button ref={cancelRef} onClick={onAlertClose}>
+            No
+          </Button>
+          <Button colorScheme="red" ml={3}>
+            Yes
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };

@@ -12,7 +12,7 @@ interface FormikValues {
   posEffect: string;
 }
 
-export const SubmissionSummary = ({
+export const SummaryText = ({
   date,
   execTime,
   side,
@@ -27,9 +27,9 @@ export const SubmissionSummary = ({
         fontWeight="medium"
         color={useColorModeValue('brand.gray.300', 'brand.gray.100')}
       >
-        {side === ''
+        {side === '' || qty === 0
           ? ''
-          : side === 'long'
+          : qty > 0 && side === 'long'
           ? `You bought ${qty} shares of ${symbol} at $${price} / share, on ${format(
               Date.parse(date),
               'MM/dd/yyyy',

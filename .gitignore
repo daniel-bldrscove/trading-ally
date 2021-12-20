@@ -120,3 +120,6 @@ dist
 
 # Local Netlify folder
 .netlify
+
+# Database
+.faunarc

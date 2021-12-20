@@ -31,7 +31,11 @@ export const logTradeValidationSchema = Yup.object({
     .max(6)
     .required('Spread must be "Stock"'),
   side: Yup.string().max(6).required(),
-  qty: Yup.number().max(100000).min(-100000).required(),
+  qty: Yup.number()
+    .test('is-not-zero', '${path} cannot be 0', (value) => value !== 0)
+    .max(100000)
+    .min(-100000)
+    .required(),
   symbol: Yup.string()
     .uppercase()
     .max(6, 'Must be 6 characters or less')

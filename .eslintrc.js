@@ -17,7 +17,6 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:prettier/recommended',
   ],
-  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -26,15 +25,17 @@ module.exports = {
     project: ['./tsconfig.json'],
     sourceType: 'module',
   },
+  parser: '@typescript-eslint/parser',
   plugins: ['react', '@typescript-eslint', 'jest'],
   rules: {
     'arrow-body-style': 'off',
     'react/jsx-filename-extension': [
       1,
-      { extensions: ['.js', '.ts', '.jsx', '.tsx'] },
+      { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
     ],
     'react/state-in-constructor': 'off',
     'react/jsx-uses-vars': 2,
+    'no-none-assertion': 0,
   },
   settings: {
     'import/ignore': ['node_modules'],
