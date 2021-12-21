@@ -11,7 +11,7 @@ export const TradeHistory = (): JSX.Element => {
     spread: string;
     side: string;
     qty: number;
-    symbol: string;
+    ticker: string;
     price: number;
     posEffect: string;
     edit: null;
@@ -45,8 +45,8 @@ export const TradeHistory = (): JSX.Element => {
         accessor: 'qty',
       },
       {
-        Header: 'Symbol',
-        accessor: 'symbol',
+        Header: 'Ticker',
+        accessor: 'ticker',
       },
       {
         Header: 'Price',

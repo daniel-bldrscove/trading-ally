@@ -7,7 +7,7 @@ interface FormikValues {
   spread: string;
   side: string;
   qty: number;
-  symbol: string;
+  ticker: string;
   price: number;
   posEffect: string;
 }
@@ -17,9 +17,10 @@ export const SummaryText = ({
   execTime,
   side,
   qty,
-  symbol,
+  ticker,
   price,
 }: FormikValues): JSX.Element => {
+  console.log('to log date: ', date);
   return (
     <Box pl={[0, 0, 4]} pr={4} mb={[8, 4, 2]}>
       <Text
@@ -30,11 +31,11 @@ export const SummaryText = ({
         {side === '' || qty === 0
           ? ''
           : qty > 0 && side === 'long'
-          ? `You bought ${qty} shares of ${symbol} at $${price} / share, on ${format(
-              Date.parse(date),
+          ? `You bought ${qty} shares of ${ticker} at $${price} / share, on ${format(
+              new Date(date.replace(/-/g, '/')), // change hyphens to forward slash otherwise it outputs one day behind
               'MM/dd/yyyy',
             )} at ${execTime}. Ready to submit?`
-          : `You sold ${qty} shares of ${symbol} at $${price} / share, on ${format(
+          : `You sold ${qty} shares of ${ticker} at $${price} / share, on ${format(
               Date.parse(date),
               'MM/dd/yyyy',
             )} at ${execTime}. Ready to submit?`}

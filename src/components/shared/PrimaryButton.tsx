@@ -19,14 +19,13 @@ export const PrimaryButton = ({
   disabled = false,
   children,
 }: PrimaryButtonProps): JSX.Element => {
-  const enabledTextColor = 'brand.gray.400';
-  const enabledColor = 'brand.green.400';
-  const hoverColor = useColorModeValue('brand.green.500', 'brand.green.500');
-  const disabledColor = useColorModeValue('#cee5db', '#28322d');
-  const disabledTextColor = useColorModeValue(
-    'brand.gray.100',
-    'brand.gray.300',
+  const enabledColor = useColorModeValue('brand.green.400', 'brand.green.400');
+  const enabledHoverBgColor = useColorModeValue(
+    'brand.gray.600',
+    'brand.gray.600',
   );
+  const disabledTextColor = useColorModeValue('brand.gray.100', '#32343a');
+  const disabledBgColor = useColorModeValue('#cee5db', '#20222a');
 
   return (
     <Button
@@ -59,27 +58,34 @@ export const PrimaryButton = ({
           : '0.90rem'
       }
       bg={enabledColor}
-      color={enabledTextColor}
+      color={enabledHoverBgColor}
+      border="1px"
+      borderColor={enabledHoverBgColor}
       transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
       _hover={{
-        bg: hoverColor,
-        color: enabledTextColor,
+        bg: enabledHoverBgColor,
+        color: enabledColor,
+        borderColor: enabledColor,
       }}
       _active={{
         transform: 'scale(0.98)',
-        bg: hoverColor,
-        color: hoverColor,
+        bg: enabledHoverBgColor,
+        color: enabledColor,
+        borderColor: enabledColor,
       }}
       _focus={{
         boxShadow:
           '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
       }}
       _disabled={{
+        bg: disabledBgColor,
         color: disabledTextColor,
-        bg: disabledColor,
+        borderColor: disabledTextColor,
         _hover: {
+          cursor: 'auto',
+          bg: disabledBgColor,
           color: disabledTextColor,
-          bg: disabledColor,
+          borderColor: disabledTextColor,
         },
       }}
     >

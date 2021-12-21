@@ -31,7 +31,15 @@ export const SelectField = ({
       >
         {label}
       </SmLabelWithTooltip>
-      <Select size={size} {...field} {...props}>
+      <Select
+        h={10}
+        size={size}
+        borderBottom="1px"
+        borderBottomColor="brand.green.400"
+        focusBorderColor="brand.green.400"
+        {...field}
+        {...props}
+      >
         {children}
       </Select>
       {meta.touched && meta.error ? (

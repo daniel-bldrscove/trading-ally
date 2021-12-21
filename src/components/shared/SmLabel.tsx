@@ -10,10 +10,11 @@ export const SmLabel = ({
 }): JSX.Element => {
   return (
     <FormLabel
+      h={4}
+      mb={0}
       fontSize="10px"
       textTransform="uppercase"
       letterSpacing="1px"
-      marginRight={1}
       htmlFor={htmlFor}
     >
       {children}

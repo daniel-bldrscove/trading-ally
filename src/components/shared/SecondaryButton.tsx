@@ -17,9 +17,10 @@ export const SecondaryButton = ({
   disabled = false,
   children,
 }: SecondaryButtonProps): JSX.Element => {
-  const enabledColor = useColorModeValue('brand.gray.300', 'brand.gray.100');
+  const enabledColor = useColorModeValue('brand.gray.300', 'brand.gray.200');
   const disabledColor = useColorModeValue('brand.gray.100', 'brand.gray.300');
-  const hoverColor = useColorModeValue('brand.green.500', 'brand.green.500');
+  const hoverColor = useColorModeValue('brand.green.400', 'brand.green.400');
+  const hoverBgColor = useColorModeValue('brand.gray.600', 'brand.gray.600');
 
   return (
     <Button
@@ -51,12 +52,14 @@ export const SecondaryButton = ({
           : '0.90rem'
       }
       color={enabledColor}
+      backgroundColor="unset"
       border="1px"
       borderColor={enabledColor}
       transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
       _hover={{
-        borderColor: hoverColor,
         color: hoverColor,
+        borderColor: hoverColor,
+        backgroundColor: hoverBgColor,
       }}
       _active={{
         transform: 'scale(0.98)',
@@ -74,6 +77,8 @@ export const SecondaryButton = ({
         _hover: {
           color: disabledColor,
           borderColor: disabledColor,
+          bg: 'none',
+          cursor: 'auto',
         },
       }}
     >

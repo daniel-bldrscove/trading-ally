@@ -11,7 +11,7 @@ interface FormikValues {
     spread: string;
     side: string;
     qty: number;
-    symbol: string;
+    ticker: string;
     price: number;
     posEffect: string;
   };
@@ -28,7 +28,7 @@ export const LogTradeSummary = ({
 }: FormikValues): JSX.Element => {
   const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
   const [activeError, setActiveError] = useState(false);
-  const tradeSummaryBgColor = useColorModeValue('gray.200', 'brand.gray.600');
+  const tradeSummaryBgColor = useColorModeValue('#d4dee7', 'brand.gray.600');
 
   useEffect(() => {
     // if at least one field has been touched && there are no keys in Formik's error object
@@ -39,7 +39,7 @@ export const LogTradeSummary = ({
     }
   }, [touched, errors]);
 
-  console.log('Incoming errors: ', errors);
+  console.log('Incoming field values: ', fieldValues);
 
   return (
     <Box
