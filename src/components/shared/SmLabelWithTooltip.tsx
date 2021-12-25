@@ -23,11 +23,11 @@ export const SmLabelWithTooltip = ({
   return (
     <Flex mb={4} w="full">
       <SmLabel htmlFor={htmlFor}>{children}</SmLabel>
-      <Popover isLazy>
+      <Popover isLazy={true} matchWidth={true}>
         <PopoverTrigger>
           <QuestionOutlineIcon size="xs" w="10px" />
         </PopoverTrigger>
-        <PopoverContent bg="brand.gray.900">
+        <PopoverContent bg="brand.gray.900" w="full">
           <PopoverArrow bg="brand.gray.900" />
           <PopoverBody p={1} pl="10px" fontSize="xs" color="white">
             {toolTipDescription}
