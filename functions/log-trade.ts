@@ -1,10 +1,9 @@
 import { Handler } from '@netlify/functions';
-import { q, client } from '../fauna-setup';
+import { q, client } from './config';
 
 const handler: Handler = async (event) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const data = JSON.parse(event.body!);
-  console.log('typeof incoming data', typeof data);
 
   return client
     .query(

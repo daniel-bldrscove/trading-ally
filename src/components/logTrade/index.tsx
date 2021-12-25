@@ -44,7 +44,7 @@ export const LogTrade = ({
       validationSchema={logTradeValidationSchema}
       onSubmit={async (values, actions) => {
         // send input field values
-        await fetch('/api/trade', {
+        await fetch('/api/log-trade', {
           method: 'POST',
           body: JSON.stringify(values),
         })

@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 /* eslint-disable @typescript-eslint/no-shadow */
 import {
   Box,
@@ -17,17 +18,43 @@ import { TableBtn } from './TableBtn';
 import { Modal } from './Modal';
 import { Alert } from './Alert';
 
-export type DataTableProps<Data extends Record<string, unknown>> = {
-  data: Data[];
-  columns: Column<Data>[];
-  id?: string;
+type DataRow = {
+  data: {
+    date: string;
+    execTime: string;
+    spread: string;
+    side: string;
+    qty: number;
+    ticker: string;
+    price: number;
+    posEffect: string;
+  };
+  ref: {
+    '@ref': {
+      collection: Record<string, unknown>;
+      id: string;
+    };
+  };
+  ts: number;
 };
 
-export function DataTable<Data extends Record<string, unknown>>({
+type ColumnFormat = {
+  Header: string;
+  accessor: string;
+  id: string;
+};
+
+interface TableProps<T extends Record<string, unknown>> {
+  data: T[] & DataRow[];
+  columns: Column<T>[] & ColumnFormat[];
+  id?: string;
+}
+
+export const DataTable = <T extends Record<string, unknown>>({
   data,
   columns,
   ...props
-}: DataTableProps<Data>): JSX.Element {
+}: TableProps<T>): JSX.Element => {
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,
@@ -57,8 +84,19 @@ export function DataTable<Data extends Record<string, unknown>>({
     onAlertClose,
   };
 
+  // make the row id the same as the fauna ref id
+  const getRowId = useCallback((row) => row.ref['@ref'].id, []);
+
+  // react table hook to render ui
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data }, useSortBy);
+    useTable(
+      {
+        columns: columns && columns,
+        data: data && data,
+        getRowId,
+      },
+      useSortBy,
+    );
 
   // TODO: use brand colors for stripes
   const tableStripes = useColorModeValue('gray', 'gray');
@@ -132,4 +170,4 @@ export function DataTable<Data extends Record<string, unknown>>({
       <Alert {...alertProps} />
     </Box>
   );
-}
+};
