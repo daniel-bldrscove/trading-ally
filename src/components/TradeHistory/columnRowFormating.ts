@@ -39,14 +39,16 @@ export const columnRowFormating = [
     accessor: 'data.posEffect',
     id: 'posEffect',
   },
-  // {
-  //   accessor: 'edit',
-  //   disableSortBy: true,
-  //   isEditable: true,
-  // },
-  // {
-  //   accessor: 'delete',
-  //   disableSortBy: true,
-  //   isDeletable: true,
-  // },
+  {
+    Header: 'Edit',
+    accessor: 'data.edit',
+    id: 'edit',
+    disableSortBy: true,
+  },
+  {
+    Header: 'Delete',
+    accessor: 'data.delete',
+    id: 'delete',
+    disableSortBy: true,
+  },
 ];

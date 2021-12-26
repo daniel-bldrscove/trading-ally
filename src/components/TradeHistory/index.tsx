@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { DataTable } from '../shared/DataTable';
 import { useQuery } from 'react-query';
 import { columnRowFormating } from './columnRowFormating';
+import { Box } from '@chakra-ui/react';
+import { TitleSections } from '../TitleSections';
 
 export const TradeHistory = (): JSX.Element => {
   // fetch data, return promise to be used in useQuery
@@ -43,6 +45,9 @@ export const TradeHistory = (): JSX.Element => {
   }
 
   return (
-    <DataTable columns={columns} data={cachedData} id="trade-history-table" />
+    <Box p={6}>
+      <TitleSections title="Trade History" />
+      <DataTable columns={columns} data={cachedData} id="trade-history-table" />
+    </Box>
   );
 };

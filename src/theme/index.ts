@@ -3,7 +3,7 @@ import { mode } from '@chakra-ui/theme-tools';
 
 const config: ThemeConfig = {
   useSystemColorMode: true,
-  initialColorMode: 'system',
+  initialColorMode: 'dark',
 };
 
 const theme = extendTheme({
@@ -62,6 +62,9 @@ const theme = extendTheme({
         '700': '#115A88',
         '800': '#0B3C5B',
         '900': '#061E2D',
+      },
+      tableLight: {
+        '100': '#d4dee7',
       },
     },
   },

@@ -42,6 +42,7 @@ type ColumnFormat = {
   Header: string;
   accessor: string;
   id: string;
+  disableSortBy?: boolean;
 };
 
 interface TableProps<T extends Record<string, unknown>> {
@@ -98,8 +99,7 @@ export const DataTable = <T extends Record<string, unknown>>({
       useSortBy,
     );
 
-  // TODO: use brand colors for stripes
-  const tableStripes = useColorModeValue('gray', 'gray');
+  const tableStripes = useColorModeValue('brand.tableLight', 'brand.gray');
 
   return (
     <Box {...props} maxW="full" h="sm">
@@ -153,9 +153,9 @@ export const DataTable = <T extends Record<string, unknown>>({
                       isNumeric={cell.column.isNumeric}
                     >
                       {cell.render('Cell')}
-                      {cell.column.isEditable ? (
+                      {cell.column.id === 'edit' ? (
                         <TableBtn action="edit" onClick={onModalOpen} />
-                      ) : cell.column.isDeletable ? (
+                      ) : cell.column.id === 'delete' ? (
                         <TableBtn action="delete" onClick={onAlertOpen} />
                       ) : null}
                     </Td>

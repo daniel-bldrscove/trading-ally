@@ -20,6 +20,8 @@ interface FormikValues {
   ticker: string;
   price: number;
   posEffect: string;
+  edit: null;
+  delete: null;
 }
 
 export const LogTrade = ({
@@ -34,6 +36,8 @@ export const LogTrade = ({
     ticker: '',
     price: 0,
     posEffect: '',
+    edit: null,
+    delete: null,
   };
 
   const tradeDetailsBgColor = useColorModeValue('gray.200', 'brand.gray.800');
