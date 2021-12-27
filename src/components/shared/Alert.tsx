@@ -1,53 +1,34 @@
-import { useRef } from 'react';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { useRef, useContext, createContext, RefObject } from 'react';
 import {
   AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  Button,
-  ModalCloseButton,
 } from '@chakra-ui/react';
+import { ModalContext } from '../TradeHistory/index';
 
 interface AlertProps {
-  data: {
-    title: string;
-    disclaimer: string;
-  };
-  isAlertOpen: boolean;
-  onAlertClose: () => void;
+  children: React.ReactNode;
 }
 
-export const Alert = ({
-  data,
-  isAlertOpen,
-  onAlertClose,
-}: AlertProps): JSX.Element => {
-  const cancelRef = useRef<HTMLButtonElement>(null);
+type ContextType = RefObject<HTMLButtonElement>;
 
+export const RefContext = createContext<ContextType | null>(null);
+
+export const Alert = ({ children }: AlertProps): JSX.Element => {
+  const context = useContext(ModalContext);
+  const cancelRef = useRef<HTMLButtonElement>(null);
   return (
     <AlertDialog
       motionPreset="slideInBottom"
       leastDestructiveRef={cancelRef}
-      onClose={onAlertClose}
-      isOpen={isAlertOpen}
+      onClose={context!.onAlertClose}
+      isOpen={context!.isAlertOpen}
       isCentered
     >
       <AlertDialogOverlay />
-
       <AlertDialogContent>
-        <AlertDialogHeader>{data.title}</AlertDialogHeader>
-        <ModalCloseButton onClick={onAlertClose} />
-        <AlertDialogBody>{data.disclaimer}</AlertDialogBody>
-        <AlertDialogFooter>
-          <Button ref={cancelRef} onClick={onAlertClose}>
-            No
-          </Button>
-          <Button colorScheme="red" ml={3}>
-            Yes
-          </Button>
-        </AlertDialogFooter>
+        <RefContext.Provider value={cancelRef}>{children}</RefContext.Provider>
       </AlertDialogContent>
     </AlertDialog>
   );

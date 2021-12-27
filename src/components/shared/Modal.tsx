@@ -1,51 +1,27 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { useContext } from 'react';
 import {
-  Button,
   Modal as CenterModal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
 } from '@chakra-ui/react';
-import { Lorem } from './Lorem';
+import { ModalContext } from '../TradeHistory/index';
 
 interface ModalData {
-  data: {
-    title: string;
-  };
-  isModalOpen: boolean;
-  onModalClose: () => void;
+  children: React.ReactNode;
 }
 
-export const Modal = ({
-  data,
-  isModalOpen,
-  onModalClose,
-}: ModalData): JSX.Element => {
+export const Modal = ({ children }: ModalData): JSX.Element => {
+  const context = useContext(ModalContext);
   return (
-    <>
-      <CenterModal
-        isCentered
-        onClose={onModalClose}
-        isOpen={isModalOpen}
-        motionPreset="slideInBottom"
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{data.title}</ModalHeader>
-          <ModalCloseButton onClick={onModalClose} />
-          <ModalBody>
-            <Lorem />
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onModalClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Secondary Action</Button>
-          </ModalFooter>
-        </ModalContent>
-      </CenterModal>
-    </>
+    <CenterModal
+      isCentered
+      onClose={context!.onModalClose}
+      isOpen={context!.isModalOpen}
+      motionPreset="slideInBottom"
+    >
+      <ModalOverlay />
+      <ModalContent>{children}</ModalContent>
+    </CenterModal>
   );
 };

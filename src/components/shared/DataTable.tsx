@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 /* eslint-disable @typescript-eslint/no-shadow */
 import {
   Box,
@@ -10,13 +10,11 @@ import {
   Td,
   chakra,
   useColorModeValue,
-  useDisclosure,
 } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { useTable, useSortBy, Column } from 'react-table';
 import { TableBtn } from './TableBtn';
-import { Modal } from './Modal';
-import { Alert } from './Alert';
+import { ModalContext } from '../TradeHistory';
 
 type DataRow = {
   data: {
@@ -56,34 +54,8 @@ export const DataTable = <T extends Record<string, unknown>>({
   columns,
   ...props
 }: TableProps<T>): JSX.Element => {
-  const {
-    isOpen: isModalOpen,
-    onOpen: onModalOpen,
-    onClose: onModalClose,
-  } = useDisclosure();
-
-  const {
-    isOpen: isAlertOpen,
-    onOpen: onAlertOpen,
-    onClose: onAlertClose,
-  } = useDisclosure();
-
-  const modalProps = {
-    data: {
-      title: 'Temp title',
-    },
-    isModalOpen,
-    onModalClose,
-  };
-
-  const alertProps = {
-    data: {
-      title: 'Alert title',
-      disclaimer: 'Are you sure you want to delete this trade?',
-    },
-    isAlertOpen,
-    onAlertClose,
-  };
+  // get modal context
+  const modalState = useContext(ModalContext);
 
   // make the row id the same as the fauna ref id
   const getRowId = useCallback((row) => row.ref['@ref'].id, []);
@@ -154,9 +126,15 @@ export const DataTable = <T extends Record<string, unknown>>({
                     >
                       {cell.render('Cell')}
                       {cell.column.id === 'edit' ? (
-                        <TableBtn action="edit" onClick={onModalOpen} />
+                        <TableBtn
+                          action="edit"
+                          onClick={modalState?.onModalOpen}
+                        />
                       ) : cell.column.id === 'delete' ? (
-                        <TableBtn action="delete" onClick={onAlertOpen} />
+                        <TableBtn
+                          action="delete"
+                          onClick={modalState?.onAlertOpen}
+                        />
                       ) : null}
                     </Td>
                   );
@@ -166,8 +144,6 @@ export const DataTable = <T extends Record<string, unknown>>({
           })}
         </Tbody>
       </Table>
-      <Modal {...modalProps} />
-      <Alert {...alertProps} />
     </Box>
   );
 };

@@ -3,8 +3,7 @@ import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
 interface BtnProps {
   action?: string;
-  text?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const TableBtn = ({ action, onClick }: BtnProps): JSX.Element => {
