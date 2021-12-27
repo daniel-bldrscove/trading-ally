@@ -39,8 +39,6 @@ export const LogTradeSummary = ({
     }
   }, [touched, errors]);
 
-  console.log('Incoming field values: ', fieldValues);
-
   return (
     <Box
       bg={tradeSummaryBgColor}

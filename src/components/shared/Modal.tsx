@@ -5,14 +5,14 @@ import {
   ModalOverlay,
   ModalContent,
 } from '@chakra-ui/react';
-import { ModalContext } from '../TradeHistory/index';
+import { ModalStatesContext } from '../TradeHistory/CreateContext';
 
 interface ModalData {
   children: React.ReactNode;
 }
 
 export const Modal = ({ children }: ModalData): JSX.Element => {
-  const context = useContext(ModalContext);
+  const context = useContext(ModalStatesContext);
   return (
     <CenterModal
       isCentered

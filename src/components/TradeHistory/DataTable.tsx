@@ -13,8 +13,8 @@ import {
 } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { useTable, useSortBy, Column } from 'react-table';
-import { TableBtn } from './TableBtn';
-import { ModalContext } from '../TradeHistory';
+import { TableBtn } from '../shared/TableBtn';
+import { ModalStatesContext } from './CreateContext';
 
 type DataRow = {
   data: {
@@ -55,7 +55,7 @@ export const DataTable = <T extends Record<string, unknown>>({
   ...props
 }: TableProps<T>): JSX.Element => {
   // get modal context
-  const modalState = useContext(ModalContext);
+  const modalState = useContext(ModalStatesContext);
 
   // make the row id the same as the fauna ref id
   const getRowId = useCallback((row) => row.ref['@ref'].id, []);
@@ -88,7 +88,6 @@ export const DataTable = <T extends Record<string, unknown>>({
             return (
               <Tr key={key} {...restHeaderGroupProps}>
                 {headerGroup.headers.map((column) => {
-                  console.log('Log column: ', column);
                   const { key, ...restColumn } = column.getHeaderProps(
                     column.getSortByToggleProps({
                       style: {
@@ -119,6 +118,7 @@ export const DataTable = <T extends Record<string, unknown>>({
           {rows.map((row) => {
             prepareRow(row);
             const { key, ...restRowProps } = row.getRowProps();
+            console.log('Row: ', row);
             return (
               <Tr key={key} {...restRowProps}>
                 {row.cells.map((cell) => {

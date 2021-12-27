@@ -1,9 +1,10 @@
-import { useMemo, createContext } from 'react';
-import { DataTable } from '../shared/DataTable';
+import { useMemo } from 'react';
+import { DataTable } from './DataTable';
 import { useQuery } from 'react-query';
 import { columnRowFormating } from './columnRowFormating';
 import { Box, useDisclosure } from '@chakra-ui/react';
 import { TitleSections } from '../TitleSections';
+import { ModalStatesContext } from './CreateContext';
 import { Modal } from '../shared/Modal';
 import { Alert } from '../shared/Alert';
 import { CustomModalContent } from './CustomModalContent';
@@ -33,9 +34,6 @@ interface ModalState {
   onModalClose: () => void;
   onAlertClose: () => void;
 }
-
-// export for use in child components
-export const ModalContext = createContext<ModalState | null>(null);
 
 export const TradeHistory = (): JSX.Element => {
   // chakra-ui hook helpers for modal states
@@ -97,7 +95,7 @@ export const TradeHistory = (): JSX.Element => {
   return (
     <Box p={6}>
       <TitleSections title="Trade History" />
-      <ModalContext.Provider value={modalStates}>
+      <ModalStatesContext.Provider value={modalStates}>
         <DataTable
           columns={columns}
           data={cachedData}
@@ -109,7 +107,7 @@ export const TradeHistory = (): JSX.Element => {
         <Alert>
           <CustomAlertContent />
         </Alert>
-      </ModalContext.Provider>
+      </ModalStatesContext.Provider>
     </Box>
   );
 };

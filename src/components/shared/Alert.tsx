@@ -1,22 +1,21 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useRef, useContext, createContext, RefObject } from 'react';
+import { useRef, useContext } from 'react';
 import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogOverlay,
 } from '@chakra-ui/react';
-import { ModalContext } from '../TradeHistory/index';
+import {
+  ModalStatesContext,
+  LeastDestructiveBtnRefContext,
+} from '../TradeHistory/CreateContext';
 
 interface AlertProps {
   children: React.ReactNode;
 }
 
-type ContextType = RefObject<HTMLButtonElement>;
-
-export const RefContext = createContext<ContextType | null>(null);
-
 export const Alert = ({ children }: AlertProps): JSX.Element => {
-  const context = useContext(ModalContext);
+  const context = useContext(ModalStatesContext);
   const cancelRef = useRef<HTMLButtonElement>(null);
   return (
     <AlertDialog
@@ -28,7 +27,9 @@ export const Alert = ({ children }: AlertProps): JSX.Element => {
     >
       <AlertDialogOverlay />
       <AlertDialogContent>
-        <RefContext.Provider value={cancelRef}>{children}</RefContext.Provider>
+        <LeastDestructiveBtnRefContext.Provider value={cancelRef}>
+          {children}
+        </LeastDestructiveBtnRefContext.Provider>
       </AlertDialogContent>
     </AlertDialog>
   );

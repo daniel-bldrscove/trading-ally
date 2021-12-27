@@ -8,17 +8,19 @@ import {
   Button,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import { ModalContext } from './index';
-import { RefContext } from '../shared/Alert';
+import {
+  ModalStatesContext,
+  LeastDestructiveBtnRefContext,
+} from './CreateContext';
 
 export const CustomAlertContent = (): JSX.Element => {
-  const context = useContext(ModalContext);
-  const cancelRef = useContext(RefContext);
+  const context = useContext(ModalStatesContext);
+  const cancelRef = useContext(LeastDestructiveBtnRefContext);
 
   return (
     <>
       <AlertDialogHeader>
-        <Heading as="h4">This is the Alert! Title</Heading>
+        <Heading as="h4">Delete this trade</Heading>
       </AlertDialogHeader>
       <ModalCloseButton onClick={context?.onAlertClose} />
       <AlertDialogBody>

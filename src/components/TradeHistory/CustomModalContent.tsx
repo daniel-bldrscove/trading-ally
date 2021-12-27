@@ -8,10 +8,10 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import { ModalContext } from './index';
+import { ModalStatesContext } from './CreateContext';
 
 export const CustomModalContent = (): JSX.Element => {
-  const context = useContext(ModalContext);
+  const context = useContext(ModalStatesContext);
   return (
     <>
       <ModalHeader>
