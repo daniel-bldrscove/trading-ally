@@ -1,20 +1,24 @@
+import { useContext } from 'react';
 import { IconButton } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import { ModalStatesContext } from './CreateContext';
 
 interface BtnProps {
   action?: string;
-  onClick?: () => void;
   ml?: number;
 }
 
-export const TableBtn = ({ action, onClick, ml }: BtnProps): JSX.Element => {
+export const TableBtn = ({ action, ml }: BtnProps): JSX.Element => {
+  // get modal context
+  const modalState = useContext(ModalStatesContext);
+
   if (action === 'edit') {
     return (
       <IconButton
         ml={ml}
         size="small"
         aria-label="Edit Trade"
-        onClick={onClick}
+        onClick={modalState?.onModalOpen}
         icon={<EditIcon m={1} />}
       />
     );
@@ -24,7 +28,7 @@ export const TableBtn = ({ action, onClick, ml }: BtnProps): JSX.Element => {
         ml={ml}
         size="small"
         aria-label="Delete Trade"
-        onClick={onClick}
+        onClick={modalState?.onAlertOpen}
         icon={<DeleteIcon m={1} />}
       />
     );

@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 /* eslint-disable @typescript-eslint/no-shadow */
 import {
   Box,
@@ -12,9 +12,8 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
-import { useTable, useSortBy, Column } from 'react-table';
-import { TableBtn } from '../shared/TableBtn';
-import { ModalStatesContext } from './CreateContext';
+import { useTable, Column, useSortBy, useRowSelect } from 'react-table';
+import { TableBtn } from './TableBtn';
 
 type DataRow = {
   data: {
@@ -54,9 +53,6 @@ export const DataTable = <T extends Record<string, unknown>>({
   columns,
   ...props
 }: TableProps<T>): JSX.Element => {
-  // get modal context
-  const modalState = useContext(ModalStatesContext);
-
   // make the row id the same as the fauna ref id
   const getRowId = useCallback((row) => row.ref['@ref'].id, []);
 
@@ -69,6 +65,7 @@ export const DataTable = <T extends Record<string, unknown>>({
         getRowId,
       },
       useSortBy,
+      useRowSelect,
     );
 
   const tableStripes = useColorModeValue('brand.tableLight', 'brand.gray');
@@ -131,17 +128,9 @@ export const DataTable = <T extends Record<string, unknown>>({
                     >
                       {cell.render('Cell')}
                       {cell.column.id === 'edit' ? (
-                        <TableBtn
-                          ml={2}
-                          action="edit"
-                          onClick={modalState?.onModalOpen}
-                        />
+                        <TableBtn ml={2} action="edit" />
                       ) : cell.column.id === 'delete' ? (
-                        <TableBtn
-                          ml={2}
-                          action="delete"
-                          onClick={modalState?.onAlertOpen}
-                        />
+                        <TableBtn ml={2} action="delete" />
                       ) : null}
                     </Td>
                   );
