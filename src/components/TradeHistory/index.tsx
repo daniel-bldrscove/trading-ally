@@ -8,6 +8,7 @@ import { Modal } from '../shared/Modal';
 import { Alert } from '../shared/Alert';
 import { CustomModalContent } from './CustomModalContent';
 import { CustomAlertContent } from './CustomAlertContent';
+import './trade-history-styles.css';
 
 // promise fetch function for useQuery
 const fetchTrades = async () => {

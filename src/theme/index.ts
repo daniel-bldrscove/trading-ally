@@ -64,7 +64,7 @@ const theme = extendTheme({
         '900': '#061E2D',
       },
       tableLight: {
-        '100': '#d4dee7',
+        '100': '#e1e8ef',
       },
     },
   },

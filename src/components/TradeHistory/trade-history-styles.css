@@ -1,0 +1,11 @@
+#trade-history-table{
+  position: relative;
+  overflow-x: scroll;
+}
+
+#trade-history-table th {
+  position: sticky;
+  top: 0;
+  background-color: #eff3fa;
+  z-index: 5;
+}

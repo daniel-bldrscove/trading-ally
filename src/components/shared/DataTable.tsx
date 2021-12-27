@@ -88,13 +88,18 @@ export const DataTable = <T extends Record<string, unknown>>({
             return (
               <Tr key={key} {...restHeaderGroupProps}>
                 {headerGroup.headers.map((column) => {
+                  console.log('Log column: ', column);
                   const { key, ...restColumn } = column.getHeaderProps(
-                    column.getSortByToggleProps(),
+                    column.getSortByToggleProps({
+                      style: {
+                        minWidth: column.minWidth,
+                      },
+                    }),
                   );
                   return (
                     <Th key={key} {...restColumn} isNumeric={column.isNumeric}>
                       {column.render('Header')}
-                      <chakra.span pl="4">
+                      <chakra.span>
                         {column.isSorted ? (
                           column.isSortedDesc ? (
                             <TriangleDownIcon aria-label="sorted descending" />
@@ -127,11 +132,13 @@ export const DataTable = <T extends Record<string, unknown>>({
                       {cell.render('Cell')}
                       {cell.column.id === 'edit' ? (
                         <TableBtn
+                          ml={2}
                           action="edit"
                           onClick={modalState?.onModalOpen}
                         />
                       ) : cell.column.id === 'delete' ? (
                         <TableBtn
+                          ml={2}
                           action="delete"
                           onClick={modalState?.onAlertOpen}
                         />
