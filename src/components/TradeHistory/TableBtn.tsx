@@ -1,37 +1,33 @@
-import { useContext } from 'react';
+/* eslint-disable react/display-name */
+import { useEffect, useContext, useRef, forwardRef } from 'react';
 import { IconButton } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import { EditIcon } from '@chakra-ui/icons';
 import { ModalStatesContext } from './CreateContext';
+import { ButtonRef, SelectedRowProps } from './types';
 
-interface BtnProps {
-  action?: string;
-  ml?: number;
-}
+export const TableBtn = forwardRef<ButtonRef, SelectedRowProps>(
+  (rowProps, ref) => {
+    // get modal context
+    const modalState = useContext(ModalStatesContext);
+    const defaultRef = useRef<HTMLButtonElement>(null);
+    const resolvedRef = ref || defaultRef;
 
-export const TableBtn = ({ action, ml }: BtnProps): JSX.Element => {
-  // get modal context
-  const modalState = useContext(ModalStatesContext);
+    useEffect(() => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      resolvedRef.current.rowSelectedProps = rowProps;
+      console.log('Logging resolvedRef: ', resolvedRef);
+    }, [resolvedRef, rowProps]);
 
-  if (action === 'edit') {
     return (
       <IconButton
-        ml={ml}
+        ml={2}
+        ref={resolvedRef}
         size="small"
-        aria-label="Edit Trade"
+        aria-label="Edit Button"
         onClick={modalState?.onModalOpen}
         icon={<EditIcon m={1} />}
       />
     );
-  } else if (action === 'delete') {
-    return (
-      <IconButton
-        ml={ml}
-        size="small"
-        aria-label="Delete Trade"
-        onClick={modalState?.onAlertOpen}
-        icon={<DeleteIcon m={1} />}
-      />
-    );
-  }
-  return <></>;
-};
+  },
+);

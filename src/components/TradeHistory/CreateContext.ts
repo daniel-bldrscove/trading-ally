@@ -1,13 +1,5 @@
 import { createContext, RefObject } from 'react';
-
-interface ModalState {
-  isModalOpen: boolean;
-  isAlertOpen: boolean;
-  onModalOpen: () => void;
-  onAlertOpen: () => void;
-  onModalClose: () => void;
-  onAlertClose: () => void;
-}
+import { ModalState } from './types';
 
 type ContextType = RefObject<HTMLButtonElement>;
 

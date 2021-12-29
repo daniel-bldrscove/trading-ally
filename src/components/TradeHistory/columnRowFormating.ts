@@ -46,18 +46,6 @@ export const columnRowFormating = [
     Header: 'Effect',
     accessor: 'data.posEffect',
     id: 'posEffect',
-    minWidth: 110,
-  },
-  {
-    Header: 'Edit',
-    accessor: 'data.edit',
-    id: 'edit',
-    disableSortBy: true,
-  },
-  {
-    Header: 'Delete',
-    accessor: 'data.delete',
-    id: 'delete',
-    disableSortBy: true,
+    minWidth: 100,
   },
 ];

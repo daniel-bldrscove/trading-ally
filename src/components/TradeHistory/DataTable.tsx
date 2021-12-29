@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
 /* eslint-disable @typescript-eslint/no-shadow */
+import { useCallback } from 'react';
 import {
   Box,
   Table,
@@ -12,41 +12,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
-import { useTable, Column, useSortBy, useRowSelect } from 'react-table';
-import { TableBtn } from './TableBtn';
-
-type DataRow = {
-  data: {
-    date: string;
-    execTime: string;
-    spread: string;
-    side: string;
-    qty: number;
-    ticker: string;
-    price: number;
-    posEffect: string;
-  };
-  ref: {
-    '@ref': {
-      collection: Record<string, unknown>;
-      id: string;
-    };
-  };
-  ts: number;
-};
-
-type ColumnFormat = {
-  Header: string;
-  accessor: string;
-  id: string;
-  disableSortBy?: boolean;
-};
-
-interface TableProps<T extends Record<string, unknown>> {
-  data: T[] & DataRow[];
-  columns: Column<T>[] & ColumnFormat[];
-  id?: string;
-}
+import { useTable, useSortBy, useRowSelect } from 'react-table';
+import { IndeterminateCheckbox } from './IndeterminateCheckbox';
+import { TableProps, CellProps } from './types';
 
 export const DataTable = <T extends Record<string, unknown>>({
   data,
@@ -56,22 +24,48 @@ export const DataTable = <T extends Record<string, unknown>>({
   // make the row id the same as the fauna ref id
   const getRowId = useCallback((row) => row.ref['@ref'].id, []);
 
-  // react table hook to render ui
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns: columns && columns,
-        data: data && data,
-        getRowId,
-      },
-      useSortBy,
-      useRowSelect,
-    );
+  // properties returned from useTable
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state: { selectedRowIds },
+    // pass options to useTable
+  } = useTable(
+    {
+      columns: columns && columns,
+      data: data && data,
+      getRowId,
+    },
+    useSortBy,
+    useRowSelect,
+    (hooks) => {
+      hooks.visibleColumns.push((columns) => [
+        // make edit button column
+        {
+          Header: 'Edit',
+          id: 'edit',
+          disableSortBy: true,
+          // pass the selected row props to button component
+          // to be able to read the selected row id
+          Cell: ({ row }: { row: CellProps }) => (
+            <div>
+              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+            </div>
+          ),
+        },
+        ...columns,
+      ]);
+    },
+  );
 
   const tableStripes = useColorModeValue('brand.tableLight', 'brand.gray');
 
   return (
     <Box {...props} maxW="full" h="sm">
+      <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
       <Table
         {...getTableProps()}
         size="sm"
@@ -114,27 +108,25 @@ export const DataTable = <T extends Record<string, unknown>>({
         <Tbody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
+            // eslint-disable-next-line react/prop-types
             const { key, ...restRowProps } = row.getRowProps();
-            console.log('Row: ', row);
             return (
               <Tr key={key} {...restRowProps}>
-                {row.cells.map((cell) => {
-                  const { key, ...restCellProps } = cell.getCellProps();
-                  return (
-                    <Td
-                      key={key}
-                      {...restCellProps}
-                      isNumeric={cell.column.isNumeric}
-                    >
-                      {cell.render('Cell')}
-                      {cell.column.id === 'edit' ? (
-                        <TableBtn ml={2} action="edit" />
-                      ) : cell.column.id === 'delete' ? (
-                        <TableBtn ml={2} action="delete" />
-                      ) : null}
-                    </Td>
-                  );
-                })}
+                {
+                  // eslint-disable-next-line react/prop-types
+                  row.cells.map((cell) => {
+                    const { key, ...restCellProps } = cell.getCellProps();
+                    return (
+                      <Td
+                        key={key}
+                        {...restCellProps}
+                        isNumeric={cell.column.isNumeric}
+                      >
+                        {cell.render('Cell')}
+                      </Td>
+                    );
+                  })
+                }
               </Tr>
             );
           })}

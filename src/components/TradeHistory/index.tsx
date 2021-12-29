@@ -10,6 +10,7 @@ import { Alert } from '../shared/Alert';
 import { CustomModalContent } from './CustomModalContent';
 import { CustomAlertContent } from './CustomAlertContent';
 import './trade-history-styles.css';
+import { ModalState } from './types';
 
 // promise fetch function for useQuery
 const fetchTrades = async () => {
@@ -25,15 +26,6 @@ const fetchTrades = async () => {
   }
   return res.json();
 };
-
-interface ModalState {
-  isModalOpen: boolean;
-  isAlertOpen: boolean;
-  onModalOpen: () => void;
-  onAlertOpen: () => void;
-  onModalClose: () => void;
-  onAlertClose: () => void;
-}
 
 export const TradeHistory = (): JSX.Element => {
   // chakra-ui hook helpers for modal states
@@ -95,12 +87,8 @@ export const TradeHistory = (): JSX.Element => {
   return (
     <Box p={6}>
       <TitleSections title="Trade History" />
+      <DataTable columns={columns} data={cachedData} id="trade-history-table" />
       <ModalStatesContext.Provider value={modalStates}>
-        <DataTable
-          columns={columns}
-          data={cachedData}
-          id="trade-history-table"
-        />
         <Modal>
           <CustomModalContent />
         </Modal>

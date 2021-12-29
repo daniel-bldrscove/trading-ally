@@ -11,13 +11,13 @@ import {
 import { ModalStatesContext } from './CreateContext';
 
 export const CustomModalContent = (): JSX.Element => {
-  const context = useContext(ModalStatesContext);
+  const modalStateContext = useContext(ModalStatesContext);
   return (
     <>
       <ModalHeader>
-        <Heading as="h4">This would be the modal title</Heading>
+        <Heading as="h4">Edit Trade</Heading>
       </ModalHeader>
-      <ModalCloseButton onClick={context?.onModalClose} />
+      <ModalCloseButton onClick={modalStateContext?.onModalClose} />
       <ModalBody>
         <Text>
           This is the modal body paragraph text that would show up as the main
@@ -25,7 +25,11 @@ export const CustomModalContent = (): JSX.Element => {
         </Text>
       </ModalBody>
       <ModalFooter>
-        <Button colorScheme="blue" mr={3} onClick={context?.onModalClose}>
+        <Button
+          colorScheme="blue"
+          mr={3}
+          onClick={modalStateContext?.onModalClose}
+        >
           Close
         </Button>
         <Button variant="ghost">Secondary Action</Button>
