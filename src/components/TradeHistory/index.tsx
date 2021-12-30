@@ -2,15 +2,10 @@ import { useMemo } from 'react';
 import { DataTable } from './DataTable';
 import { useQuery } from 'react-query';
 import { columnRowFormating } from './columnRowFormating';
-import { Box, useDisclosure } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { TitleSections } from '../TitleSections';
-import { ModalStatesContext } from './CreateContext';
-import { Modal } from '../shared/Modal';
-import { Alert } from '../shared/Alert';
-import { CustomModalContent } from './CustomModalContent';
-import { CustomAlertContent } from './CustomAlertContent';
+import { Modals } from './Modals';
 import './trade-history-styles.css';
-import { ModalState } from './types';
 
 // promise fetch function for useQuery
 const fetchTrades = async () => {
@@ -28,39 +23,6 @@ const fetchTrades = async () => {
 };
 
 export const TradeHistory = (): JSX.Element => {
-  // chakra-ui hook helpers for modal states
-  const {
-    isOpen: isModalOpen,
-    onOpen: onModalOpen,
-    onClose: onModalClose,
-  } = useDisclosure();
-
-  const {
-    isOpen: isAlertOpen,
-    onOpen: onAlertOpen,
-    onClose: onAlertClose,
-  } = useDisclosure();
-
-  // memoize modal states to pass in context
-  const modalStates = useMemo<ModalState | null>(
-    () => ({
-      isModalOpen,
-      onModalOpen,
-      onModalClose,
-      isAlertOpen,
-      onAlertOpen,
-      onAlertClose,
-    }),
-    [
-      isModalOpen,
-      onModalOpen,
-      onModalClose,
-      isAlertOpen,
-      onAlertOpen,
-      onAlertClose,
-    ],
-  );
-
   // query data
   const { isLoading, isError, data, error } = useQuery('todos', fetchTrades);
 
@@ -87,15 +49,14 @@ export const TradeHistory = (): JSX.Element => {
   return (
     <Box p={6}>
       <TitleSections title="Trade History" />
-      <DataTable columns={columns} data={cachedData} id="trade-history-table" />
-      <ModalStatesContext.Provider value={modalStates}>
-        <Modal>
-          <CustomModalContent />
-        </Modal>
-        <Alert>
-          <CustomAlertContent />
-        </Alert>
-      </ModalStatesContext.Provider>
+      <Modals>
+        <DataTable
+          columns={columns}
+          data={cachedData}
+          id="trade-history-table"
+          overflow="scroll"
+        />
+      </Modals>
     </Box>
   );
 };

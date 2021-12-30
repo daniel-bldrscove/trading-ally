@@ -14,6 +14,7 @@ import {
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { useTable, useSortBy, useRowSelect } from 'react-table';
 import { IndeterminateCheckbox } from './IndeterminateCheckbox';
+import { RowMenu } from './RowMenu';
 import { TableProps, CellProps } from './types';
 
 export const DataTable = <T extends Record<string, unknown>>({
@@ -43,10 +44,10 @@ export const DataTable = <T extends Record<string, unknown>>({
     useRowSelect,
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
-        // make edit button column
+        // make indeterminate checkbox
         {
-          Header: 'Edit',
-          id: 'edit',
+          Header: '',
+          id: 'select-row',
           disableSortBy: true,
           // pass the selected row props to button component
           // to be able to read the selected row id
@@ -57,11 +58,21 @@ export const DataTable = <T extends Record<string, unknown>>({
           ),
         },
         ...columns,
+        // make row menu
+        {
+          Header: '',
+          id: 'row-menu',
+          disableSortBy: true,
+          // pass the selected row props to button component
+          // to be able to read the selected row id
+          Cell: () => <RowMenu />,
+        },
       ]);
     },
   );
 
   const tableStripes = useColorModeValue('brand.tableLight', 'brand.gray');
+  const tableHeaderBg = useColorModeValue('#d3dee5', 'brand.gray.800');
 
   return (
     <Box {...props} maxW="full" h="sm">
@@ -77,7 +88,14 @@ export const DataTable = <T extends Record<string, unknown>>({
             const { key, ...restHeaderGroupProps } =
               headerGroup.getHeaderGroupProps();
             return (
-              <Tr key={key} {...restHeaderGroupProps}>
+              <Tr
+                key={key}
+                bg={tableHeaderBg}
+                position="sticky"
+                top={0}
+                zIndex={5}
+                {...restHeaderGroupProps}
+              >
                 {headerGroup.headers.map((column) => {
                   const { key, ...restColumn } = column.getHeaderProps(
                     column.getSortByToggleProps({

@@ -33,7 +33,6 @@ export const InputField = ({
         h={10}
         borderBottom="1px"
         borderBottomColor="brand.green.400"
-        focusBorderColor="brand.green.400"
         size={size}
         {...field}
         {...props}

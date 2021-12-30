@@ -1,15 +1,15 @@
 export const columnRowFormating = [
   {
-    Header: 'Date',
-    accessor: 'data.date',
-    id: 'date',
-    minWidth: 140,
-  },
-  {
     Header: 'Ticker',
     accessor: 'data.ticker',
     id: 'ticker',
-    minWidth: 100,
+    minWidth: 80,
+  },
+  {
+    Header: 'Date',
+    accessor: 'data.date',
+    id: 'date',
+    minWidth: 130,
   },
   {
     Header: 'QTY',

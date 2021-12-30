@@ -41,6 +41,7 @@ export interface TableProps<T extends Record<string, unknown>> {
   data: T[] & DataRow[];
   columns: Column<T>[] & ColumnFormat[];
   id?: string;
+  overflow?: string;
 }
 
 export interface CellProps {

@@ -6,6 +6,31 @@ const config: ThemeConfig = {
   initialColorMode: 'dark',
 };
 
+const inputStyles = {
+  variants: {
+    // outline is the default variant
+    outline: {
+      field: {
+        _hover: {
+          borderColor: 'brand.green.400',
+        },
+        _focus: {
+          borderColor: 'brand.green.400',
+          boxShadow: 'unset',
+        },
+      },
+    },
+  },
+};
+
+const modalStyles = {
+  baseStyle: (props: ThemeConfig) => ({
+    dialog: {
+      bg: mode('brand.gray.100', 'brand.gray.400')(props),
+    },
+  }),
+};
+
 const theme = extendTheme({
   ...config,
   styles: {
@@ -16,6 +41,10 @@ const theme = extendTheme({
     }),
   },
   components: {
+    Input: { ...inputStyles },
+    NumberInput: { ...inputStyles },
+    Select: { ...inputStyles },
+    Modal: { ...modalStyles },
     Button: {
       baseStyle: {},
       variants: {},
