@@ -15,10 +15,12 @@ import {
   ModalStatesContext,
   LeastDestructiveBtnRefContext,
 } from './CreateContext';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 
 export const CustomAlertContent = (): JSX.Element => {
+  const queryClient = useQueryClient();
+
   const [rowData, setRowData] = useState({
     data: {
       date: '',
@@ -60,16 +62,21 @@ export const CustomAlertContent = (): JSX.Element => {
     setRowData(getDataFromRow());
   }, [getDataFromRow]);
 
-  const mutation = useMutation((delTradeData) => {
-    return axios.post('/api/delete-trade', delTradeData);
-  });
-
-  if (mutation.isSuccess && mutation.data) {
-    console.log('Data after deletion: ', mutation.data);
-    setTimeout(() => {
-      onAlertClose();
-    }, 1000);
-  }
+  const mutation = useMutation(
+    (delTradeData) => {
+      return axios.post('/api/delete-trade', delTradeData);
+    },
+    {
+      onSuccess: () => {
+        // close modal
+        setTimeout(() => {
+          onAlertClose();
+        }, 500);
+        // refetch trade info
+        queryClient.invalidateQueries('trades');
+      },
+    },
+  );
 
   return (
     <>

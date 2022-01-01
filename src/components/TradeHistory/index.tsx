@@ -24,7 +24,7 @@ const fetchTrades = async () => {
 
 export const TradeHistory = (): JSX.Element => {
   // query data
-  const { isLoading, isError, data, error } = useQuery('todos', fetchTrades);
+  const { isLoading, isError, data, error } = useQuery('trades', fetchTrades);
 
   // memoize data
   const cachedData = useMemo(() => {
