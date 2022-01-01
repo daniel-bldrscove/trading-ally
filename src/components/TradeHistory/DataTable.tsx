@@ -12,10 +12,10 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
-import { useTable, useSortBy, useRowSelect } from 'react-table';
+import { useTable, useSortBy, useRowSelect, CellProps } from 'react-table';
 import { IndeterminateCheckbox } from './IndeterminateCheckbox';
 import { RowMenu } from './RowMenu';
-import { TableProps, CellProps } from './types';
+import { TableProps, RowDataProps } from './types';
 
 export const DataTable = <T extends Record<string, unknown>>({
   data,
@@ -51,21 +51,24 @@ export const DataTable = <T extends Record<string, unknown>>({
           disableSortBy: true,
           // pass the selected row props to button component
           // to be able to read the selected row id
-          Cell: ({ row }: { row: CellProps }) => (
-            <div>
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            </div>
-          ),
+          Cell: ({ row }: CellProps<RowDataProps>) => {
+            if (row.getToggleRowSelectedProps) {
+              return (
+                <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+              );
+            }
+            return <IndeterminateCheckbox />;
+          },
         },
         ...columns,
-        // make row menu
+        // make row option menu
         {
           Header: '',
           id: 'row-menu',
           disableSortBy: true,
-          // pass the selected row props to button component
-          // to be able to read the selected row id
-          Cell: () => <RowMenu />,
+          Cell: ({ row }: CellProps<RowDataProps>) => {
+            return <RowMenu rowProps={{ ...row.original }} />;
+          },
         },
       ]);
     },

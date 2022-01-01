@@ -1,4 +1,4 @@
-import { ChangeEvent, CSSProperties } from 'react';
+import { ChangeEvent, CSSProperties, Ref, RefObject } from 'react';
 import { Column, UseRowSelectRowProps } from 'react-table';
 
 export interface ModalState {
@@ -8,6 +8,8 @@ export interface ModalState {
   onAlertOpen: () => void;
   onModalClose: () => void;
   onAlertClose: () => void;
+  passDataToModalContent: (data: Record<string, unknown>) => void;
+  getDataFromRow: () => Record<string, unknown>;
 }
 
 export type DataRow = {
@@ -44,11 +46,12 @@ export interface TableProps<T extends Record<string, unknown>> {
   overflow?: string;
 }
 
-export interface CellProps {
-  getToggleRowSelectedProps: UseRowSelectRowProps<
+export type RowDataProps = {
+  getToggleRowSelectedProps?: UseRowSelectRowProps<
     Record<string, unknown>
   >['getToggleRowSelectedProps'];
-}
+  original?: Record<string, unknown>;
+};
 
 export type ClickableCheckboxProps<T> = {
   onChange?: (e: ChangeEvent<Element>) => void;
@@ -61,7 +64,7 @@ export type ClickableCheckboxProps<T> = {
   rest?: T;
 };
 
-export type ButtonRef = HTMLButtonElement;
+export type LeastDestructiveButton = RefObject<HTMLButtonElement>;
 
 export interface SelectedRowProps {
   onChange?: (e: ChangeEvent<Element>) => void;
@@ -71,4 +74,11 @@ export interface SelectedRowProps {
   style?: CSSProperties;
   className?: string;
   role?: string;
+}
+
+export type RowMenuRefType = Ref<HTMLDivElement>;
+
+export interface RowMenuProps {
+  rowProps: Record<string, unknown>;
+  rest?: Record<string, unknown>;
 }

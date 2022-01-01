@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import {
   AlertDialogBody,
   AlertDialogFooter,
@@ -15,23 +15,68 @@ import {
   ModalStatesContext,
   LeastDestructiveBtnRefContext,
 } from './CreateContext';
+import { useMutation } from 'react-query';
+import axios from 'axios';
 
 export const CustomAlertContent = (): JSX.Element => {
-  const alertStateContext = useContext(ModalStatesContext);
+  const [rowData, setRowData] = useState({
+    data: {
+      date: '',
+      execTime: '',
+      spread: '',
+      side: '',
+      qty: '',
+      ticker: '',
+      price: '',
+      posEffect: '',
+    },
+    ref: {
+      '@ref': {
+        collection: null,
+        id: '',
+      },
+    },
+    ts: 0,
+  });
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  const { onAlertClose, getDataFromRow } = useContext(ModalStatesContext);
   const cancelRef = useContext(LeastDestructiveBtnRefContext);
   const descriptionTextColor = useColorModeValue(
     'brand.gray.400',
     'brand.gray.50',
   );
-  const ticker = 'AMD';
-  const tradeDate = '10/24/20';
+  const { data: tradeRowData, ref, ts: timeStamp } = rowData;
+  const ticker = tradeRowData?.ticker;
+  const tradeDate = tradeRowData?.date;
+  const tradeCollection = ref['@ref'].collection;
+  const tradeId = ref['@ref'].id;
+  const rowToDelete = {
+    tradeCollection,
+    tradeId,
+  };
+
+  useEffect(() => {
+    setRowData(getDataFromRow());
+  }, [getDataFromRow]);
+
+  const mutation = useMutation((delTradeData) => {
+    return axios.post('/api/delete-trade', delTradeData);
+  });
+
+  if (mutation.isSuccess && mutation.data) {
+    console.log('Data after deletion: ', mutation.data);
+    setTimeout(() => {
+      onAlertClose();
+    }, 1000);
+  }
 
   return (
     <>
       <AlertDialogHeader>
         <Heading as="h4">Delete trade</Heading>
       </AlertDialogHeader>
-      <ModalCloseButton onClick={alertStateContext?.onAlertClose} />
+      <ModalCloseButton onClick={onAlertClose} />
       <AlertDialogBody>
         <Text fontSize="1.3rem" color={descriptionTextColor}>
           You&apos;ve selected to delete your
@@ -58,14 +103,31 @@ export const CustomAlertContent = (): JSX.Element => {
         <Text color={descriptionTextColor}>
           Are you sure you want to delete this trade?
         </Text>
+        <Text color={descriptionTextColor}>Trade timestamp: {timeStamp}</Text>
       </AlertDialogBody>
       <AlertDialogFooter>
-        <Button ref={cancelRef} onClick={alertStateContext?.onAlertClose}>
+        <Button ref={cancelRef} onClick={onAlertClose}>
           No
         </Button>
-        <Button colorScheme="red" ml={3}>
+        <Button
+          isLoading={mutation.isLoading}
+          onClick={() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            mutation.mutate(rowToDelete);
+          }}
+          colorScheme="red"
+          ml={3}
+        >
           Yes
         </Button>
+        {mutation.isError ? (
+          <Text color={descriptionTextColor}>
+            Encountered error in deleting trade: {mutation.error}
+          </Text>
+        ) : (
+          ''
+        )}
       </AlertDialogFooter>
     </>
   );

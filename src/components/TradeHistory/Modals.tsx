@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useDisclosure } from '@chakra-ui/react';
 import { ModalStatesContext } from './CreateContext';
 import { Modal } from '../shared/Modal';
@@ -12,6 +12,7 @@ export const Modals = ({
 }: {
   children: React.ReactNode;
 }): JSX.Element => {
+  const [rowData, setRowData] = useState({});
   // hook helpers for modal/alert states
   const {
     isOpen: isModalOpen,
@@ -34,8 +35,13 @@ export const Modals = ({
       isAlertOpen,
       onAlertOpen,
       onAlertClose,
+      passDataToModalContent: (dataObject) => {
+        setRowData(dataObject);
+      },
+      getDataFromRow: () => rowData,
     }),
     [
+      rowData,
       isModalOpen,
       onModalOpen,
       onModalClose,

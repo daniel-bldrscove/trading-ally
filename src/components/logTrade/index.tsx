@@ -53,8 +53,7 @@ export const LogTrade = ({
           body: JSON.stringify(values),
         })
           .then((res) => res.json())
-          .then((data) => {
-            console.log('Data: ', data); // returns object
+          .then(() => {
             actions.setSubmitting(false);
           });
       }}
