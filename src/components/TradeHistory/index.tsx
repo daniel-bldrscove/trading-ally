@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { columnRowFormating } from './columnRowFormating';
 import { Box } from '@chakra-ui/react';
 import { TitleSections } from '../TitleSections';
-import { Modals } from './Modals';
+import { Modals } from './ModalStates';
 import './trade-history-styles.css';
 
 // promise fetch function for useQuery

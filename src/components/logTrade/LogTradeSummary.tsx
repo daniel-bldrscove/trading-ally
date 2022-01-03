@@ -25,7 +25,7 @@ export const LogTradeSummary = ({
 }: LogTradeSummaryPropValues): JSX.Element => {
   const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
   const [activeError, setActiveError] = useState(false);
-  const tradeSummaryBgColor = useColorModeValue('#d4dee7', 'brand.gray.600');
+  const tradeSummaryBgColor = useColorModeValue('white', 'brand.gray.600');
 
   const resetForm = () => {
     setActiveError(false);
@@ -53,7 +53,7 @@ export const LogTradeSummary = ({
     <Box
       bg={tradeSummaryBgColor}
       w="full"
-      p={[8, 4, 2]}
+      p={[4, 4, 4, 2]}
       display="flex"
       justifyContent="end"
       borderBottomRadius="md"
