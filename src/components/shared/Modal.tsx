@@ -21,7 +21,7 @@ export const Modal = ({ children }: ModalData): JSX.Element => {
       motionPreset="slideInBottom"
     >
       <ModalOverlay />
-      <ModalContent>{children}</ModalContent>
+      <ModalContent minWidth="full">{children}</ModalContent>
     </CenterModal>
   );
 };

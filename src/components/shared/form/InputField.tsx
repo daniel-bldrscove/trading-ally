@@ -5,6 +5,7 @@ import { FormErrorMessage } from './FormErrorMessage';
 
 interface InputFieldProps {
   w: string | string[];
+  variant?: string;
   size?: string;
   type: string;
   id: string;

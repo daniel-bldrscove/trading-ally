@@ -2,18 +2,7 @@ import { useField } from 'formik';
 import { SmLabelWithTooltip } from '../SmLabelWithTooltip';
 import { FormControl, Select } from '@chakra-ui/react';
 import { FormErrorMessage } from './FormErrorMessage';
-
-interface SelectFieldProps {
-  w: string;
-  size?: string;
-  type: string;
-  id: string;
-  name: string;
-  label: string;
-  placeholder?: string;
-  toolTipDescription: string;
-  children: React.ReactNode;
-}
+import { SelectFieldProps } from '../../LogTrade/types';
 
 export const SelectField = ({
   label,
@@ -31,7 +20,7 @@ export const SelectField = ({
       >
         {label}
       </SmLabelWithTooltip>
-      <Select h={10} size={size} {...field} {...props}>
+      <Select size={size} {...field} {...props}>
         {children}
       </Select>
       {meta.touched && meta.error ? (

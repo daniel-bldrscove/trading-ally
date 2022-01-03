@@ -21,11 +21,13 @@ export const SmLabelWithTooltip = ({
   children,
 }: InputProps): JSX.Element => {
   return (
-    <Flex mb={4} w="full">
-      <SmLabel htmlFor={htmlFor}>{children}</SmLabel>
+    <Flex mb={2} w="full">
+      <SmLabel htmlFor={htmlFor} color="brand.gray.200">
+        {children}
+      </SmLabel>
       <Popover isLazy={true} matchWidth={true}>
         <PopoverTrigger>
-          <QuestionOutlineIcon size="xs" w="10px" />
+          <QuestionOutlineIcon size="xs" w="10px" color="brand.gray.200" />
         </PopoverTrigger>
         <PopoverContent bg="brand.gray.900" w="full">
           <PopoverArrow bg="brand.gray.900" />

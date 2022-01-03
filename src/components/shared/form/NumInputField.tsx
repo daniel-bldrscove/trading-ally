@@ -10,10 +10,11 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react';
 import { FormErrorMessage } from './FormErrorMessage';
-import { SplitNumCounterFieldProps } from '../../logTrade/types';
+import { SplitNumCounterFieldProps } from '../../LogTrade/types';
 
 export const NumInputField = ({
   label,
+  variant,
   size = 'xs',
   placeholder,
   precision = 0,
@@ -33,6 +34,7 @@ export const NumInputField = ({
       <Stack direction="row">
         <NumberInput
           w="full"
+          variant={variant} //"outline" | "filled" | "flushed" | "unstyled"
           size={size}
           max={1000000}
           precision={precision}
