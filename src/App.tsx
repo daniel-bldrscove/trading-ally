@@ -6,7 +6,7 @@ import Nav from './components/Nav';
 import Layout from './components/Layout';
 import Footer from './components/Footer';
 import theme from './theme';
-import './theme/global-styles.css';
+import './styles.css';
 
 export const App: React.FC = function () {
   const queryClient = new QueryClient();
