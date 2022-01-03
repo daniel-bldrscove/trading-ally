@@ -12,7 +12,6 @@ import { RowMenuProps, DataRow } from './types';
 
 export const RowMenu = ({ rowProps, ...rest }: RowMenuProps): JSX.Element => {
   const [rowData, setRowData] = useState({});
-  const [rowId, setRowId] = useState('');
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { onModalOpen, onAlertOpen, passDataToModalContent } =
@@ -26,7 +25,6 @@ export const RowMenu = ({ rowProps, ...rest }: RowMenuProps): JSX.Element => {
     if (!ref.current) throw Error('divRef is not assigned');
 
     setRowData(rowProps);
-    setRowId(ref.current.ref['@ref'].id);
   }, [rowProps]);
 
   const handleModalOpen = (modalType: string) => {
@@ -54,7 +52,6 @@ export const RowMenu = ({ rowProps, ...rest }: RowMenuProps): JSX.Element => {
         <MenuItem onClick={() => handleModalOpen('alert')} icon={<FiTrash />}>
           Delete
         </MenuItem>
-        <MenuItem icon={<FiEdit2 />}>{rowId}</MenuItem>
       </MenuList>
     </Menu>
   );
