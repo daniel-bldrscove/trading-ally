@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Formik, Form, FormikProps } from 'formik';
 import { Box, Grid, Heading, useColorModeValue } from '@chakra-ui/react';
 import { logTradeValidationSchema } from '../../utils/validationSchema';
@@ -5,40 +6,31 @@ import { InputField } from '../shared/form/InputField';
 import { SelectField } from '../shared/form/SelectField';
 import { NumInputField } from '../shared/form/NumInputField';
 import { LogTradeSummary } from './LogTradeSummary';
+import { useQueryClient } from 'react-query';
+import axios from 'axios';
 
-interface OtherProps {
-  w: string;
-  mb: number;
-}
+import { OtherProps, FormikValues } from './types';
 
-interface FormikValues {
-  date: string;
-  execTime: string;
-  spread: string;
-  side: string;
-  qty: number;
-  ticker: string;
-  price: number;
-  posEffect: string;
-  edit: null;
-  delete: null;
-}
+export const initialValues: FormikValues = {
+  date: '',
+  execTime: '',
+  spread: '',
+  side: '',
+  qty: 1,
+  ticker: '',
+  price: 0,
+  posEffect: '',
+};
 
 export const LogTrade = ({
   ...formContainerProps
 }: OtherProps): JSX.Element => {
-  const initialValues: FormikValues = {
-    date: '',
-    execTime: '',
-    spread: '',
-    side: '',
-    qty: 1,
-    ticker: '',
-    price: 0,
-    posEffect: '',
-    edit: null,
-    delete: null,
-  };
+  const queryClient = useQueryClient();
+  const [submissionStatus, setSubmissionStatus] = useState({
+    submitted: false,
+    success: false,
+    message: '',
+  });
 
   const tradeDetailsBgColor = useColorModeValue('gray.200', 'brand.gray.800');
 
@@ -47,15 +39,34 @@ export const LogTrade = ({
       initialValues={initialValues}
       validationSchema={logTradeValidationSchema}
       onSubmit={async (values, actions) => {
-        // send input field values
-        await fetch('/api/log-trade', {
-          method: 'POST',
-          body: JSON.stringify(values),
-        })
-          .then((res) => res.json())
-          .then(() => {
-            actions.setSubmitting(false);
+        try {
+          // log trade data
+          await axios.post('/api/log-trade', {
+            ...values,
           });
+
+          actions.setSubmitting(false);
+          setSubmissionStatus({
+            submitted: true,
+            success: true,
+            message:
+              'Submission processed. You have successfully logged your trade!',
+          });
+
+          // refresh trade data
+          queryClient.invalidateQueries('trades');
+        } catch (error) {
+          actions.setSubmitting(false);
+          if (axios.isAxiosError(error)) {
+            setSubmissionStatus({
+              submitted: true,
+              success: false,
+              message: `Submission failed. ${error.message}`,
+            });
+          } else {
+            throw new Error(`Encountered error: ${error}`);
+          }
+        }
       }}
     >
       {(props: FormikProps<FormikValues>) => (
@@ -77,7 +88,7 @@ export const LogTrade = ({
                 gap={6}
               >
                 <InputField
-                  w="32"
+                  w={['full', 'full', 'full', '32']}
                   type="date"
                   id="date"
                   name="date"
@@ -101,7 +112,7 @@ export const LogTrade = ({
                   name="spread"
                   label="Spread"
                   placeholder="Stock"
-                  toolTipDescription="Currently only support logging Stock trades"
+                  toolTipDescription="Stock trades only"
                 />
                 <SelectField
                   w="full"
@@ -160,6 +171,9 @@ export const LogTrade = ({
               isSubmitting={props.isSubmitting}
               touched={props.touched}
               errors={props.errors}
+              resetFormik={props.resetForm}
+              submissionStatus={submissionStatus}
+              setSubmissionStatus={setSubmissionStatus}
             />
           </Box>
         </Form>

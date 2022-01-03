@@ -47,7 +47,7 @@ export const TradeHistory = (): JSX.Element => {
   }
 
   return (
-    <Box p={6}>
+    <Box p={[6, 0]}>
       <TitleSections title="Trade History" />
       <Modals>
         <DataTable

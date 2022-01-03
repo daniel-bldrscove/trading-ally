@@ -10,17 +10,7 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react';
 import { FormErrorMessage } from './FormErrorMessage';
-
-interface SplitNumCounterFieldProps {
-  w: string;
-  size?: string;
-  id: string;
-  name: string;
-  label: string;
-  placeholder?: number;
-  precision?: number;
-  toolTipDescription: string;
-}
+import { SplitNumCounterFieldProps } from '../../logTrade/types';
 
 export const NumInputField = ({
   label,
@@ -48,16 +38,14 @@ export const NumInputField = ({
           precision={precision}
           defaultValue={placeholder}
         >
-          <NumberInputField
-            h={10}
-            borderBottom="1px"
-            borderBottomColor="brand.green.400"
-            {...field}
-            {...props}
-          />
+          <NumberInputField h={10} {...field} {...props} />
           <NumberInputStepper>
-            <NumberIncrementStepper onClick={() => setValue(field.value + 1)} />
-            <NumberDecrementStepper onClick={() => setValue(field.value - 1)} />
+            <NumberIncrementStepper
+              onClick={() => setValue(parseInt(field.value) + 1)}
+            />
+            <NumberDecrementStepper
+              onClick={() => setValue(parseInt(field.value) - 1)}
+            />
           </NumberInputStepper>
         </NumberInput>
       </Stack>

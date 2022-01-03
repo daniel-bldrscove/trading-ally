@@ -4,7 +4,7 @@ import { FormControl, Input } from '@chakra-ui/react';
 import { FormErrorMessage } from './FormErrorMessage';
 
 interface InputFieldProps {
-  w: string;
+  w: string | string[];
   size?: string;
   type: string;
   id: string;
@@ -29,14 +29,7 @@ export const InputField = ({
       >
         {label}
       </SmLabelWithTooltip>
-      <Input
-        h={10}
-        borderBottom="1px"
-        borderBottomColor="brand.green.400"
-        size={size}
-        {...field}
-        {...props}
-      />
+      <Input h={10} size={size} {...field} {...props} />
       {meta.touched && meta.error ? (
         <FormErrorMessage>{meta.error}</FormErrorMessage>
       ) : null}

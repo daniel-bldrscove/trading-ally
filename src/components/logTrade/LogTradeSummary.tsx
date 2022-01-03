@@ -1,34 +1,44 @@
 import { useState, useEffect } from 'react';
-import { Box, ButtonGroup, Flex, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  ButtonGroup,
+  Button,
+  Flex,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { PrimaryButton } from '../shared/PrimaryButton';
 import { SecondaryButton } from '../shared/SecondaryButton';
-import { SummaryText } from './SummaryText';
-
-interface FormikValues {
-  fieldValues: {
-    date: string;
-    execTime: string;
-    spread: string;
-    side: string;
-    qty: number;
-    ticker: string;
-    price: number;
-    posEffect: string;
-  };
-  isSubmitting: boolean;
-  touched: Record<string, unknown>;
-  errors: Record<string, unknown>;
-}
+import { PreSubmissionMsg } from './PreSubmissionMsg';
+import { SubmissionFailedMsg } from './SubmissionFailedMsg';
+import { SubmissionSuccessMsg } from './SubmissionSuccessMsg';
+import { LogTradeSummaryPropValues } from './types';
+import { initialValues } from './index';
 
 export const LogTradeSummary = ({
   fieldValues,
   isSubmitting,
   touched,
   errors,
-}: FormikValues): JSX.Element => {
+  submissionStatus,
+  resetFormik,
+  setSubmissionStatus,
+}: LogTradeSummaryPropValues): JSX.Element => {
   const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
   const [activeError, setActiveError] = useState(false);
   const tradeSummaryBgColor = useColorModeValue('#d4dee7', 'brand.gray.600');
+
+  const resetForm = () => {
+    setActiveError(false);
+    setIsReadyToSubmit(false);
+    resetFormik({
+      values: initialValues,
+    });
+    setSubmissionStatus({
+      submitted: false,
+      success: false,
+      message: '',
+    });
+  };
 
   useEffect(() => {
     // if at least one field has been touched && there are no keys in Formik's error object
@@ -37,7 +47,7 @@ export const LogTradeSummary = ({
     } else {
       setActiveError(true);
     }
-  }, [touched, errors]);
+  }, [touched, errors, activeError]);
 
   return (
     <Box
@@ -48,35 +58,68 @@ export const LogTradeSummary = ({
       justifyContent="end"
       borderBottomRadius="md"
     >
-      {!activeError && isReadyToSubmit ? (
-        <Flex
-          w="full"
-          align="center"
-          justify="space-between"
-          wrap={['wrap', 'wrap', 'nowrap']}
-        >
-          <SummaryText {...fieldValues} />
-          <ButtonGroup isAttached variant="filled">
-            <SecondaryButton
+      {
+        // no form field errors
+        !activeError && !isReadyToSubmit && !submissionStatus.submitted ? (
+          <SecondaryButton
+            type="button"
+            onClick={() => setIsReadyToSubmit(true)}
+            disabled={activeError}
+          >
+            Review Trade
+          </SecondaryButton>
+        ) : // user ready to submit form
+        !activeError && isReadyToSubmit && !submissionStatus.submitted ? (
+          <Flex
+            w="full"
+            align="center"
+            justify="space-between"
+            wrap={['wrap', 'wrap', 'nowrap']}
+          >
+            <PreSubmissionMsg {...fieldValues} />
+            <ButtonGroup isAttached variant="filled">
+              <SecondaryButton
+                type="button"
+                onClick={() => setIsReadyToSubmit(false)}
+              >
+                Cancel
+              </SecondaryButton>
+              <PrimaryButton w={32} isLoading={isSubmitting} type="submit">
+                Submit
+              </PrimaryButton>
+            </ButtonGroup>
+          </Flex>
+        ) : // form submission failed
+        !activeError &&
+          submissionStatus.submitted &&
+          !submissionStatus.success ? (
+          <>
+            <SubmissionFailedMsg>
+              {submissionStatus.message}
+            </SubmissionFailedMsg>
+            <Button
               type="button"
-              onClick={() => setIsReadyToSubmit(false)}
+              onClick={resetForm}
+              disabled={activeError}
+              colorScheme="red"
             >
-              Cancel
-            </SecondaryButton>
-            <PrimaryButton w={32} isLoading={isSubmitting} type="submit">
-              Submit
-            </PrimaryButton>
-          </ButtonGroup>
-        </Flex>
-      ) : (
-        <SecondaryButton
-          type="button"
-          onClick={() => setIsReadyToSubmit(true)}
-          disabled={activeError}
-        >
-          Review Trade
-        </SecondaryButton>
-      )}
+              Reset &amp; Try Again
+            </Button>
+          </>
+        ) : // form submission success
+        !activeError &&
+          submissionStatus.submitted &&
+          submissionStatus.success ? (
+          (setTimeout(() => {
+            resetForm();
+          }, 3000),
+          (
+            <SubmissionSuccessMsg>
+              {submissionStatus.message}
+            </SubmissionSuccessMsg>
+          ))
+        ) : null
+      }
     </Box>
   );
 };
