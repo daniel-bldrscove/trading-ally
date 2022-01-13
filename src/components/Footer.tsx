@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
     <Box as="footer">
       <Flex
         h="7rem"
-        bg={useColorModeValue('brand.gray.100', 'brand.gray.500')}
+        bg={useColorModeValue('#d7e3eb', 'brand.gray.900')}
         justifyContent="center"
         alignContent="center"
         flexWrap="wrap"

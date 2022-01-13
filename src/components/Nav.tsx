@@ -52,7 +52,7 @@ const Nav = ({ navbarHeight }: { navbarHeight: string[] | number[] }) => {
       w="full"
       bg={useColorModeValue('brand.gray.50', 'brand.gray.400')}
       position="fixed"
-      zIndex={5}
+      zIndex={15}
     >
       <LayoutWrapper>
         <Flex

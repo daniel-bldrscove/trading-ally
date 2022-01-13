@@ -11,11 +11,13 @@ import {
   chakra,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
+import { useScrollbarAppearance } from '../../utils/scrollbarAppearance';
+
+import { TableProps, RowDataProps } from '../../@types/trade-history-types';
 import { useTable, useSortBy, useRowSelect, CellProps } from 'react-table';
+import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { IndeterminateCheckbox } from './IndeterminateCheckbox';
 import { RowMenu } from './RowMenu';
-import { TableProps, RowDataProps } from '../../@types/trade-history-types';
 
 export const DataTable = <T extends Record<string, unknown>>({
   data,
@@ -24,6 +26,7 @@ export const DataTable = <T extends Record<string, unknown>>({
 }: TableProps<T>): JSX.Element => {
   // make the row id the same as the fauna ref id
   const getRowId = useCallback((row) => row.ref['@ref'].id, []);
+  const { scrollbarLgtMd, scrollbarDrkMd } = useScrollbarAppearance();
 
   // properties returned from useTable
   const {
@@ -77,6 +80,14 @@ export const DataTable = <T extends Record<string, unknown>>({
   const tableHeaderBg = useColorModeValue('white', 'brand.gray.800');
   const tableStripes = useColorModeValue('brand.tableLight', 'brand.gray');
   const tableBg = useColorModeValue('white', 'brand.gray.800');
+  const handleScrollStyles = useColorModeValue(
+    { ...scrollbarLgtMd },
+    { ...scrollbarDrkMd },
+  );
+
+  const scrollStyles = {
+    ...handleScrollStyles,
+  };
 
   return (
     <Box
@@ -85,82 +96,88 @@ export const DataTable = <T extends Record<string, unknown>>({
       h="sm"
       bg={tableBg}
       borderRadius="md"
-      overflow="scroll"
+      overflow="hidden"
     >
-      <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
-      <Table
-        {...getTableProps()}
-        size="sm"
-        variant="striped"
-        colorScheme={tableStripes}
-      >
-        <Thead>
-          {headerGroups.map((headerGroup) => {
-            const { key, ...restHeaderGroupProps } =
-              headerGroup.getHeaderGroupProps();
-            return (
-              <Tr
-                key={key}
-                bg={tableHeaderBg}
-                position="sticky"
-                top={0}
-                zIndex={5}
-                {...restHeaderGroupProps}
-              >
-                {headerGroup.headers.map((column) => {
-                  const { key, ...restColumn } = column.getHeaderProps(
-                    column.getSortByToggleProps({
-                      style: {
-                        minWidth: column.minWidth,
-                      },
-                    }),
-                  );
-                  return (
-                    <Th key={key} {...restColumn} isNumeric={column.isNumeric}>
-                      {column.render('Header')}
-                      <chakra.span>
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <TriangleDownIcon aria-label="sorted descending" />
-                          ) : (
-                            <TriangleUpIcon aria-label="sorted ascending" />
-                          )
-                        ) : null}
-                      </chakra.span>
-                    </Th>
-                  );
-                })}
-              </Tr>
-            );
-          })}
-        </Thead>
-        <Tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            // eslint-disable-next-line react/prop-types
-            const { key, ...restRowProps } = row.getRowProps();
-            return (
-              <Tr key={key} {...restRowProps}>
-                {
-                  // eslint-disable-next-line react/prop-types
-                  row.cells.map((cell) => {
-                    const { key, ...restCellProps } = cell.getCellProps();
-                    return (
-                      <Td
-                        key={key}
-                        {...restCellProps}
-                        isNumeric={cell.column.isNumeric}
-                      >
-                        {cell.render('Cell')}
-                      </Td>
+      <Box h="sm" overflow="auto" sx={scrollStyles}>
+        <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
+        <Table
+          {...getTableProps()}
+          size="sm"
+          variant="striped"
+          colorScheme={tableStripes}
+        >
+          <Thead>
+            {headerGroups.map((headerGroup) => {
+              const { key, ...restHeaderGroupProps } =
+                headerGroup.getHeaderGroupProps();
+              return (
+                <Tr
+                  key={key}
+                  bg={tableHeaderBg}
+                  position="sticky"
+                  top={0}
+                  zIndex={5}
+                  {...restHeaderGroupProps}
+                >
+                  {headerGroup.headers.map((column) => {
+                    const { key, ...restColumn } = column.getHeaderProps(
+                      column.getSortByToggleProps({
+                        style: {
+                          minWidth: column.minWidth,
+                        },
+                      }),
                     );
-                  })
-                }
-              </Tr>
-            );
-          })}
-        </Tbody>
-      </Table>
+                    return (
+                      <Th
+                        key={key}
+                        {...restColumn}
+                        isNumeric={column.isNumeric}
+                      >
+                        {column.render('Header')}
+                        <chakra.span>
+                          {column.isSorted ? (
+                            column.isSortedDesc ? (
+                              <TriangleDownIcon aria-label="sorted descending" />
+                            ) : (
+                              <TriangleUpIcon aria-label="sorted ascending" />
+                            )
+                          ) : null}
+                        </chakra.span>
+                      </Th>
+                    );
+                  })}
+                </Tr>
+              );
+            })}
+          </Thead>
+          <Tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              // eslint-disable-next-line react/prop-types
+              const { key, ...restRowProps } = row.getRowProps();
+              return (
+                <Tr key={key} {...restRowProps}>
+                  {
+                    // eslint-disable-next-line react/prop-types
+                    row.cells.map((cell) => {
+                      const { key, ...restCellProps } = cell.getCellProps();
+                      return (
+                        <Td
+                          key={key}
+                          {...restCellProps}
+                          isNumeric={cell.column.isNumeric}
+                        >
+                          {cell.render('Cell')}
+                        </Td>
+                      );
+                    })
+                  }
+                </Tr>
+              );
+            })}
+          </Tbody>
+        </Table>
+      </Box>
     </Box>
   );
 };
