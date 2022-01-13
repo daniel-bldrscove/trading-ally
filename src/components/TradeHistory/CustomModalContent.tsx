@@ -1,39 +1,50 @@
 import { useContext } from 'react';
 import {
-  Button,
+  Box,
   Heading,
-  Text,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import { ModalStatesContext } from './CreateContext';
+import { ModalStatesContext } from '../../utils/createContext';
+import { LogTrade } from '../LogTrade';
+import { CustomPreSubmissionSummary } from './CustomPreSubmissionSummary';
 
 export const CustomModalContent = (): JSX.Element => {
-  const modalStateContext = useContext(ModalStatesContext);
+  const { onModalClose, rowData } = useContext(ModalStatesContext) || {};
+
+  // typescript check variables exist
+  if (!onModalClose || !rowData) {
+    throw new Error('ModalStatesContext not loaded!');
+  }
+
+  const { data } = rowData;
+  const modalSectionsPadding = [2, 4, 6];
+
   return (
-    <>
+    <Box className="custom-modal-content">
       <ModalHeader>
-        <Heading as="h4">Edit Trade</Heading>
+        <Heading as="h2">
+          {data.ticker} was traded on {data.date}
+        </Heading>
       </ModalHeader>
-      <ModalCloseButton onClick={modalStateContext?.onModalClose} />
-      <ModalBody>
-        <Text>
-          This is the modal body paragraph text that would show up as the main
-          modal body paragraph text.
-        </Text>
-      </ModalBody>
-      <ModalFooter>
-        <Button
-          colorScheme="blue"
-          mr={3}
-          onClick={modalStateContext?.onModalClose}
+      <ModalCloseButton onClick={onModalClose} />
+      <ModalBody p={modalSectionsPadding}>
+        <LogTrade
+          mb={['10', '6']}
+          preFillValues={{ ...rowData.data }}
+          gridTemplateCols={[
+            'repeat(1,1fr)',
+            'repeat(2,1fr)',
+            'repeat(3,1fr)',
+            'repeat(4,1fr)',
+            'repeat(4,1fr)',
+          ]}
+          heading={`Edit the fields below, then click submit to update.`}
         >
-          Close
-        </Button>
-        <Button variant="ghost">Secondary Action</Button>
-      </ModalFooter>
-    </>
+          <CustomPreSubmissionSummary initialValues={rowData.data} />
+        </LogTrade>
+      </ModalBody>
+    </Box>
   );
 };

@@ -15,7 +15,7 @@ import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { useTable, useSortBy, useRowSelect, CellProps } from 'react-table';
 import { IndeterminateCheckbox } from './IndeterminateCheckbox';
 import { RowMenu } from './RowMenu';
-import { TableProps, RowDataProps } from './types';
+import { TableProps, RowDataProps } from '../../@types/trade-history-types';
 
 export const DataTable = <T extends Record<string, unknown>>({
   data,
@@ -74,11 +74,19 @@ export const DataTable = <T extends Record<string, unknown>>({
     },
   );
 
+  const tableHeaderBg = useColorModeValue('white', 'brand.gray.800');
   const tableStripes = useColorModeValue('brand.tableLight', 'brand.gray');
-  const tableHeaderBg = useColorModeValue('#d3dee5', 'brand.gray.800');
+  const tableBg = useColorModeValue('white', 'brand.gray.800');
 
   return (
-    <Box {...props} maxW="full" h="sm">
+    <Box
+      {...props}
+      maxW="full"
+      h="sm"
+      bg={tableBg}
+      borderRadius="md"
+      overflow="scroll"
+    >
       <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
       <Table
         {...getTableProps()}

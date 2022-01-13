@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { useEffect, useRef, Ref } from 'react';
-import { ClickableCheckboxProps } from './types';
+import { ClickableCheckboxProps } from '../../@types/trade-history-types';
 
 // Redecalare forwardRef in order to use generics in ref type
 declare module 'react' {

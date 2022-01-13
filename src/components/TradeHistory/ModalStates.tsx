@@ -1,18 +1,37 @@
 import { useMemo, useState } from 'react';
 import { useDisclosure } from '@chakra-ui/react';
-import { ModalStatesContext } from './CreateContext';
+import { ModalStatesContext } from '../../utils/createContext';
 import { Modal } from '../shared/Modal';
 import { Alert } from '../shared/Alert';
 import { CustomModalContent } from './CustomModalContent';
 import { CustomAlertContent } from './CustomAlertContent';
-import { ModalState } from './types';
+import { ModalStatesProps } from '../../@types/trade-history-types';
 
-export const Modals = ({
+export const ModalStates = ({
   children,
 }: {
   children: React.ReactNode;
 }): JSX.Element => {
-  const [rowData, setRowData] = useState({});
+  const [rowData, setRowData] = useState({
+    data: {
+      date: '',
+      execTime: '',
+      spread: '',
+      side: '',
+      qty: 1,
+      ticker: '',
+      price: 0,
+      posEffect: '',
+    },
+    ref: {
+      '@ref': {
+        collection: {},
+        id: '',
+      },
+    },
+    ts: 0,
+  });
+
   // hook helpers for modal/alert states
   const {
     isOpen: isModalOpen,
@@ -27,7 +46,7 @@ export const Modals = ({
   } = useDisclosure();
 
   // memoize modal states to pass in context
-  const modalStates = useMemo<ModalState | null>(
+  const modalStates = useMemo<ModalStatesProps | null>(
     () => ({
       isModalOpen,
       onModalOpen,
@@ -38,7 +57,7 @@ export const Modals = ({
       passDataToModalContent: (dataObject) => {
         setRowData(dataObject);
       },
-      getDataFromRow: () => rowData,
+      rowData,
     }),
     [
       rowData,

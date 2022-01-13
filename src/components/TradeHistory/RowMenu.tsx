@@ -7,8 +7,8 @@ import {
   MenuItem,
 } from '@chakra-ui/react';
 import { FiMoreHorizontal, FiEdit2, FiTrash } from 'react-icons/fi';
-import { ModalStatesContext } from './CreateContext';
-import { RowMenuProps, DataRow } from './types';
+import { ModalStatesContext } from '../../utils/createContext';
+import { RowMenuProps } from '../../@types/trade-history-types';
 
 export const RowMenu = ({ rowProps, ...rest }: RowMenuProps): JSX.Element => {
   const [rowData, setRowData] = useState({});
@@ -16,11 +16,9 @@ export const RowMenu = ({ rowProps, ...rest }: RowMenuProps): JSX.Element => {
   // @ts-ignore
   const { onModalOpen, onAlertOpen, passDataToModalContent } =
     useContext(ModalStatesContext);
-  const ref = useRef<DataRow | null>(null);
+  const ref = useRef<Record<string, unknown> | null>(null);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     ref.current = rowProps;
     if (!ref.current) throw Error('divRef is not assigned');
 
