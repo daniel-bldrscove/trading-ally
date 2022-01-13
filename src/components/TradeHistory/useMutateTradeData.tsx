@@ -7,7 +7,9 @@ import { TradeDataPropVals } from '../../@types/log-trade-types';
 import { ModalStatesContext } from '../../utils/createContext';
 import { useFormFilledState } from '../../utils/logTradeFormProgressionHelper';
 
-export const useMutateTradeData = () => {
+export const useMutateTradeData = (): {
+  handleSubmit: (updatedFieldData: Record<string, unknown>) => void;
+} => {
   const { onModalClose } = useContext(ModalStatesContext) || {};
   const { cancelForm } = useFormFilledState();
   const queryClient = useQueryClient();
@@ -38,6 +40,7 @@ export const useMutateTradeData = () => {
         cancelForm();
         onModalClose?.();
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: any) => {
         // must come first when calling from inside mutate method
         setSubmittedResult({

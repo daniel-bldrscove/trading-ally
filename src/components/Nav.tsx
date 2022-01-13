@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Logo } from './Logo';
-import { LayoutWrapper } from './LayoutWrapper';
+import { LayoutWrapper } from './shared/LayoutWrapper';
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 

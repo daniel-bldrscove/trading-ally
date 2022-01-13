@@ -1,5 +1,5 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
-import { LayoutWrapper } from './LayoutWrapper';
+import { LayoutWrapper } from './shared/LayoutWrapper';
 import { TradeHistory } from './TradeHistory';
 import { LogTrade } from './LogTrade';
 

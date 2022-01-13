@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { DataTable } from './DataTable';
 import { useQuery } from 'react-query';
 import { columnRowFormating } from './columnRowFormating';
-import { Box } from '@chakra-ui/react';
+import { ComponentWrapper } from '../shared/ComponentWrapper';
 import { TitleSections } from '../shared/TitleSections';
 import { ModalStates } from './ModalStates';
 
@@ -46,7 +46,7 @@ export const TradeHistory = (): JSX.Element => {
   }
 
   return (
-    <Box p={[6, 0]}>
+    <ComponentWrapper id="trade-history-container">
       <TitleSections title="Trade History" />
       <ModalStates>
         <DataTable
@@ -55,6 +55,6 @@ export const TradeHistory = (): JSX.Element => {
           id="trade-history-table"
         />
       </ModalStates>
-    </Box>
+    </ComponentWrapper>
   );
 };
