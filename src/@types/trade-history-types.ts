@@ -1,15 +1,15 @@
 import { ChangeEvent, CSSProperties, Ref, RefObject } from 'react';
 import { Column, UseRowSelectRowProps } from 'react-table';
 
-export interface ModalState {
+export interface ModalStatesProps extends Record<string, unknown> {
   isModalOpen: boolean;
   isAlertOpen: boolean;
   onModalOpen: () => void;
   onAlertOpen: () => void;
   onModalClose: () => void;
   onAlertClose: () => void;
-  passDataToModalContent: (data: Record<string, unknown>) => void;
-  getDataFromRow: () => Record<string, unknown>;
+  passDataToModalContent: (data: Record<string, unknown> & DataRow) => void;
+  rowData: DataRow;
 }
 
 export type DataRow = {
