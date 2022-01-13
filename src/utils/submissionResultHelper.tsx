@@ -21,6 +21,7 @@ export const defaultSubmissionResults = {
   fastConfirm: null,
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SubmissionResult = createContext<SubmissionResultCtx | any>(
   defaultSubmissionResults,
 );
