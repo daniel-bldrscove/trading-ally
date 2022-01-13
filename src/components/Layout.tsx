@@ -16,7 +16,7 @@ const Layout = (): JSX.Element => {
       flexGrow={1}
       bg={useColorModeValue('brand.gray.50', 'brand.gray.400')}
     >
-      <LayoutWrapper mt="5rem" mb="5rem">
+      <LayoutWrapper mt="2rem" mb="5rem">
         <LogTrade
           w="full"
           mb={['0', '10']}

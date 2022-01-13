@@ -20,10 +20,17 @@ import {
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Logo } from './Logo';
 import { LayoutWrapper } from './shared/LayoutWrapper';
+import userAvatar from '../images/user-avatar-img.png';
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 
-const NavLink = ({ children }: { children: ReactNode }) => (
+const NavLink = ({
+  children,
+  href = '#',
+}: {
+  children: ReactNode;
+  href?: string;
+}) => (
   <Link
     px={2}
     py={1}
@@ -32,24 +39,27 @@ const NavLink = ({ children }: { children: ReactNode }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href={'#'}
+    href={href}
   >
     {children}
   </Link>
 );
 
-const Nav: React.FC = () => {
+const Nav = ({ navbarHeight }: { navbarHeight: string[] | number[] }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box
-      bg={useColorModeValue('gray.100', 'brand.gray.500')}
-      justifySelf="start"
+      w="full"
+      bg={useColorModeValue('brand.gray.50', 'brand.gray.400')}
+      position="fixed"
+      zIndex={5}
     >
       <LayoutWrapper>
         <Flex
-          h={[16, 20, 28]}
+          h={navbarHeight}
           alignItems={'center'}
           justifyContent={'space-between'}
+          className="navbar-flex-wrapper"
         >
           <IconButton
             size={'md'}
@@ -62,15 +72,20 @@ const Nav: React.FC = () => {
             <Logo maxW={[160, 190, 215]} />
           </Flex>
           <HStack alignItems={'center'}>
+            {/* 
+            temporarily hide menu items
             <HStack
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}
+              className="navigation-links"
             >
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link} href={link.toLowerCase()}>
+                  {link}
+                </NavLink>
               ))}
-            </HStack>
+            </HStack> */}
             <Flex alignItems={'center'}>
               <ColorModeSwitcher />
               <Menu>
@@ -82,19 +97,16 @@ const Nav: React.FC = () => {
                   minW={0}
                   display={{ base: 'none', sm: 'block' }}
                 >
-                  <Avatar
-                    size={'sm'}
-                    src={
-                      'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                    }
-                  />
+                  <Avatar size={'sm'} src={userAvatar} />
                 </MenuButton>
+                {/* 
+                temporarily hide menu list
                 <MenuList>
                   <MenuItem>User Settings</MenuItem>
                   <MenuItem>Settings</MenuItem>
                   <MenuDivider />
                   <MenuItem>Log Out</MenuItem>
-                </MenuList>
+                </MenuList> */}
               </Menu>
             </Flex>
           </HStack>
