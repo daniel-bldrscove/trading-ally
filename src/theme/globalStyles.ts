@@ -9,6 +9,13 @@ export const globalStyles = {
       },
     }),
   },
+  // breakpoints: createBreakpoints({
+  //   sm: '30em',
+  //   md: '48em',
+  //   lg: '62em',
+  //   xl: '80em',
+  //   '2xl': '96em',
+  // }),
   fonts: {
     heading: `Murecho ${base.fonts?.heading}`,
     body: `Murecho ${base.fonts?.body}`,
@@ -63,7 +70,8 @@ export const globalStyles = {
         '900': '#330011',
       },
       tableLight: {
-        '100': '#e1e8ef',
+        // '100': '#e1e8ef',
+        '100': '#eff3f9',
       },
     },
   },

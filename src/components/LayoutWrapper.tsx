@@ -15,13 +15,14 @@ export const LayoutWrapper = ({
   return (
     <Container
       className="layout-wrapper"
-      maxW={['xl', '95%', '5xl']}
+      maxW={['xl', '95%', '5xl', '85%', '75%']}
       p={0}
       mx="auto"
       px={['.5rem', '1.5rem', '2rem']}
       position="relative"
       display="block"
-      h="auto"
+      minHeight="full"
+      overflow="hidden"
       {...props}
     >
       {children}

@@ -9,20 +9,23 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from '@chakra-ui/react';
-import { FormErrorMessage } from './FormErrorMessage';
-import { SplitNumCounterFieldProps } from '../../LogTrade/types';
+import { FieldErrorFeedback } from './FieldErrorFeedback';
+import { SplitNumCounterFieldProps } from '../../../@types/log-trade-types';
 
 export const NumInputField = ({
+  w,
   label,
-  variant,
-  size = 'xs',
-  placeholder,
+  step = 6,
+  size = 'md',
   precision = 0,
+  placeholder,
   toolTipDescription,
+  variant,
   ...props
 }: SplitNumCounterFieldProps): JSX.Element => {
   const [field, meta, helpers] = useField(props);
   const { setValue } = helpers;
+
   return (
     <FormControl isInvalid={meta.touched && meta.error}>
       <SmLabelWithTooltip
@@ -33,26 +36,28 @@ export const NumInputField = ({
       </SmLabelWithTooltip>
       <Stack direction="row">
         <NumberInput
-          w="full"
-          variant={variant} //"outline" | "filled" | "flushed" | "unstyled"
+          width={w}
+          step={step}
           size={size}
-          max={1000000}
+          max={100000}
+          min={-100000}
+          inputMode="numeric"
           precision={precision}
           defaultValue={placeholder}
+          clampValueOnBlur={true}
+          variant={variant} // using a custom variant. Other variant types are: "outline" | "filled" | "flushed" | "unstyled"
+          onChange={(valueString) => setValue(valueString)}
+          value={field.value} // controll value with formik allows programmatic reset
         >
-          <NumberInputField h={10} {...field} {...props} />
+          <NumberInputField {...field} />
           <NumberInputStepper>
-            <NumberIncrementStepper
-              onClick={() => setValue(parseInt(field.value) + 1)}
-            />
-            <NumberDecrementStepper
-              onClick={() => setValue(parseInt(field.value) - 1)}
-            />
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
       </Stack>
       {meta.touched && meta.error ? (
-        <FormErrorMessage>{meta.error}</FormErrorMessage>
+        <FieldErrorFeedback>{meta.error}</FieldErrorFeedback>
       ) : null}
     </FormControl>
   );

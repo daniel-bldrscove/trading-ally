@@ -8,7 +8,7 @@ import {
 import {
   ModalStatesContext,
   LeastDestructiveBtnRefContext,
-} from '../TradeHistory/CreateContext';
+} from '../../utils/createContext';
 
 interface AlertProps {
   children: React.ReactNode;

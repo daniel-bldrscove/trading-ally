@@ -1,12 +1,12 @@
 import { useField } from 'formik';
 import { SmLabelWithTooltip } from '../SmLabelWithTooltip';
 import { FormControl, Select } from '@chakra-ui/react';
-import { FormErrorMessage } from './FormErrorMessage';
-import { SelectFieldProps } from '../../LogTrade/types';
+import { FieldErrorFeedback } from './FieldErrorFeedback';
+import { SelectFieldProps } from '../../../@types/log-trade-types';
 
 export const SelectField = ({
   label,
-  size = 'xs',
+  size = 'md',
   toolTipDescription,
   children,
   ...props
@@ -24,7 +24,7 @@ export const SelectField = ({
         {children}
       </Select>
       {meta.touched && meta.error ? (
-        <FormErrorMessage>{meta.error}</FormErrorMessage>
+        <FieldErrorFeedback>{meta.error}</FieldErrorFeedback>
       ) : null}
     </FormControl>
   );

@@ -1,7 +1,7 @@
 import { useField } from 'formik';
 import { SmLabelWithTooltip } from '../SmLabelWithTooltip';
 import { FormControl, Input } from '@chakra-ui/react';
-import { FormErrorMessage } from './FormErrorMessage';
+import { FieldErrorFeedback } from './FieldErrorFeedback';
 
 interface InputFieldProps {
   w: string | string[];
@@ -17,7 +17,7 @@ interface InputFieldProps {
 
 export const InputField = ({
   label,
-  size = 'xs',
+  size = 'md',
   toolTipDescription,
   ...props
 }: InputFieldProps): JSX.Element => {
@@ -32,7 +32,7 @@ export const InputField = ({
       </SmLabelWithTooltip>
       <Input h={10} size={size} {...field} {...props} />
       {meta.touched && meta.error ? (
-        <FormErrorMessage>{meta.error}</FormErrorMessage>
+        <FieldErrorFeedback>{meta.error}</FieldErrorFeedback>
       ) : null}
     </FormControl>
   );
