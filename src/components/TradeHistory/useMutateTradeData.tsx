@@ -34,7 +34,7 @@ export const useMutateTradeData = (): {
           submitted: true,
           success: true,
           message: 'Successfully updated your trade!',
-          fastConfirm: true,
+          submittedFromModal: true,
         });
         //clear submittedResult state and form values
         cancelForm();
@@ -47,6 +47,7 @@ export const useMutateTradeData = (): {
           submitted: true,
           success: false,
           message: error?.message,
+          submittedFromModal: true,
         });
         console.log('Encountered a mutation error: ', error.toJSON());
       },

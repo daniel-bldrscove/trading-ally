@@ -76,7 +76,7 @@ export type SubmittedResult = {
   submitted: boolean | null;
   success: boolean | null;
   message: string | null;
-  fastConfirm: boolean | null;
+  submittedFromModal: boolean | null;
 };
 
 export type SubmissionResultCtx = (

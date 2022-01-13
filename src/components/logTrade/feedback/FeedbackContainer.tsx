@@ -8,7 +8,7 @@ export const FeedbackContainer = ({
   children,
 }: {
   formFilled: boolean | Dispatch<SetStateAction<boolean | null>> | null;
-  submittedResult: Omit<SubmittedResult, 'message' | 'fastConfirm'>;
+  submittedResult: Omit<SubmittedResult, 'message' | 'submittedFromModal'>;
   children: React.ReactNode;
 }): JSX.Element => {
   const summaryBg = useColorModeValue('white', 'brand.gray.800');

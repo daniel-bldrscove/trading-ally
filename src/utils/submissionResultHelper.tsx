@@ -18,7 +18,7 @@ export const defaultSubmissionResults = {
   submitted: null,
   success: null,
   message: '',
-  fastConfirm: null,
+  submittedFromModal: null,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -11,7 +11,7 @@ export const SubmissionSuccessMsg = (): JSX.Element => {
 
   useEffect(() => {
     // fast confirm is mainly used to close a modal instantly, rather then setting a timeout
-    if (!submittedResult.fastConfirm) {
+    if (!submittedResult.submittedFromModal) {
       setTimeout(() => {
         cancelForm();
       }, 4000);

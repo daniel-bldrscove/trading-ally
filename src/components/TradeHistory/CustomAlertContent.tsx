@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import {
   AlertDialogBody,
   AlertDialogFooter,
@@ -20,6 +20,7 @@ import axios from 'axios';
 
 export const CustomAlertContent = (): JSX.Element => {
   const queryClient = useQueryClient();
+  const [err, setErr] = useState(null);
   const { onAlertClose, rowData } = useContext(ModalStatesContext) || {};
 
   if (!onAlertClose || !rowData) {
@@ -29,7 +30,6 @@ export const CustomAlertContent = (): JSX.Element => {
   const {
     data: { ticker, date },
     ref,
-    ts: timeStamp,
   } = rowData;
 
   const rowToDelete = {
@@ -47,6 +47,13 @@ export const CustomAlertContent = (): JSX.Element => {
         setTimeout(() => {
           onAlertClose();
         }, 500);
+      },
+      onError: (error: any) => {
+        // must come first when calling from inside mutate method
+        setErr(error?.message);
+        console.log('Encountered a mutation error: ', error.toJSON());
+      },
+      onSettled: () => {
         // refetch trade info
         queryClient.invalidateQueries('trades');
       },
@@ -63,60 +70,75 @@ export const CustomAlertContent = (): JSX.Element => {
 
   return (
     <>
-      <AlertDialogHeader p={alertSectionsPadding}>
-        <Heading as="h4">Delete trade</Heading>
-      </AlertDialogHeader>
       <ModalCloseButton onClick={onAlertClose} />
-      <AlertDialogBody p={alertSectionsPadding}>
-        <Text fontSize="1.3rem" color={descriptionTextColor}>
-          You&apos;ve selected to delete your
-        </Text>
-        <HStack mb={6}>
-          <Code
-            backgroundColor="brand.gray.600"
-            fontSize="1.3rem"
-            color="#ff5a72"
-          >
-            {ticker}
-          </Code>
-          <Text fontSize="1.3rem" color={descriptionTextColor}>
-            trade, on
-          </Text>
-          <Code
-            backgroundColor="brand.gray.600"
-            fontSize="1.3rem"
-            color="#ff5a72"
-          >
-            {date}.
-          </Code>
-        </HStack>
-        <Text color={descriptionTextColor}>
-          Are you sure you want to delete this trade?
-        </Text>
-        <Text color={descriptionTextColor}>Trade timestamp: {timeStamp}</Text>
-      </AlertDialogBody>
-      <AlertDialogFooter p={alertSectionsPadding}>
-        <Button ref={cancelRef} onClick={onAlertClose}>
-          No
-        </Button>
-        <Button
-          isLoading={mutation.isLoading}
-          onClick={() => {
-            mutation.mutate(rowToDelete);
-          }}
-          colorScheme="red"
-          ml={3}
-        >
-          Yes
-        </Button>
-        {mutation.isError ? (
-          <Text color={descriptionTextColor}>
-            Encountered error in deleting trade: {mutation.error}
-          </Text>
-        ) : (
-          ''
-        )}
-      </AlertDialogFooter>
+      {err ? (
+        <>
+          <AlertDialogHeader p={alertSectionsPadding}>
+            <Heading as="h4">Encountered Error!</Heading>
+          </AlertDialogHeader>
+          <AlertDialogBody p={alertSectionsPadding}>
+            <Text fontSize="1.3rem" color={descriptionTextColor}>
+              Encountered error in deleting trade:
+            </Text>
+            <Text fontSize="1.3rem" color={descriptionTextColor}>
+              {err}
+            </Text>
+          </AlertDialogBody>
+          <AlertDialogFooter p={alertSectionsPadding}>
+            <Button ref={cancelRef} colorScheme="red" onClick={onAlertClose}>
+              Close & Try again
+            </Button>
+          </AlertDialogFooter>
+        </>
+      ) : (
+        <>
+          <AlertDialogHeader p={alertSectionsPadding}>
+            <Heading as="h4">Delete trade</Heading>
+          </AlertDialogHeader>
+          <AlertDialogBody p={alertSectionsPadding}>
+            <Text fontSize="1.3rem" color={descriptionTextColor}>
+              You&apos;ve selected to delete your
+            </Text>
+            <HStack mb={4}>
+              <Code
+                backgroundColor="brand.gray.600"
+                fontSize="1.3rem"
+                color="#ff5a72"
+              >
+                {ticker}
+              </Code>
+              <Text fontSize="1.3rem" color={descriptionTextColor}>
+                trade, on
+              </Text>
+              <Code
+                backgroundColor="brand.gray.600"
+                fontSize="1.3rem"
+                color="#ff5a72"
+              >
+                {date}.
+              </Code>
+            </HStack>
+            <Text fontSize="1.3rem" color={descriptionTextColor}>
+              Are you sure you want to delete this trade?
+            </Text>
+          </AlertDialogBody>
+          <AlertDialogFooter p={alertSectionsPadding}>
+            <Button ref={cancelRef} onClick={onAlertClose}>
+              No
+            </Button>
+            <Button
+              isLoading={mutation.isLoading}
+              onClick={() => {
+                mutation.mutate(rowToDelete);
+              }}
+              colorScheme="red"
+              ml={3}
+            >
+              Yes
+            </Button>
+          </AlertDialogFooter>
+        </>
+      )}
     </>
   );
 };
