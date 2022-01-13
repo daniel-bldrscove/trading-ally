@@ -123,3 +123,4 @@ dist
 
 # Database
 .faunarc
+.vscode/settings.json
