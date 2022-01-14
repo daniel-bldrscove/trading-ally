@@ -31,7 +31,7 @@ export const DefaultPreSubmissionSummary = (): JSX.Element => {
               'MM/dd/yyyy',
             )} at ${execTime}. Ready to submit?`
           : `You sold ${qty} shares of ${ticker} at $${price} / share, on ${format(
-              Date.parse(date),
+              new Date(date.replace(/-/g, '/')),
               'MM/dd/yyyy',
             )} at ${execTime}. Ready to submit?`}
       </FeedbackText>
