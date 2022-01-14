@@ -2,6 +2,7 @@
 import { useCallback } from 'react';
 import {
   Box,
+  Text,
   Table,
   Thead,
   Tbody,
@@ -99,7 +100,6 @@ export const DataTable = <T extends Record<string, unknown>>({
       overflow="hidden"
     >
       <Box h="sm" overflow="auto" sx={scrollStyles}>
-        <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
         <Table
           {...getTableProps()}
           size="sm"
@@ -177,6 +177,7 @@ export const DataTable = <T extends Record<string, unknown>>({
             })}
           </Tbody>
         </Table>
+        <Text m={4}>Selected Rows: {Object.keys(selectedRowIds).length}</Text>
       </Box>
     </Box>
   );

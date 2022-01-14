@@ -21,11 +21,11 @@ export const App: React.FC = function () {
             pt={navbarHeight}
             direction="column"
             justify="space-between"
-            height={'calc(100vh - 7rem)'}
+            minHeight={['auto', 'auto', 'calc(100vh - 7rem)']}
           >
             <Layout />
-            <Footer />
           </Flex>
+          <Footer />
         </Box>
       </ChakraProvider>
       <ReactQueryDevtools initialIsOpen={false} />

@@ -22,6 +22,7 @@ export const LayoutWrapper = ({
       position="relative"
       display="block"
       minHeight="full"
+      flexGrow={1}
       {...props}
     >
       {children}
