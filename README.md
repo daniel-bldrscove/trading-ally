@@ -3,7 +3,22 @@
 ## Project Status
 This project is currently in development. Users can manually log a trade through the LogTrade component. A collection of all logged trades appears under the Trade History section, allowing users to sort trades by column, edit trades, and delete trades. Functionality for multi-selection to delete multiple trades is currently in progress. Functionality to view more specific user performance through a stat component is also in progress.
 
-Live example: [https://tradingally.netlify.app](https://tradingally.netlify.app/)
+Live example: 
+<a href="https://tradingally.netlify.app/" target="_blank">https://tradingally.netlify.app/</a>
+
+## Technologies
+
+This project is created with: 
+-   React 17.0
+-   Chakra UI 1.7
+-   Netlify functions 0.10.0
+-   Netlify CLI 8.8
+-   Typescript 4.5
+-   Fauna DB 4.4
+-   Formik 2.2
+-   React Query 3.34
+-   React Table 7.7
+-   Yup 0.32
 
 ## Set up & Installation
 
