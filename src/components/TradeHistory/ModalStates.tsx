@@ -32,7 +32,7 @@ export const ModalStates = ({
     ts: 0,
   });
 
-  // hook helpers for modal/alert states
+  // chakraUI hook helpers for modal/alert states
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,
