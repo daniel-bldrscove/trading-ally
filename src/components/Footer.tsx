@@ -40,11 +40,11 @@ const Footer: React.FC = () => {
           >
             Designed & built by{' '}
             <a
-              href="https://www.bldrscove.com/"
+              href="https://edwindanlopez.com/"
               target="_blank"
               rel="noreferrer"
             >
-              BldrsCove
+              Edwin Dan Lopez
             </a>
           </Text>
         </Stack>
