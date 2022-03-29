@@ -8,11 +8,11 @@ export interface ModalStatesProps extends Record<string, unknown> {
   onAlertOpen: () => void;
   onModalClose: () => void;
   onAlertClose: () => void;
-  passDataToModalContent: (data: Record<string, unknown> & DataRow) => void;
-  rowData: DataRow;
+  passDataToModalContent: (data: Record<string, unknown> & Row) => void;
+  rowData: Row;
 }
 
-export type DataRow = {
+export type Row = {
   data: {
     date: string;
     execTime: string;
@@ -32,19 +32,10 @@ export type DataRow = {
   ts: number;
 };
 
-export type ColumnFormat = {
-  Header: string;
-  accessor: string;
-  id: string;
-  disableSortBy?: boolean;
+export type HistoryTableProps = {
+  columns: Column<Row>[];
+  data: Row[];
 };
-
-export interface TableProps<T extends Record<string, unknown>> {
-  data: T[] & DataRow[];
-  columns: Column<T>[] & ColumnFormat[];
-  id?: string;
-  overflow?: string;
-}
 
 export type RowDataProps = {
   getToggleRowSelectedProps?: UseRowSelectRowProps<
@@ -79,6 +70,6 @@ export interface SelectedRowProps {
 export type RowMenuRefType = Ref<HTMLDivElement>;
 
 export interface RowMenuProps {
-  rowProps: Record<string, unknown>;
+  rowTableData: Row;
   rest?: Record<string, unknown>;
 }

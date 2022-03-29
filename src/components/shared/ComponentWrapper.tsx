@@ -1,18 +1,19 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 
-export const ComponentWrapper = ({
+type ComponentWrapperProps = {
+  id?: string;
+  children: React.ReactNode;
+};
+
+export default function ComponentWrapper({
   id,
   children,
   ...props
-}: {
-  id?: string;
-  name?: string;
-  children: React.ReactNode;
-}) => {
+}: ComponentWrapperProps): JSX.Element {
   return (
     <Box p={[4, 0]} id={id} {...props}>
       {children}
     </Box>
   );
-};
+}

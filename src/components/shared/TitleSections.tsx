@@ -1,17 +1,16 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from 'react';
+import * as React from 'react';
 import { Flex, Heading } from '@chakra-ui/react';
 
-interface Props {
-  title: string;
-}
+type TitleSectionProps = {
+  children: React.ReactNode;
+};
 
-export const TitleSections = ({ title }: Props): JSX.Element => {
+export default function TitleSection({ children }: TitleSectionProps) {
   return (
     <Flex>
       <Heading as="h2" mt="1rem" mb="2rem" w="full">
-        {title}
+        {children}
       </Heading>
     </Flex>
   );
-};
+}

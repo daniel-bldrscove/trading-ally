@@ -1,30 +1,36 @@
-import { useContext, useState } from 'react';
+import * as React from 'react';
 import {
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  Button,
+  Text,
   Code,
+  Button,
   HStack,
   Heading,
   ModalCloseButton,
-  Text,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
   useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react';
-import {
-  ModalStatesContext,
-  LeastDestructiveBtnRefContext,
-} from '../../utils/createContext';
+import { useRowDataContext } from './RowDataProvider';
+import { LeastDestructiveBtnRefContext } from '../../utils/createContext';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 
-export const CustomAlertContent = (): JSX.Element => {
+export default function DeleteRowData(): JSX.Element {
   const queryClient = useQueryClient();
-  const [err, setErr] = useState(null);
-  const { onAlertClose, rowData } = useContext(ModalStatesContext) || {};
+  const [err, setErr] = React.useState(null);
+  // const { rowData } = React.useContext(ModalStatesContext) || {};
+  const context = useRowDataContext();
 
-  if (!onAlertClose || !rowData) {
-    throw new Error('ModalStatesContext not loaded!');
+  const { onClose: onAlertClose } = useDisclosure();
+  const { rowData } = context;
+  const dataInRowData = Boolean('data' in rowData);
+
+  if (!dataInRowData) {
+    throw new Error(
+      'rowData was not passed through context. Please check context import.',
+    );
   }
 
   const {
@@ -60,7 +66,7 @@ export const CustomAlertContent = (): JSX.Element => {
     },
   );
 
-  const cancelRef = useContext(LeastDestructiveBtnRefContext);
+  const cancelRef = React.useContext(LeastDestructiveBtnRefContext);
   const descriptionTextColor = useColorModeValue(
     'brand.gray.400',
     'brand.gray.50',
@@ -141,4 +147,4 @@ export const CustomAlertContent = (): JSX.Element => {
       )}
     </>
   );
-};
+}

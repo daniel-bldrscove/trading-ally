@@ -3,7 +3,7 @@ import { Flex, ButtonGroup } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import { TradeDataPropVals } from '../../@types/log-trade-types';
 import { ModalStatesContext } from '../../utils/createContext';
-import { useMutateTradeData } from './useMutateTradeData';
+import { useMutateTradeData } from '../../utils/useMutateTradeData';
 
 import { SecondaryButton } from '../shared/SecondaryButton';
 import { PrimaryButton } from '../shared/PrimaryButton';

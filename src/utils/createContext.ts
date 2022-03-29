@@ -7,6 +7,8 @@ import {
 // pass modal/alert states and rowData
 export const ModalStatesContext = createContext<ModalStatesProps | null>(null);
 
-// pass the least desctructive HTMLButtonElement to the alert parent
+// TODO: move this into dialog provider
+
+// pass the least destructive HTMLButtonElement to the alert parent
 export const LeastDestructiveBtnRefContext =
   createContext<LeastDestructiveButton | null>(null);

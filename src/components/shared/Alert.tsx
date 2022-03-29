@@ -1,28 +1,26 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useRef, useContext } from 'react';
+import { useRef } from 'react';
 import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogOverlay,
 } from '@chakra-ui/react';
-import {
-  ModalStatesContext,
-  LeastDestructiveBtnRefContext,
-} from '../../utils/createContext';
+import { LeastDestructiveBtnRefContext } from '../../utils/createContext';
+import { useDialogContext } from '../TradeHistory/DialogProvider';
 
 interface AlertProps {
   children: React.ReactNode;
 }
 
 export const Alert = ({ children }: AlertProps): JSX.Element => {
-  const context = useContext(ModalStatesContext);
+  const { isAlertOpen, onAlertClose } = useDialogContext();
   const cancelRef = useRef<HTMLButtonElement>(null);
   return (
     <AlertDialog
       motionPreset="slideInBottom"
       leastDestructiveRef={cancelRef}
-      onClose={context!.onAlertClose}
-      isOpen={context!.isAlertOpen}
+      isOpen={isAlertOpen}
+      onClose={onAlertClose}
       isCentered
     >
       <AlertDialogOverlay />

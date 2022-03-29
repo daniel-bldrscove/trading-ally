@@ -1,60 +1,90 @@
-import { useMemo } from 'react';
-import { DataTable } from './DataTable';
+import * as React from 'react';
+import HistoryTable from './HistoryTable';
+import { Box, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
-import { columnRowFormating } from './columnRowFormating';
-import { ComponentWrapper } from '../shared/ComponentWrapper';
-import { TitleSections } from '../shared/TitleSections';
-import { ModalStates } from './ModalStates';
+import { columnRowFormatting } from './columnRowFormatting';
+import ComponentWrapper from '../shared/ComponentWrapper';
+import { useScrollbarAppearance } from '../../utils/scrollbarAppearance';
+import { Modal } from '../shared/Modal';
+import { Alert } from '../shared/Alert';
+import EditRowData from './EditRowData';
+import DeleteRowData from './DeleteRowData';
+import RowDataProvider from './RowDataProvider';
+import DialogProvider from './DialogProvider';
 
-// promise fetch function for useQuery
 const fetchTrades = async () => {
-  const res = await fetch('/api/read-all-trades', {
+  const response = await fetch('/api/read-all-trades', {
     method: 'GET',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
   });
-  if (!res.ok) {
-    throw new Error(res.statusText);
+  const res = await response.json();
+  if (!response.ok) {
+    console.log('Fetch Error: ', res.error);
+    console.log('Res statusText: ', res.statusText);
+    return Promise.reject(res.error);
   }
-  return res.json();
+  // console.log('Logging fetch response: ', response);
+  return res.data;
 };
 
-export const TradeHistory = (): JSX.Element => {
-  // query data
-  const { isLoading, isError, data, error } = useQuery('trades', fetchTrades);
+export default function TradeHistory(): JSX.Element {
+  const tableBg = useColorModeValue('white', 'brand.gray.800');
+  const { scrollbarLgtMd, scrollbarDrkMd } = useScrollbarAppearance();
+  const handleScrollStyles = useColorModeValue(
+    { ...scrollbarLgtMd },
+    { ...scrollbarDrkMd },
+  );
+  const scrollStyles = {
+    ...handleScrollStyles,
+  };
 
-  // memoize data
-  const cachedData = useMemo(() => {
-    if (!isLoading && !isError) {
-      // return the nested data array
-      return data.data;
-    }
-    return null;
-  }, [isLoading, isError, data]);
+  // query trades from DB
+  const status = useQuery('trades', fetchTrades);
 
-  // memoize columns
-  const columns = useMemo(() => columnRowFormating, []);
+  // memoize data for table
+  const cachedData = React.useMemo(() => status.data, [status.data]);
 
-  // TODO: move into main render. Integrate spinner
-  if (isLoading) {
+  // memoize columns for table
+  const columns = React.useMemo(() => columnRowFormatting, []);
+
+  // render based on status
+  if (status.isLoading) {
     return <span>Loading...</span>;
-  } else if (isError && error instanceof Error) {
-    console.log(error);
-    return <span>Error: {error.message}</span>;
+  } else if (status.isIdle) {
+    return <span>Idle...</span>;
+  } else if (status.isError) {
+    console.log('There was an error fetching trades: ', status.error);
+    return <span>Error: {status.error}</span>;
   }
 
+  // render table
   return (
     <ComponentWrapper id="trade-history-container">
-      <TitleSections title="Trade History" />
-      <ModalStates>
-        <DataTable
-          columns={columns}
-          data={cachedData}
-          id="trade-history-table"
-        />
-      </ModalStates>
+      <DialogProvider>
+        <RowDataProvider>
+          <Modal>
+            <EditRowData />
+          </Modal>
+          <Alert>
+            <DeleteRowData />
+          </Alert>
+          <Box
+            maxW="full"
+            h="sm"
+            bg={tableBg}
+            borderRadius="md"
+            overflow="hidden"
+          >
+            <Box h="sm" overflow="auto" sx={scrollStyles}>
+              {status.data && (
+                <HistoryTable columns={columns} data={cachedData} />
+              )}
+            </Box>
+          </Box>
+        </RowDataProvider>
+      </DialogProvider>
     </ComponentWrapper>
   );
-};
+}

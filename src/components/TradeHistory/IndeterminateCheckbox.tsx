@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, Ref } from 'react';
 import { ClickableCheckboxProps } from '../../@types/trade-history-types';
 
-// Redecalare forwardRef in order to use generics in ref type
+// redeclare forwardRef in order to use generics in ref type
 declare module 'react' {
   function forwardRef<T, P = Record<string, unknown>>(
     render: (props: P, ref: React.Ref<T>) => React.ReactElement | null,

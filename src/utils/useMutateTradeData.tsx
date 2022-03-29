@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { useSubmissionResult } from '../../utils/submissionResultHelper';
+import { useSubmissionResult } from './submissionResultHelper';
 import { useFormikContext } from 'formik';
-import { TradeDataPropVals } from '../../@types/log-trade-types';
-import { ModalStatesContext } from '../../utils/createContext';
-import { useFormFilledState } from '../../utils/logTradeFormProgressionHelper';
+import { TradeDataPropVals } from '../@types/log-trade-types';
+import { ModalStatesContext } from './createContext';
+import { useFormFilledState } from './logTradeFormProgressionHelper';
 
 export const useMutateTradeData = (): {
   handleSubmit: (updatedFieldData: Record<string, unknown>) => void;

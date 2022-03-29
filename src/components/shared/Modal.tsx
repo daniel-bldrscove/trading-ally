@@ -1,25 +1,23 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useContext } from 'react';
 import {
   Modal as CenterModal,
   ModalOverlay,
   ModalContent,
 } from '@chakra-ui/react';
-import { ModalStatesContext } from '../../utils/createContext';
+import { useDialogContext } from '../TradeHistory/DialogProvider';
 
 interface ModalData {
   children: React.ReactNode;
 }
 
 export const Modal = ({ children }: ModalData): JSX.Element => {
-  const context = useContext(ModalStatesContext);
+  const { isModalOpen, onModalClose } = useDialogContext();
   return (
     <CenterModal
       size="4xl"
       motionPreset="slideInBottom"
       scrollBehavior="outside"
-      onClose={context!.onModalClose}
-      isOpen={context!.isModalOpen}
+      isOpen={isModalOpen}
+      onClose={onModalClose}
     >
       <ModalOverlay />
       <ModalContent>{children}</ModalContent>

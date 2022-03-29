@@ -1,7 +1,7 @@
 import { LogTradeProps } from '../../@types/log-trade-types';
 import { RenderFormik } from './RenderFormik';
 import { SubmissionResultProvider } from '../../utils/submissionResultHelper';
-import { ComponentWrapper } from '../shared/ComponentWrapper';
+import ComponentWrapper from '../shared/ComponentWrapper';
 
 export const LogTrade = ({
   formConfig,
