@@ -1,6 +1,6 @@
 import * as React from 'react';
 import HistoryTable from './HistoryTable';
-import { Box, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Box, useColorModeValue } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { columnRowFormatting } from './columnRowFormatting';
 import ComponentWrapper from '../shared/ComponentWrapper';

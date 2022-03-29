@@ -2,7 +2,6 @@ import { useField } from 'formik';
 import { SmLabelWithTooltip } from '../SmLabelWithTooltip';
 import { FormControl, Input } from '@chakra-ui/react';
 import { FieldErrorFeedback } from './FieldErrorFeedback';
-import { string } from 'yup/lib/locale';
 
 interface InputFieldProps {
   w: string | string[];
@@ -23,8 +22,6 @@ export const InputField = ({
   ...props
 }: InputFieldProps): JSX.Element => {
   const [field, meta] = useField(props);
-  console.log('meta error: ', meta.error);
-  console.log('typeof meta error: ', meta.error);
 
   return (
     <FormControl isInvalid={meta.touched && !!meta.error}>
