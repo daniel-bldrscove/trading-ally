@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Box, ChakraProvider, Flex } from '@chakra-ui/react';
+import {
+  Box,
+  ChakraProvider,
+  Flex,
+  FormControl,
+  Input,
+} from '@chakra-ui/react';
 import Nav from './components/Nav';
 import Layout from './components/Layout';
 import Footer from './components/Footer';

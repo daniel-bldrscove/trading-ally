@@ -47,8 +47,7 @@ export const FormFields = ({
     return () => setFieldValues(initialValues);
 
     // only pre-fill values once on first render
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [preFillValues, setFieldValues, setTouched]);
 
   return (
     <FormikForm>

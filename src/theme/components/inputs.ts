@@ -16,7 +16,7 @@ const customInputStyles = {
       },
     },
     // uses same base styles as variant 'outline'
-    'single-baseline': (props: ThemeConfig): Record<string, unknown> => ({
+    'single-baseline': (props: ThemeConfig) => ({
       field: {
         borderBottom: '1px solid',
         borderRadius: '0px',

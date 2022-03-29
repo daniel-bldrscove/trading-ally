@@ -27,7 +27,7 @@ export const NumInputField = ({
   const { setValue } = helpers;
 
   return (
-    <FormControl isInvalid={meta.touched && meta.error}>
+    <FormControl isInvalid={meta.touched && !!meta.error}>
       <SmLabelWithTooltip
         htmlFor={field.name}
         toolTipDescription={toolTipDescription}
