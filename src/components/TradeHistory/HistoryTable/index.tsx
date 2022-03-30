@@ -13,6 +13,7 @@ export default function HistoryTable({
 }: HistoryTableProps): JSX.Element {
   // make the row id the same as the fauna ref id
   const getRowId = useCallback((row) => row.ref['@ref'].id, []);
+
   const tableStripes = useColorModeValue('brand.tableLight', 'brand.gray');
 
   const instance = useTable(

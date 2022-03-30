@@ -14,7 +14,7 @@ import { useDialogContext } from './DialogProvider';
 export const RowMenu = ({
   rowTableData,
   ...rest
-}: RowMenuProps): JSX.Element => {
+}: RowMenuProps): JSX.Element | null => {
   const { onModalOpen, onAlertOpen } = useDialogContext();
   const context = useRowDataContext();
   const { setRowData } = context;
@@ -28,36 +28,34 @@ export const RowMenu = ({
     ref.current = rowTableData;
   }, [rowTableData]);
 
-  const handleOpen = (modalType: string) => {
-    if (ref.current) {
-      console.log('Row Menu - ref.current: ', ref.current);
-      if (modalType === 'modal') {
-        onModalOpen();
-      } else if (modalType === 'alert') {
-        onAlertOpen();
-      }
+  if (ref.current) {
+    return (
+      <Menu isLazy {...rest}>
+        <MenuButton
+          as={IconButton}
+          aria-label="Options"
+          icon={<FiMoreHorizontal />}
+          variant="outline"
+        />
+        <MenuList>
+          <MenuItem
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            onClick={() => (onModalOpen(), setRowData(ref.current!))}
+            icon={<FiEdit2 />}
+          >
+            Edit
+          </MenuItem>
+          <MenuItem
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            onClick={() => (onAlertOpen(), setRowData(ref.current!))}
+            icon={<FiTrash />}
+          >
+            Delete
+          </MenuItem>
+        </MenuList>
+      </Menu>
+    );
+  }
 
-      // pass row data to dialog onOpen
-      setRowData(ref.current);
-    }
-  };
-
-  return (
-    <Menu isLazy {...rest}>
-      <MenuButton
-        as={IconButton}
-        aria-label="Options"
-        icon={<FiMoreHorizontal />}
-        variant="outline"
-      />
-      <MenuList>
-        <MenuItem onClick={() => handleOpen('modal')} icon={<FiEdit2 />}>
-          Edit
-        </MenuItem>
-        <MenuItem onClick={() => handleOpen('alert')} icon={<FiTrash />}>
-          Delete
-        </MenuItem>
-      </MenuList>
-    </Menu>
-  );
+  return null;
 };
