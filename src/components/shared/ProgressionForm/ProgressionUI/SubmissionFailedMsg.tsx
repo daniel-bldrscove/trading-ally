@@ -1,14 +1,18 @@
-import { useContext } from 'react';
 import { Flex, Stack, Button } from '@chakra-ui/react';
-import { useFormFilledState } from '../../../utils/logTradeFormProgressionHelper';
-import { useSubmissionResult } from '../../../utils/submissionResultHelper';
+// import { useFormFilledState } from '../../../utils/logTradeFormProgressionHelper';
+// import { useSubmissionResult } from '../../../utils/submissionResultHelper';
 import { FeedbackText } from './FeedbackText';
-import { ModalStatesContext } from '../../../utils/createContext';
+// import { ModalStatesContext } from '../../../utils/createContext';
 
 export const SubmissionFailedMsg = (): JSX.Element => {
-  const { onModalClose } = useContext(ModalStatesContext) || {};
-  const { cancelForm } = useFormFilledState();
-  const { submittedResult } = useSubmissionResult();
+  // TODO: figure out logic when user closes modal
+  // const { onModalClose } = useContext(ModalStatesContext) || {};
+
+  // figure out logic when user cancels form
+  // TODO: const { cancelForm } = useFormFilledState();
+
+  // TODO: figure out submission results
+  // const { submittedResult } = useSubmissionResult();
 
   return (
     <Flex
@@ -17,7 +21,9 @@ export const SubmissionFailedMsg = (): JSX.Element => {
       align="center"
       justify="left"
     >
-      {submittedResult.submittedFromModal ? (
+      <h1>Encountered an error</h1>
+      <h4>Figuring out submission process</h4>
+      {/* {submittedResult.submittedFromModal ? (
         <>
           <Stack mb={4}>
             <FeedbackText fontSize="1.3rem">Submission failed 😕.</FeedbackText>
@@ -32,7 +38,7 @@ export const SubmissionFailedMsg = (): JSX.Element => {
           <Button
             minWidth="auto"
             type="button"
-            onClick={onModalClose}
+            // TODO: onClick={onModalClose}
             colorScheme="red"
           >
             Close &amp; Try Again
@@ -46,13 +52,13 @@ export const SubmissionFailedMsg = (): JSX.Element => {
           <Button
             minWidth="auto"
             type="button"
-            onClick={cancelForm}
+            // TODO: onClick={cancelForm}
             colorScheme="red"
           >
             Reset &amp; Try Again
           </Button>
         </>
-      )}
+      )} */}
     </Flex>
   );
 };

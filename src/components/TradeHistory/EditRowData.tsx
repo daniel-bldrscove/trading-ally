@@ -7,8 +7,8 @@ import {
 } from '@chakra-ui/react';
 import { useDialogContext } from './DialogProvider';
 import { useRowDataContext } from './RowDataProvider';
-import { LogTrade } from '../LogTrade';
-import { CustomPreSubmissionSummary } from './CustomPreSubmissionSummary';
+// import { LogTrade } from '../LogTrade';
+// import { CustomPreSubmissionSummary } from './CustomPreSubmissionSummary';
 
 export default function EditRowData(): JSX.Element {
   const modalSectionsPadding = [2, 4, 6];
@@ -27,7 +27,7 @@ export default function EditRowData(): JSX.Element {
       </ModalHeader>
       <ModalCloseButton onClick={onModalClose} />
       <ModalBody p={modalSectionsPadding}>
-        <LogTrade
+        {/* <LogTrade
           mb={['10', '6']}
           preFillValues={{ ...ctxData }}
           gridTemplateCols={[
@@ -40,7 +40,7 @@ export default function EditRowData(): JSX.Element {
           heading={`Edit the fields below, then click submit to update.`}
         >
           <CustomPreSubmissionSummary initialValues={ctxData} />
-        </LogTrade>
+        </LogTrade> */}
       </ModalBody>
     </Box>
   );

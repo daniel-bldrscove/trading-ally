@@ -3,11 +3,11 @@ import { Flex, ButtonGroup } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import { TradeDataPropVals } from '../../@types/log-trade-types';
 import { ModalStatesContext } from '../../utils/createContext';
-import { useMutateTradeData } from '../../utils/useMutateTradeData';
+// import { useMutateTradeData } from '../../utils/useMutateTradeData';
 
 import { SecondaryButton } from '../shared/SecondaryButton';
 import { PrimaryButton } from '../shared/PrimaryButton';
-import { FeedbackText } from '../LogTrade/feedback/FeedbackText';
+// import { FeedbackText } from '../LogTrade/feedback/FeedbackText';
 
 const arraysAreEqual = (a: unknown[], b: unknown[]) => {
   return Boolean(
@@ -57,23 +57,23 @@ export const CustomPreSubmissionSummary = ({
 
   const { ref } = rowData || {};
 
-  const updatedFieldData = {
+  const data = {
     tradeCollection: ref?.['@ref'].collection,
     tradeId: ref?.['@ref'].id,
     data: valuesToSubmit.current,
   };
 
   // reset state and close modal on successful update
-  const { handleSubmit } = useMutateTradeData();
+  // const { handleSubmit } = useMutateTradeData();
 
   return (
     <Flex
-      className="default-presubmission"
+      className="default-preSubmission"
       wrap={['wrap', 'nowrap']}
       align="center"
       justify="center"
     >
-      <FeedbackText>Ready to update your trade?</FeedbackText>
+      {/* <FeedbackText>Ready to update your trade?</FeedbackText> */}
       <ButtonGroup isAttached variant="filled">
         <SecondaryButton type="button" onClick={onModalClose}>
           Cancel
@@ -83,7 +83,12 @@ export const CustomPreSubmissionSummary = ({
           type="button"
           disabled={notUpdated}
           isLoading={isSubmitting}
-          onClick={() => handleSubmit(updatedFieldData)}
+          // onClick={() => handleSubmit(data)}
+          onClick={() =>
+            console.log(
+              'Need to restore handleSubmit method from useMutateTradeData',
+            )
+          }
         >
           Update
         </PrimaryButton>

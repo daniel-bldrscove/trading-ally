@@ -15,12 +15,14 @@ export type LogTradeProps = {
   submitTradeDataForLog?: () => void;
   gridTemplateCols: string[];
   formConfig?: {
-    postRoute?: string;
-    invalidateQueries: string | string[];
+    route?: string;
+    queriesToInvalidate: string | string[];
   };
 };
 
-export type TradeDataPropVals = {
+export type TradeDataPropVals = FormFields;
+
+export type FormFields = {
   date: string;
   execTime: string;
   posEffect: string;
@@ -29,6 +31,38 @@ export type TradeDataPropVals = {
   side: string;
   spread: string;
   ticker: string;
+};
+
+export type ProgressionFormProps = {
+  formConfig: {
+    queriesToInvalidate: QueryStateType['queriesToInvalidate'];
+    route: QueryStateType['route'];
+  };
+  w: string;
+  mb: string[];
+  heading: string;
+  gridTemplateCols: string[];
+};
+
+export type ProviderValue = {
+  state: QueryStateType;
+  dispatch: React.Dispatch<QueryStateType>;
+};
+
+export type QueryStateType = {
+  preFillValues?: FormFields | null;
+  tempSummaryValues?: FormFields;
+  onSubmit?: (
+    fieldValues: FormFields,
+    actions: FormikHelpers<FormFields>,
+    route: string,
+    queriesToInvalidate: string | null,
+  ) => void;
+  route?: string;
+  queriesToInvalidate?: string | null;
+  formStatus: string;
+  success?: boolean | null;
+  error?: boolean | null;
 };
 
 export type FormFieldsProps = {
@@ -42,7 +76,7 @@ export type FormFieldsProps = {
 
 export interface SplitNumCounterFieldProps {
   w: string | string[];
-  id: string;
+  id?: string;
   name: string;
   step?: number;
   size?: string;
@@ -55,7 +89,7 @@ export interface SplitNumCounterFieldProps {
 
 export interface SelectFieldProps {
   w: string | string[];
-  id: string;
+  id?: string;
   name: string;
   size?: string;
   type: string;

@@ -4,7 +4,7 @@ import { Box, useColorModeValue } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { columnRowFormatting } from './columnRowFormatting';
 import ComponentWrapper from '../shared/ComponentWrapper';
-import { useScrollbarAppearance } from '../../utils/scrollbarAppearance';
+import { useScrollbarAppearance } from '../../utils/useScrollbarAppearance';
 import { Modal } from '../shared/Modal';
 import { Alert } from '../shared/Alert';
 import EditRowData from './EditRowData';
