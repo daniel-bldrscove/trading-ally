@@ -6,40 +6,18 @@ import { SecondaryButton } from '../../../shared/SecondaryButton';
 import { PrimaryButton } from '../../../shared/PrimaryButton';
 import { FeedbackText } from './FeedbackText';
 import { FormFields } from '../../../../@types/log-trade-types';
+import { useFormikContext, FormikContextType } from 'formik';
+
+type FormikContextSummaryTypes = {
+  values: FormFields;
+  submitForm: unknown;
+  isSubmitting: unknown;
+};
 
 export const DefaultPreSubmissionSummary = () => {
-  const {
-    state: { tempSummaryValues },
-    dispatch,
-  } = useQueryContext();
-
-  const fieldValues = React.useRef<FormFields>({
-    date: '',
-    execTime: '',
-    posEffect: '',
-    price: 0,
-    qty: 1,
-    side: '',
-    spread: '',
-    ticker: '',
-  });
-
-  React.useEffect(() => {
-    if (!tempSummaryValues) {
-      return;
-    }
-
-    console.log('incoming tempSummaryValues', tempSummaryValues);
-
-    fieldValues.current = tempSummaryValues;
-  }, [tempSummaryValues]);
-
-  console.log(
-    'Values passed to DefaultPreSubmissionSummary: ',
-    fieldValues.current,
-  );
-
-  const { date, execTime, price, qty, side, ticker } = fieldValues.current;
+  const { dispatch } = useQueryContext();
+  const { values, submitForm, isSubmitting } = useFormikContext<FormFields>();
+  const { date, execTime, price, qty, side, ticker } = values;
 
   return (
     <Flex
@@ -75,13 +53,9 @@ export const DefaultPreSubmissionSummary = () => {
         </SecondaryButton>
         <PrimaryButton
           w={32}
-          type="button"
-          // TODO: isLoading={isSubmitting}
-          onClick={() =>
-            dispatch({
-              formStatus: 'submitting',
-            })
-          }
+          type="submit"
+          isLoading={isSubmitting}
+          onClick={() => submitForm()}
         >
           Submit
         </PrimaryButton>

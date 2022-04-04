@@ -2,7 +2,7 @@ import { useQueryContext } from '../QueryProvider';
 import { DefaultPreSubmissionSummary } from './DefaultPreSubmissionSummary';
 import { FeedbackContainer } from './FeedbackContainer';
 // import { SubmissionFailedMsg } from './SubmissionFailedMsg';
-// import { SubmissionSuccessMsg } from './SubmissionSuccessMsg';
+import { SubmissionSuccessMsg } from './SubmissionSuccessMsg';
 
 export default function ProgressionUI() {
   const {
@@ -19,12 +19,12 @@ export default function ProgressionUI() {
         {formStatus === 'readyToSubmit' ? (
           <DefaultPreSubmissionSummary />
         ) : formStatus === 'submitted' && success ? (
+          // <SubmissionSuccessMsg />
           <h1>Submission Succeeded </h1>
-        ) : // <SubmissionSuccessMsg />
-        formStatus === 'submitted' && error ? (
-          <h1>Submission Succeeded </h1>
-        ) : (
+        ) : formStatus === 'submitted' && error ? (
           // <SubmissionFailedMsg />
+          <h1>Submission failed </h1>
+        ) : (
           formStatus === 'submitting' && <h1>Submitting in progress...</h1>
         )}
       </FeedbackContainer>

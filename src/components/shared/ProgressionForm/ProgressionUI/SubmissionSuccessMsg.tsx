@@ -4,8 +4,14 @@ import { Flex, Heading, useColorModeValue } from '@chakra-ui/react';
 import { FeedbackText } from './FeedbackText';
 
 export const SubmissionSuccessMsg = (): JSX.Element => {
-  // const { cancelForm } = useFormFilledState();
-  // const { submittedResult } = useSubmissionResult();
+  // TODO: check to see if Formik provides a hook letting you know if submission success / fail
+  // fade out the ProgressionUI
+  // handle dispatch success - display success message
+  // return {
+  //   formStatus: 'submitted',
+  //   success: true,
+  //   error: null,
+  // };
   const headingColor = useColorModeValue('brand.green.700', 'brand.green.400');
 
   // useEffect(() => {

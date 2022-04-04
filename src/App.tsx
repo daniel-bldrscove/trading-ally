@@ -5,7 +5,6 @@ import { Box, ChakraProvider, Flex } from '@chakra-ui/react';
 import Nav from './components/Nav';
 import Layout from './components/Layout';
 import Footer from './components/Footer';
-// import { LogTrade } from './components/LogTrade';
 import { LayoutWrapper } from './components/shared/LayoutWrapper';
 import ProgressionForm from './components/shared/ProgressionForm';
 import TitleSection from './components/shared/TitleSections';
@@ -13,8 +12,9 @@ import TradeHistory from './components/TradeHistory';
 import theme from './theme';
 import './styles.css';
 
-const formConfig = {
+const submissionConfig = {
   queriesToInvalidate: 'trades',
+  preFillValues: null,
   route: '/api/create-log-trade',
 };
 
@@ -36,19 +36,7 @@ export const App: React.FC = function () {
             <Layout>
               <LayoutWrapper mt="2rem" mb="5rem">
                 <TitleSection>Progression Form</TitleSection>
-                <ProgressionForm
-                  w="full"
-                  mb={['0']}
-                  heading="Log your latest trade"
-                  formConfig={formConfig}
-                  gridTemplateCols={[
-                    'repeat(2,1fr)',
-                    'repeat(2,1fr)',
-                    'repeat(3,1fr)',
-                    'repeat(4,1fr)',
-                    'repeat(8,1fr)',
-                  ]}
-                />
+                <ProgressionForm submissionConfig={submissionConfig} />
                 <TitleSection>Log Trade</TitleSection>
                 <TitleSection>Trade History</TitleSection>
                 <TradeHistory />

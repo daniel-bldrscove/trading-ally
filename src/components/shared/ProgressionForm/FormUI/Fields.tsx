@@ -11,19 +11,25 @@ import {
 } from '../../../../@types/log-trade-types';
 
 type FieldsPropTypes = {
-  w: string;
-  mb: string[];
-  heading: string;
-  gridTemplateCols: string[];
+  w?: string;
+  mb?: string[];
+  heading?: string;
+  gridTemplateCols?: string[];
   formikProps: FormikProps<TradeDataPropVals>;
 };
 
 export default function Fields({
   formikProps,
-  w,
-  mb,
-  heading,
-  gridTemplateCols,
+  w = 'full',
+  mb = ['0'],
+  heading = 'Pass this heading as a prop',
+  gridTemplateCols = [
+    'repeat(2,1fr)',
+    'repeat(2,1fr)',
+    'repeat(3,1fr)',
+    'repeat(4,1fr)',
+    'repeat(8,1fr)',
+  ],
 }: FieldsPropTypes) {
   const {
     state: { formStatus },

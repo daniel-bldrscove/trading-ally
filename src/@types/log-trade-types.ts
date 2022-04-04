@@ -14,7 +14,7 @@ export type LogTradeProps = {
   preFillValues?: TradeDataPropVals;
   submitTradeDataForLog?: () => void;
   gridTemplateCols: string[];
-  formConfig?: {
+  submissionConfig?: {
     route?: string;
     queriesToInvalidate: string | string[];
   };
@@ -34,14 +34,15 @@ export type FormFields = {
 };
 
 export type ProgressionFormProps = {
-  formConfig: {
+  submissionConfig: {
     queriesToInvalidate: QueryStateType['queriesToInvalidate'];
+    preFillValues: FormFields | null;
     route: QueryStateType['route'];
   };
-  w: string;
-  mb: string[];
-  heading: string;
-  gridTemplateCols: string[];
+  w?: string;
+  mb?: string[];
+  heading?: string;
+  gridTemplateCols?: string[];
 };
 
 export type ProviderValue = {
@@ -59,7 +60,7 @@ export type QueryStateType = {
     queriesToInvalidate: string | null,
   ) => void;
   route?: string;
-  queriesToInvalidate?: string | null;
+  queriesToInvalidate?: string;
   formStatus: string;
   success?: boolean | null;
   error?: boolean | null;
@@ -71,7 +72,7 @@ export type FormFieldsProps = {
     values: SetStateAction<TradeDataPropVals>,
     shouldValidate?: boolean | undefined,
   ) => void;
-  wrapperProps: Omit<LogTradeProps, 'formConfig' | 'children'>;
+  wrapperProps: Omit<LogTradeProps, 'submissionConfig' | 'children'>;
 };
 
 export interface SplitNumCounterFieldProps {
@@ -103,7 +104,7 @@ export interface SelectFieldProps {
 export type HandleSubmitFunctionProps = (
   fieldValues: FormikValues,
   actions: FormikHelpers<TradeDataPropVals>,
-  formConfig: LogTradeProps['formConfig'],
+  submissionConfig: LogTradeProps['submissionConfig'],
 ) => void;
 
 export type SubmittedResult = {

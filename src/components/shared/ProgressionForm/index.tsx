@@ -1,16 +1,56 @@
+import * as React from 'react';
 import QueryProvider from './QueryProvider';
-import FormUI from './FormUI';
 import ProgressionUI from './ProgressionUI';
-import { ProgressionFormProps } from '../../../@types/log-trade-types';
+import {
+  ProgressionFormProps,
+  TradeDataPropVals,
+  FormFields,
+} from '../../../@types/log-trade-types';
+import { logTradeValidationSchema } from '../../../utils/validationSchema';
+import { Formik, FormikProps, FormikHelpers } from 'formik';
+import useMutateTradeData from '../../../utils/useMutateTradeData';
+import Fields from './FormUI/Fields';
+
+const initValues = {
+  date: '',
+  execTime: '',
+  spread: 'Stock',
+  side: '',
+  qty: 1,
+  ticker: '',
+  price: 0,
+  posEffect: '',
+};
 
 export default function ProgressionForm({
-  formConfig,
+  submissionConfig: { queriesToInvalidate, preFillValues, route },
   ...rest
 }: ProgressionFormProps) {
+  const { onSubmit } = useMutateTradeData();
+
+  if (typeof queriesToInvalidate !== 'string') {
+    throw new Error('typeof queriesToInvalidate is null or undefined');
+  } else if (typeof route !== 'string') {
+    throw new Error('typeof route is undefined');
+  }
+
   return (
-    <QueryProvider {...formConfig}>
-      <FormUI {...rest} />
-      <ProgressionUI />
+    <QueryProvider>
+      <Formik
+        initialValues={preFillValues ? preFillValues : initValues}
+        validationSchema={logTradeValidationSchema}
+        validateOnMount={true}
+        onSubmit={(values, actions) =>
+          onSubmit(values, actions, route, queriesToInvalidate)
+        }
+      >
+        {(formikProps: FormikProps<TradeDataPropVals>) => (
+          <>
+            <Fields formikProps={formikProps} {...rest} />
+            <ProgressionUI />
+          </>
+        )}
+      </Formik>
     </QueryProvider>
   );
 }
