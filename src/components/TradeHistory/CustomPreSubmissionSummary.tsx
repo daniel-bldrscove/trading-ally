@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useContext } from 'react';
-import { Flex, ButtonGroup } from '@chakra-ui/react';
+import { Flex, ButtonGroup, Text } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import { TradeDataPropVals } from '../../@types/log-trade-types';
 import { ModalStatesContext } from '../../utils/createContext';
@@ -7,7 +7,6 @@ import { ModalStatesContext } from '../../utils/createContext';
 
 import { SecondaryButton } from '../shared/SecondaryButton';
 import { PrimaryButton } from '../shared/PrimaryButton';
-// import { FeedbackText } from '../LogTrade/feedback/FeedbackText';
 
 const arraysAreEqual = (a: unknown[], b: unknown[]) => {
   return Boolean(
@@ -73,7 +72,7 @@ export const CustomPreSubmissionSummary = ({
       align="center"
       justify="center"
     >
-      {/* <FeedbackText>Ready to update your trade?</FeedbackText> */}
+      {/* <Text>Ready to update your trade?</Text> */}
       <ButtonGroup isAttached variant="filled">
         <SecondaryButton type="button" onClick={onModalClose}>
           Cancel

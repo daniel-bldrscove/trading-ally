@@ -1,25 +1,19 @@
 import * as React from 'react';
-import { FormikProps, Form, FormikErrors } from 'formik';
+import { Form, FormikErrors, useFormikContext } from 'formik';
+import { Box, Grid, Heading, useColorModeValue } from '@chakra-ui/react';
 import { InputField } from '../../../shared/form/InputField';
 import { SelectField } from '../../../shared/form/SelectField';
-import { useQueryContext } from '../QueryProvider';
 import { NumInputField } from '../../../shared/form/NumInputField';
-import { Box, Grid, Heading, useColorModeValue } from '@chakra-ui/react';
-import {
-  TradeDataPropVals,
-  FormFields,
-} from '../../../../@types/log-trade-types';
+import { FormFields } from '../../../../@types/log-trade-types';
 
 type FieldsPropTypes = {
   w?: string;
   mb?: string[];
   heading?: string;
   gridTemplateCols?: string[];
-  formikProps: FormikProps<TradeDataPropVals>;
 };
 
 export default function Fields({
-  formikProps,
   w = 'full',
   mb = ['0'],
   heading = 'Pass this heading as a prop',
@@ -31,59 +25,25 @@ export default function Fields({
     'repeat(8,1fr)',
   ],
 }: FieldsPropTypes) {
-  const {
-    state: { formStatus },
-    dispatch,
-  } = useQueryContext();
-
+  const formBackgroundColor = useColorModeValue('white', 'brand.gray.800');
   const isEmpty = React.useCallback((obj: FormikErrors<FormFields>) => {
     return Object.keys(obj).length === 0;
   }, []);
 
-  const tempSummaryValues = React.useRef<FormFields | null>(null);
-  const isDirty = React.useMemo(() => formikProps.dirty, [formikProps.dirty]);
-  const errors = React.useMemo(() => formikProps.errors, [formikProps.errors]);
-  const isValid = React.useMemo(
-    () => formikProps.isValid,
-    [formikProps.isValid],
-  );
-
-  const formBackgroundColor = useColorModeValue('white', 'brand.gray.800');
+  const { isValid, errors, dirty, setStatus } = useFormikContext();
 
   React.useEffect(() => {
-    tempSummaryValues.current = formikProps.values;
-    console.log('Form status: ', formStatus);
-    // let QueryProvider know when the form has been successfully filled out
-    if (isValid && isEmpty(errors) && isDirty) {
-      dispatch({
+    // update Formik status
+    if (isValid && isEmpty(errors) && dirty) {
+      setStatus({
         formStatus: 'readyToSubmit',
-        tempSummaryValues: { ...tempSummaryValues.current },
       });
     } else if (!isEmpty(errors)) {
-      console.log('form errors: ', errors);
-      dispatch({
+      setStatus({
         formStatus: 'idle',
-        tempSummaryValues: {
-          date: '',
-          execTime: '',
-          posEffect: '',
-          price: 0,
-          qty: 1,
-          side: '',
-          spread: '',
-          ticker: '',
-        },
       });
     }
-  }, [
-    dispatch,
-    errors,
-    isDirty,
-    isEmpty,
-    isValid,
-    formikProps.values,
-    formStatus,
-  ]);
+  }, [dirty, errors, isEmpty, isValid, setStatus]);
 
   const fieldOptions = {
     responsiveWidth: ['full'],

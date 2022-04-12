@@ -1,31 +1,32 @@
-import { Flex, Heading, useColorModeValue } from '@chakra-ui/react';
-// import { useFormFilledState } from '../../../utils/logTradeFormProgressionHelper';
-// import { useSubmissionResult } from '../../../utils/submissionResultHelper';
-import { FeedbackText } from './FeedbackText';
+import * as React from 'react';
+import { Flex, Heading, useColorModeValue, Text } from '@chakra-ui/react';
+import { useFormikContext } from 'formik';
 
-export const SubmissionSuccessMsg = (): JSX.Element => {
-  // TODO: check to see if Formik provides a hook letting you know if submission success / fail
-  // fade out the ProgressionUI
-  // handle dispatch success - display success message
-  // return {
-  //   formStatus: 'submitted',
-  //   success: true,
-  //   error: null,
-  // };
+export const SubmissionSuccessMsg = () => {
   const headingColor = useColorModeValue('brand.green.700', 'brand.green.400');
+  const { setStatus, resetForm } = useFormikContext();
 
-  // useEffect(() => {
-  //   // fast confirm is mainly used to close a modal instantly, rather then setting a timeout
-  //   if (!submittedResult.submittedFromModal) {
-  //     setTimeout(() => {
-  //       cancelForm();
-  //     }, 4000);
-  //   }
-  // });
+  React.useEffect(() => {
+    // fade out the ProgressionUI and reset the form
+    setTimeout(() => {
+      setStatus({
+        formStatus: 'idle',
+        success: null,
+        error: null,
+      });
+
+      resetForm({
+        errors: {
+          date: 'unknown',
+        },
+      });
+    }, 4000);
+  }, [setStatus, resetForm]);
 
   return (
     <Flex
       mt={2}
+      mb={2}
       className="submission-success-container"
       wrap={['wrap', 'wrap', 'nowrap']}
       align="center"
@@ -36,15 +37,14 @@ export const SubmissionSuccessMsg = (): JSX.Element => {
         minWidth={72}
         pr={2}
         mb={['0.5rem', '0.5rem', '0rem']}
-        size="md"
+        size="lg"
         color={headingColor}
       >
-        Submission Processed!
+        Trade Logged!
       </Heading>
-      {/* <FeedbackText>{submittedResult.message}</FeedbackText> */}
-      <FeedbackText>
-        {'Success! Still figuring out success message format'}
-      </FeedbackText>
+      <Text>
+        Look below in the Trade History table for more actions on your trades.
+      </Text>
     </Flex>
   );
 };

@@ -18,7 +18,9 @@ const run = async (route: string, fieldValues: FormFields) => {
   const result = await res.json();
 
   if (!res.ok) {
-    throw new Error(`HTTP error! Status: ${res.status}. ${result.message}`);
+    throw new Error(
+      `HTTP error in run function. Status: ${res.status}. ${result.message}`,
+    );
   }
 
   return result;
@@ -34,13 +36,13 @@ export default function useMutateTradeData() {
       postRoute: string,
       invalidateQueries: string | null = '',
     ) => {
-      console.log('Submitting form');
-      try {
-        run(postRoute, fieldValues).then((data) => {
-          console.log('Formik actions: ', actions);
-          console.log('Successful POST request: ', data);
-          // clear out form fields and reset Formik back to initial state
-          actions.resetForm();
+      run(postRoute, fieldValues).then(
+        () => {
+          actions.setStatus({
+            formStatus: 'submitted',
+            success: true,
+            error: null,
+          });
 
           if (!invalidateQueries) {
             throw new Error(
@@ -49,24 +51,16 @@ export default function useMutateTradeData() {
           }
 
           queryClient.invalidateQueries(invalidateQueries);
-        });
-      } catch (error) {
-        console.log('Error in creating new trade!: ', error);
-        return;
-
-        // TODO:
-        // handle dispatch errors - display failed message and options
-        // cancel button
-        // try again button
-        // if user cancels - clear out form & fade out ProgressionUI
-        // if user tries again, try to resend request
-
-        // dispatch({
-        //   status: 'rejected',
-        //   data: null,
-        //   error: error,
-        // });
-      }
+        },
+        (error) => {
+          console.error('onRejected function called: ' + error);
+          actions.setStatus({
+            formStatus: 'submitted',
+            success: false,
+            error: error,
+          });
+        },
+      );
     },
     [queryClient],
   );

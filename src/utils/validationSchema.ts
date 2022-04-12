@@ -9,21 +9,21 @@ export const logTradeValidationSchema = Yup.object({
       // check to see if the previous transform already parsed the date
       if (this.isType(value)) return value;
       // the default coercion failed, so parse with date-fns,
-      // returning the date parsed from incoming string, using the given format
+      // returns a timestamp dateString using given format or 'Invalid Date'
       value = parse(originalValue, 'yyyy-MM-dd', new Date());
-      // if it's valid return the date object, otherwise return an `InvalidDate` to trigger error
+      // if invalid - return an `InvalidDate` to trigger error
       return isValid(value) ? value : new Date('');
     })
     .max(today, 'Cannot log future trades')
     .required('Required'),
   execTime: Yup.date()
-    .transform(function (currentValue, originalValue) {
-      // original value comes in as 24hr format
-      // which registers invalid when ran against the previous Yup.date() method
-      // so we parse and give the validation a new date object
-      currentValue = parse(originalValue, 'kk:mm', new Date());
-      // if currentValue is now valid, return it, otherwise return an invalid new Date();
-      return isValid(currentValue) ? currentValue : new Date('');
+    // transform runs before Yup.date()
+    .transform(function (value, originalValue) {
+      // value is the result of new Date(originalValue)
+      // returns a timestamp dateString using given format or 'Invalid Date'
+      value = parse(originalValue, 'HH:mm', new Date());
+      // if invalid - return an `InvalidDate` to trigger error
+      return isValid(value) ? value : new Date('');
     })
     .typeError('Invalid time format')
     .required('Required'),

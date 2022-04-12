@@ -1,13 +1,8 @@
-import * as React from 'react';
-import QueryProvider from './QueryProvider';
 import ProgressionUI from './ProgressionUI';
-import {
-  ProgressionFormProps,
-  TradeDataPropVals,
-  FormFields,
-} from '../../../@types/log-trade-types';
+import { motion } from 'framer-motion';
+import { ProgressionFormProps } from '../../../@types/log-trade-types';
 import { logTradeValidationSchema } from '../../../utils/validationSchema';
-import { Formik, FormikProps, FormikHelpers } from 'formik';
+import { Formik } from 'formik';
 import useMutateTradeData from '../../../utils/useMutateTradeData';
 import Fields from './FormUI/Fields';
 
@@ -35,42 +30,30 @@ export default function ProgressionForm({
   }
 
   return (
-    <QueryProvider>
+    <motion.div
+      id="progression-form"
+      style={{ marginBottom: '2.5rem' }}
+      key="log-trade-prog-form"
+      initial={{ opacity: 0, y: 45 }} // how the animation starts
+      animate={{ opacity: 1, y: 0 }} // how the animation ends
+      transition={{
+        duration: 0.18,
+      }}
+    >
       <Formik
+        initialStatus={{ formStatus: 'idle', success: null, error: null }}
         initialValues={preFillValues ? preFillValues : initValues}
         validationSchema={logTradeValidationSchema}
         validateOnMount={true}
-        onSubmit={(values, actions) =>
-          onSubmit(values, actions, route, queriesToInvalidate)
+        onSubmit={(values, formikBag) =>
+          onSubmit(values, formikBag, route, queriesToInvalidate)
         }
       >
-        {(formikProps: FormikProps<TradeDataPropVals>) => (
-          <>
-            <Fields formikProps={formikProps} {...rest} />
-            <ProgressionUI />
-          </>
-        )}
+        <>
+          <Fields {...rest} />
+          <ProgressionUI />
+        </>
       </Formik>
-    </QueryProvider>
+    </motion.div>
   );
 }
-
-//1 - once user fills out form without errors, queryProvider is
-// given a dispatch update that says ok - ready to move on to the next step
-
-//2 - ProgressionUI component now shows up displaying
-// a. confirmation message
-// b. submit button - sends submission request with data in body
-// c. cancel button - clears out form and cancels submission
-// d. clear queryProvider state - hiding the ProgressionUI component
-
-//3A - User successfully submits data
-// a. display success message
-// b. clear out form and any internal state
-// d. clear queryProvider state - hiding the ProgressionUI component
-
-//3B - User fails in submitting data
-// a. display error message
-// b. display try again button
-// c. cancel button - clears out form and cancels submission
-// d. clear queryProvider state - hiding the ProgressionUI component

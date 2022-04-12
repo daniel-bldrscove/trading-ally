@@ -15,7 +15,7 @@ const handler: Handler = async (event) => {
       }),
     )
     .then((response) => {
-      console.log('Handler func success: ', response);
+      // console.log('Handler func success: ', response);
       return {
         statusCode: 200,
         body: JSON.stringify(response),
