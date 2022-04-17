@@ -10,24 +10,23 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   useColorModeValue,
-  useDisclosure,
 } from '@chakra-ui/react';
 import { useRowDataContext } from './RowDataProvider';
+import { useDialogContext } from './DialogProvider';
 import { LeastDestructiveBtnRefContext } from '../../utils/createContext';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 
 export default function DeleteRowData(): JSX.Element {
   const queryClient = useQueryClient();
+  const { onAlertClose } = useDialogContext();
+
   const [err, setErr] = React.useState(null);
-  // const { rowData } = React.useContext(ModalStatesContext) || {};
+
   const context = useRowDataContext();
-
-  const { onClose: onAlertClose } = useDisclosure();
   const { rowData } = context;
-  const dataInRowData = Boolean('data' in rowData);
 
-  if (!dataInRowData) {
+  if (!rowData) {
     throw new Error(
       'rowData was not passed through context. Please check context import.',
     );
@@ -50,9 +49,7 @@ export default function DeleteRowData(): JSX.Element {
     {
       onSuccess: () => {
         // close modal
-        setTimeout(() => {
-          onAlertClose();
-        }, 500);
+        onAlertClose();
       },
       onError: (error: any) => {
         // must come first when calling from inside mutate method
