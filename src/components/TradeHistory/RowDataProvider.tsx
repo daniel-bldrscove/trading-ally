@@ -37,7 +37,12 @@ export default function RowDataProvider({
     },
     ref: {
       '@ref': {
-        collection: {},
+        collection: {
+          '@ref': {
+            collection: {},
+            id: '',
+          },
+        },
         id: '',
       },
     },

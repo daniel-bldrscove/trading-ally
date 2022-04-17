@@ -22,7 +22,12 @@ export const ModalStates = ({
     },
     ref: {
       '@ref': {
-        collection: {},
+        collection: {
+          '@ref': {
+            collection: {},
+            id: '',
+          },
+        },
         id: '',
       },
     },

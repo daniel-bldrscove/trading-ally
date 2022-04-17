@@ -36,7 +36,10 @@ export const App: React.FC = function () {
             <Layout>
               <LayoutWrapper mt="2rem" mb="5rem">
                 <TitleSection>Log Trade</TitleSection>
-                <ProgressionForm submissionConfig={submissionConfig} />
+                <ProgressionForm
+                  submissionConfig={submissionConfig}
+                  heading="Fill out the fields below!"
+                />
                 <TitleSection>Trade History</TitleSection>
                 <TradeHistory />
               </LayoutWrapper>

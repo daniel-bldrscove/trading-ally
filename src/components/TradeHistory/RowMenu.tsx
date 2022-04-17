@@ -18,44 +18,44 @@ export const RowMenu = ({
   const { onModalOpen, onAlertOpen } = useDialogContext();
   const context = useRowDataContext();
   const { setRowData } = context;
-  const ref = React.useRef<Row | null>(null);
+  const tDRef = React.useRef<Row | null>(null);
 
   React.useEffect(() => {
     const isRowData = Boolean('data' in rowTableData);
     if (!isRowData) {
       return;
     }
-    ref.current = rowTableData;
+    tDRef.current = rowTableData;
   }, [rowTableData]);
 
-  if (ref.current) {
-    return (
-      <Menu isLazy {...rest}>
-        <MenuButton
-          as={IconButton}
-          aria-label="Options"
-          icon={<FiMoreHorizontal />}
-          variant="outline"
-        />
-        <MenuList>
-          <MenuItem
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            onClick={() => (onModalOpen(), setRowData(ref.current!))}
-            icon={<FiEdit2 />}
-          >
-            Edit
-          </MenuItem>
-          <MenuItem
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            onClick={() => (onAlertOpen(), setRowData(ref.current!))}
-            icon={<FiTrash />}
-          >
-            Delete
-          </MenuItem>
-        </MenuList>
-      </Menu>
-    );
-  }
+  return (
+    <Menu isLazy {...rest}>
+      <MenuButton
+        as={IconButton}
+        aria-label="Options"
+        icon={<FiMoreHorizontal />}
+        variant="outline"
+      />
+      <MenuList>
+        <MenuItem
+          onClick={() =>
+            tDRef.current && (onModalOpen(), setRowData(tDRef.current))
+          }
+          icon={<FiEdit2 />}
+        >
+          Edit
+        </MenuItem>
+        <MenuItem
+          onClick={() =>
+            tDRef.current && (onAlertOpen(), setRowData(tDRef.current))
+          }
+          icon={<FiTrash />}
+        >
+          Delete
+        </MenuItem>
+      </MenuList>
+    </Menu>
+  );
 
   return null;
 };

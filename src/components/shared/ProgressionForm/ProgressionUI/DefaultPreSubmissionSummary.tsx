@@ -10,7 +10,6 @@ export const DefaultPreSubmissionSummary = () => {
     useFormikContext<FormFields>();
 
   const { date, execTime, price, qty, side, ticker } = values;
-  console.log('execTime: ', execTime);
 
   const handleCancel = () => {
     // clear out form and cancel submission

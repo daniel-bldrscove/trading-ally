@@ -40,16 +40,10 @@ export default function TradeHistory(): JSX.Element {
     ...handleScrollStyles,
   };
 
-  // query trades from DB
   const status = useQuery('trades', fetchTrades);
-
-  // memoize data for table
   const cachedData = React.useMemo(() => status.data, [status.data]);
-
-  // memoize columns for table
   const columns = React.useMemo(() => columnRowFormatting, []);
 
-  // render based on status
   if (status.isLoading) {
     return <span>Loading...</span>;
   } else if (status.isIdle) {

@@ -41,7 +41,6 @@ export default function DialogProvider({
     onOpen: onAlertOpen,
   } = useDisclosure();
 
-  // memoize modal states to pass in context
   const dialogStates = {
     isModalOpen,
     onModalOpen,

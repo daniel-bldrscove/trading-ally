@@ -1,5 +1,3 @@
-export type TradeDataPropVals = FormFields;
-
 export type FormFields = {
   date: string;
   execTime: string;
@@ -13,9 +11,12 @@ export type FormFields = {
 
 export type ProgressionFormProps = {
   submissionConfig: {
-    queriesToInvalidate?: string;
+    queriesToInvalidate: string;
     preFillValues: FormFields | null;
-    route?: string;
+    collectionName?: string;
+    collectionId?: string;
+    closeModal?: () => void;
+    route: string;
   };
   w?: string;
   mb?: string[];

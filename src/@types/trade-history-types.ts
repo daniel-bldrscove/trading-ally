@@ -25,7 +25,12 @@ export type Row = {
   };
   ref: {
     '@ref': {
-      collection: Record<string, unknown>;
+      collection: {
+        '@ref': {
+          collection: Record<string, unknown>;
+          id: string;
+        };
+      };
       id: string;
     };
   };

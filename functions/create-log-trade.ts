@@ -22,7 +22,7 @@ const handler: Handler = async (event) => {
       };
     })
     .catch((error) => {
-      console.log('Handler func error: ', error);
+      // console.log('Handler func error: ', error);
       return {
         statusCode: 400,
         body: JSON.stringify(error),

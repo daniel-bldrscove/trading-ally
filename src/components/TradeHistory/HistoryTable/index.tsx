@@ -25,8 +25,8 @@ export default function HistoryTable({
     useSortBy,
     useRowSelect,
     (hooks) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      hooks.visibleColumns.push((columns) => [
+      // custom hook plugins
+      hooks.visibleColumns.push(() => [
         {
           // make indeterminate checkbox
           Header: '',

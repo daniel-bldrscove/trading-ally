@@ -8,7 +8,7 @@ export const SubmissionSuccessMsg = () => {
 
   React.useEffect(() => {
     // fade out the ProgressionUI and reset the form
-    setTimeout(() => {
+    const fadeSuccessFeedback = setTimeout(() => {
       setStatus({
         formStatus: 'idle',
         success: null,
@@ -21,6 +21,9 @@ export const SubmissionSuccessMsg = () => {
         },
       });
     }, 4000);
+
+    // cancel fade timeout
+    return () => clearTimeout(fadeSuccessFeedback);
   }, [setStatus, resetForm]);
 
   return (

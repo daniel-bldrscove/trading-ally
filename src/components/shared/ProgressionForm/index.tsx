@@ -18,7 +18,14 @@ const initValues = {
 };
 
 export default function ProgressionForm({
-  submissionConfig: { queriesToInvalidate, preFillValues, route },
+  submissionConfig: {
+    queriesToInvalidate,
+    preFillValues,
+    collectionName,
+    collectionId,
+    closeModal,
+    route,
+  },
   ...rest
 }: ProgressionFormProps) {
   const { onSubmit } = useMutateTradeData();
@@ -46,7 +53,15 @@ export default function ProgressionForm({
         validationSchema={logTradeValidationSchema}
         validateOnMount={true}
         onSubmit={(values, formikBag) =>
-          onSubmit(values, formikBag, route, queriesToInvalidate)
+          onSubmit(
+            values,
+            formikBag,
+            route,
+            collectionName,
+            collectionId,
+            queriesToInvalidate,
+            closeModal,
+          )
         }
       >
         <>

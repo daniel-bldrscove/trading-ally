@@ -1,9 +1,28 @@
 import * as React from 'react';
 import { useQueryClient } from 'react-query';
-import { FormFields } from '../@types/log-trade-types';
+import { FormFields, ProgressionFormProps } from '../@types/log-trade-types';
 import { FormikHelpers } from 'formik';
 
-const run = async (route: string, fieldValues: FormFields) => {
+const run = async (
+  route: string,
+  fieldValues: FormFields,
+  collectionName: ProgressionFormProps['submissionConfig']['collectionName'] = '',
+  collectionId: ProgressionFormProps['submissionConfig']['collectionName'] = '',
+) => {
+  let reqBody;
+
+  if (!collectionName || !collectionId) {
+    reqBody = {
+      ...fieldValues,
+    };
+  } else {
+    reqBody = {
+      fieldValues,
+      collectionName,
+      collectionId,
+    };
+  }
+
   const res = await window.fetch(route, {
     method: 'POST',
     headers: {
@@ -11,7 +30,7 @@ const run = async (route: string, fieldValues: FormFields) => {
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      ...fieldValues,
+      ...reqBody,
     }),
   });
 
@@ -32,13 +51,22 @@ export default function useMutateTradeData() {
   const onSubmit = React.useCallback(
     (
       fieldValues: FormFields,
-      actions: FormikHelpers<FormFields>,
-      postRoute: string,
-      invalidateQueries: string | null = '',
+      formikBag: FormikHelpers<FormFields>,
+      postRoute: ProgressionFormProps['submissionConfig']['route'] = '',
+      collectionName: ProgressionFormProps['submissionConfig']['collectionName'] = '',
+      collectionId: ProgressionFormProps['submissionConfig']['collectionName'] = '',
+      invalidateQueries: ProgressionFormProps['submissionConfig']['queriesToInvalidate'] = '',
+      closeModal: ProgressionFormProps['submissionConfig']['closeModal'] = () => {},
     ) => {
-      run(postRoute, fieldValues).then(
+      if (!fieldValues || !formikBag || !postRoute) {
+        throw new Error(
+          'The form field values, formikBag, or the post route is undefined! Make sure the values exist.',
+        );
+      }
+
+      run(postRoute, fieldValues, collectionName, collectionId).then(
         () => {
-          actions.setStatus({
+          formikBag.setStatus({
             formStatus: 'submitted',
             success: true,
             error: null,
@@ -51,10 +79,14 @@ export default function useMutateTradeData() {
           }
 
           queryClient.invalidateQueries(invalidateQueries);
+
+          if (closeModal) {
+            closeModal();
+          }
         },
         (error) => {
           console.error('onRejected function called: ' + error);
-          actions.setStatus({
+          formikBag.setStatus({
             formStatus: 'submitted',
             success: false,
             error: error,
