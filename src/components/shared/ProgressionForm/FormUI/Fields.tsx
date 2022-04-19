@@ -1,58 +1,58 @@
-import { useEffect } from 'react';
-import { Form as FormikForm, useFormikContext } from 'formik';
+import * as React from 'react';
+import { Form, FormikErrors, useFormikContext } from 'formik';
 import { Box, Grid, Heading, useColorModeValue } from '@chakra-ui/react';
-import { InputField } from '../shared/form/InputField';
-import { SelectField } from '../shared/form/SelectField';
-import { NumInputField } from '../shared/form/NumInputField';
-import { FormFieldsProps } from '../../@types/log-trade-types';
-import { initialValues } from './RenderFormik';
+import { InputField } from '../../../shared/form/InputField';
+import { SelectField } from '../../../shared/form/SelectField';
+import { NumInputField } from '../../../shared/form/NumInputField';
+import { FormFields } from '../../../../@types/log-trade-types';
 
-export const FormFields = ({
-  children,
-  setFieldValues,
-  wrapperProps: { gridTemplateCols, heading, preFillValues, ...rest },
-}: FormFieldsProps): JSX.Element => {
+type FieldsPropTypes = {
+  w?: string;
+  mb?: string[];
+  heading?: string;
+  gridTemplateCols?: string[];
+};
+
+export default function Fields({
+  w = 'full',
+  mb = ['0'],
+  heading = 'Pass this heading as a prop',
+  gridTemplateCols = [
+    'repeat(2,1fr)',
+    'repeat(2,1fr)',
+    'repeat(3,1fr)',
+    'repeat(4,1fr)',
+    'repeat(8,1fr)',
+  ],
+}: FieldsPropTypes) {
   const formBackgroundColor = useColorModeValue('white', 'brand.gray.800');
-  const fieldOptions = {
-    fieldWidth: ['full'],
-    variant: 'single-baseline',
-  };
-  const { setTouched } = useFormikContext();
-
-  useEffect(() => {
-    if (preFillValues) {
-      const setValues = new Promise((resolve) => {
-        resolve(setFieldValues(preFillValues));
-      });
-
-      // touch and validate all pre-filled values
-      setValues.then(() =>
-        setTouched(
-          {
-            date: true,
-            execTime: true,
-            spread: true,
-            side: true,
-            qty: true,
-            ticker: true,
-            price: true,
-            posEffect: true,
-          },
-          true,
-        ),
-      );
-    }
-
-    // clean up field values
-    return () => setFieldValues(initialValues);
-
-    // only pre-fill values once on first render
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const isEmpty = React.useCallback((obj: FormikErrors<FormFields>) => {
+    return Object.keys(obj).length === 0;
   }, []);
 
+  const { isValid, errors, dirty, setStatus } = useFormikContext();
+
+  React.useEffect(() => {
+    // update Formik status
+    if (isValid && isEmpty(errors) && dirty) {
+      setStatus({
+        formStatus: 'readyToSubmit',
+      });
+    } else if (!isEmpty(errors)) {
+      setStatus({
+        formStatus: 'idle',
+      });
+    }
+  }, [dirty, errors, isEmpty, isValid, setStatus]);
+
+  const fieldOptions = {
+    responsiveWidth: ['full'],
+    variant: 'single-baseline',
+  };
+
   return (
-    <FormikForm>
-      <Box position="relative" p={0} {...rest}>
+    <Form>
+      <Box position="relative" p={0} w={w} mb={mb}>
         <Box bg={formBackgroundColor} p={6} borderRadius="md">
           <Box mb={6}>
             <Heading as="h4" size="md" mb={8}>
@@ -61,40 +61,36 @@ export const FormFields = ({
           </Box>
           <Grid templateColumns={gridTemplateCols} gap={6}>
             <InputField
-              w={fieldOptions.fieldWidth}
+              w={fieldOptions.responsiveWidth}
               variant={fieldOptions.variant}
               type="date"
-              id="date"
               name="date"
               label="Date"
               placeholder="mm/dd/yyyy"
               toolTipDescription="On what day did you execute the trade?"
             />
             <InputField
-              w={fieldOptions.fieldWidth}
+              w={fieldOptions.responsiveWidth}
               variant={fieldOptions.variant}
               type="time"
-              id="execTime"
               name="execTime"
               label="Exc. Time"
               placeholder="00:00"
               toolTipDescription="At what time did you execute the trade?"
             />
             <InputField
-              w={fieldOptions.fieldWidth}
+              w={fieldOptions.responsiveWidth}
               variant={fieldOptions.variant}
               type="text"
-              id="spread"
               name="spread"
               label="Spread"
               placeholder="Stock"
               toolTipDescription="Write 'Stock' below"
             />
             <SelectField
-              w={fieldOptions.fieldWidth}
+              w={fieldOptions.responsiveWidth}
               variant={fieldOptions.variant}
               type="text"
-              id="side"
               name="side"
               label="Side"
               placeholder="Pick One"
@@ -104,9 +100,8 @@ export const FormFields = ({
               <option value="short">Short</option>
             </SelectField>
             <NumInputField
-              w={fieldOptions.fieldWidth}
+              w={fieldOptions.responsiveWidth}
               variant={fieldOptions.variant}
-              id="qty"
               step={1}
               name="qty"
               label="Quantity"
@@ -114,19 +109,17 @@ export const FormFields = ({
               toolTipDescription="How many shares did you buy or sell?"
             />
             <InputField
-              w={fieldOptions.fieldWidth}
+              w={fieldOptions.responsiveWidth}
               variant={fieldOptions.variant}
               type="text"
-              id="ticker"
               name="ticker"
               label="Ticker"
               placeholder="AAPL"
               toolTipDescription="What is the company's ticker symbol?"
             />
             <NumInputField
-              w={fieldOptions.fieldWidth}
+              w={fieldOptions.responsiveWidth}
               variant={fieldOptions.variant}
-              id="price"
               name="price"
               label="Price"
               precision={2}
@@ -134,10 +127,9 @@ export const FormFields = ({
               toolTipDescription="What's the price of a single share?"
             />
             <SelectField
-              w={fieldOptions.fieldWidth}
+              w={fieldOptions.responsiveWidth}
               variant={fieldOptions.variant}
               type="text"
-              id="posEffect"
               name="posEffect"
               label="Effect"
               placeholder="Pick One"
@@ -148,8 +140,7 @@ export const FormFields = ({
             </SelectField>
           </Grid>
         </Box>
-        {children}
       </Box>
-    </FormikForm>
+    </Form>
   );
-};
+}

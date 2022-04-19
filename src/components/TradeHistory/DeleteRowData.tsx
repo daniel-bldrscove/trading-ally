@@ -1,30 +1,35 @@
-import { useContext, useState } from 'react';
+import * as React from 'react';
 import {
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  Button,
+  Text,
   Code,
+  Button,
   HStack,
   Heading,
   ModalCloseButton,
-  Text,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
   useColorModeValue,
 } from '@chakra-ui/react';
-import {
-  ModalStatesContext,
-  LeastDestructiveBtnRefContext,
-} from '../../utils/createContext';
+import { useRowDataContext } from './RowDataProvider';
+import { useDialogContext } from './DialogProvider';
+import { LeastDestructiveBtnRefContext } from '../../utils/createContext';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 
-export const CustomAlertContent = (): JSX.Element => {
+export default function DeleteRowData(): JSX.Element {
   const queryClient = useQueryClient();
-  const [err, setErr] = useState(null);
-  const { onAlertClose, rowData } = useContext(ModalStatesContext) || {};
+  const { onAlertClose } = useDialogContext();
 
-  if (!onAlertClose || !rowData) {
-    throw new Error('ModalStatesContext not loaded!');
+  const [err, setErr] = React.useState(null);
+
+  const context = useRowDataContext();
+  const { rowData } = context;
+
+  if (!rowData) {
+    throw new Error(
+      'rowData was not passed through context. Please check context import.',
+    );
   }
 
   const {
@@ -44,9 +49,7 @@ export const CustomAlertContent = (): JSX.Element => {
     {
       onSuccess: () => {
         // close modal
-        setTimeout(() => {
-          onAlertClose();
-        }, 500);
+        onAlertClose();
       },
       onError: (error: any) => {
         // must come first when calling from inside mutate method
@@ -60,7 +63,7 @@ export const CustomAlertContent = (): JSX.Element => {
     },
   );
 
-  const cancelRef = useContext(LeastDestructiveBtnRefContext);
+  const cancelRef = React.useContext(LeastDestructiveBtnRefContext);
   const descriptionTextColor = useColorModeValue(
     'brand.gray.400',
     'brand.gray.50',
@@ -141,4 +144,4 @@ export const CustomAlertContent = (): JSX.Element => {
       )}
     </>
   );
-};
+}

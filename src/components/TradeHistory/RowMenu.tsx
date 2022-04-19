@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from 'react';
+import * as React from 'react';
 import {
   IconButton,
   Menu,
@@ -7,33 +7,26 @@ import {
   MenuItem,
 } from '@chakra-ui/react';
 import { FiMoreHorizontal, FiEdit2, FiTrash } from 'react-icons/fi';
-import { ModalStatesContext } from '../../utils/createContext';
-import { RowMenuProps } from '../../@types/trade-history-types';
+import { useRowDataContext } from './RowDataProvider';
+import { RowMenuProps, Row } from '../../@types/trade-history-types';
+import { useDialogContext } from './DialogProvider';
 
-export const RowMenu = ({ rowProps, ...rest }: RowMenuProps): JSX.Element => {
-  const [rowData, setRowData] = useState({});
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const { onModalOpen, onAlertOpen, passDataToModalContent } =
-    useContext(ModalStatesContext);
-  const ref = useRef<Record<string, unknown> | null>(null);
+export const RowMenu = ({
+  rowTableData,
+  ...rest
+}: RowMenuProps): JSX.Element | null => {
+  const { onModalOpen, onAlertOpen } = useDialogContext();
+  const context = useRowDataContext();
+  const { setRowData } = context;
+  const tDRef = React.useRef<Row | null>(null);
 
-  useEffect(() => {
-    ref.current = rowProps;
-    if (!ref.current) throw Error('divRef is not assigned');
-
-    setRowData(rowProps);
-  }, [rowProps]);
-
-  const handleModalOpen = (modalType: string) => {
-    if (modalType === 'modal') {
-      onModalOpen();
-    } else if (modalType === 'alert') {
-      onAlertOpen();
+  React.useEffect(() => {
+    const isRowData = Boolean('data' in rowTableData);
+    if (!isRowData) {
+      return;
     }
-    // pass selected row data when user opens modal
-    passDataToModalContent(rowData);
-  };
+    tDRef.current = rowTableData;
+  }, [rowTableData]);
 
   return (
     <Menu isLazy {...rest}>
@@ -44,13 +37,25 @@ export const RowMenu = ({ rowProps, ...rest }: RowMenuProps): JSX.Element => {
         variant="outline"
       />
       <MenuList>
-        <MenuItem onClick={() => handleModalOpen('modal')} icon={<FiEdit2 />}>
+        <MenuItem
+          onClick={() =>
+            tDRef.current && (onModalOpen(), setRowData(tDRef.current))
+          }
+          icon={<FiEdit2 />}
+        >
           Edit
         </MenuItem>
-        <MenuItem onClick={() => handleModalOpen('alert')} icon={<FiTrash />}>
+        <MenuItem
+          onClick={() =>
+            tDRef.current && (onAlertOpen(), setRowData(tDRef.current))
+          }
+          icon={<FiTrash />}
+        >
           Delete
         </MenuItem>
       </MenuList>
     </Menu>
   );
+
+  return null;
 };

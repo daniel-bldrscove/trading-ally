@@ -27,7 +27,11 @@ export const SmLabelWithTooltip = ({
       </SmLabel>
       <Popover isLazy={true} matchWidth={true}>
         <PopoverTrigger>
-          <QuestionOutlineIcon size="xs" w="10px" color="brand.gray.200" />
+          <QuestionOutlineIcon
+            boxSize=".75rem"
+            w="10px"
+            color="brand.gray.200"
+          />
         </PopoverTrigger>
         <PopoverContent bg="brand.gray.900" w="full">
           <PopoverArrow bg="brand.gray.900" />

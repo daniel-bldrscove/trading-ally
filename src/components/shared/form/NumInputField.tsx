@@ -27,7 +27,7 @@ export const NumInputField = ({
   const { setValue } = helpers;
 
   return (
-    <FormControl isInvalid={meta.touched && meta.error}>
+    <FormControl isInvalid={meta.touched && !!meta.error}>
       <SmLabelWithTooltip
         htmlFor={field.name}
         toolTipDescription={toolTipDescription}
@@ -47,7 +47,7 @@ export const NumInputField = ({
           clampValueOnBlur={true}
           variant={variant} // using a custom variant. Other variant types are: "outline" | "filled" | "flushed" | "unstyled"
           onChange={(valueString) => setValue(valueString)}
-          value={field.value} // controll value with formik allows programmatic reset
+          value={field.value} // control value with formik allows programmatic reset
         >
           <NumberInputField {...field} />
           <NumberInputStepper>

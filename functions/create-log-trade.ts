@@ -15,14 +15,14 @@ const handler: Handler = async (event) => {
       }),
     )
     .then((response) => {
-      console.log('Handler func success: ', response);
+      // console.log('Handler func success: ', response);
       return {
         statusCode: 200,
         body: JSON.stringify(response),
       };
     })
     .catch((error) => {
-      console.log('Handler func error: ', error);
+      // console.log('Handler func error: ', error);
       return {
         statusCode: 400,
         body: JSON.stringify(error),

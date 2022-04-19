@@ -1,10 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useDisclosure } from '@chakra-ui/react';
 import { ModalStatesContext } from '../../utils/createContext';
-import { Modal } from '../shared/Modal';
-import { Alert } from '../shared/Alert';
-import { CustomModalContent } from './CustomModalContent';
-import { CustomAlertContent } from './CustomAlertContent';
+
 import { ModalStatesProps } from '../../@types/trade-history-types';
 
 export const ModalStates = ({
@@ -25,7 +22,12 @@ export const ModalStates = ({
     },
     ref: {
       '@ref': {
-        collection: {},
+        collection: {
+          '@ref': {
+            collection: {},
+            id: '',
+          },
+        },
         id: '',
       },
     },
@@ -72,12 +74,6 @@ export const ModalStates = ({
 
   return (
     <ModalStatesContext.Provider value={modalStates}>
-      <Modal>
-        <CustomModalContent />
-      </Modal>
-      <Alert>
-        <CustomAlertContent />
-      </Alert>
       {children}
     </ModalStatesContext.Provider>
   );
